@@ -16,10 +16,6 @@ class RolesSchema extends Schema {
     this.drop('roles')
   }
 
-  users () {
-    return this.hasMany('App/Models/User')
-  }
-
 }
 
 module.exports = RolesSchema

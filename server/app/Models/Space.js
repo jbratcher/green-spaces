@@ -4,6 +4,11 @@
 const Model = use('Model')
 
 class Space extends Model {
+
+  users () {
+    return this.hasMany('App/Models/Users')
+  }
+
 }
 
 module.exports = Space
