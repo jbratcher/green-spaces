@@ -37,7 +37,7 @@ Factory.blueprint('App/Models/Role', async (faker, i, data) => {
 
 Factory.blueprint('App/Models/Space', async (faker) => {
   return {
-    name: faker.name(),
+    name: faker.street(),
     full_address: faker.address(),
     description: faker.sentence(3),
   }

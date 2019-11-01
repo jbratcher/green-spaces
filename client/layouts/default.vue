@@ -1,5 +1,5 @@
 <template>
-  <v-app dark>
+  <v-app>
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -57,6 +57,7 @@
         <v-icon>mdi-menu</v-icon>
       </v-btn>
     </v-app-bar>
+    <!-- Nuxt content -->
     <v-content>
       <v-container>
         <nuxt />
@@ -115,3 +116,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+
+  // #app{
+  //   background-color: #4caf50;
+  // }
+
+</style>
