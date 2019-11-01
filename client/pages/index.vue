@@ -6,10 +6,10 @@
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
               <h1 class="display-3 text-shadow mb-5">
-                Green Spaces
+                GreenSpaces
               </h1>
               <p class="display-1 text-shadow">
-                Crowdsourced Climate Action
+                Crowd-sourced Climate Action
               </p>
             </v-col>
           </v-row>
