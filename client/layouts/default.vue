@@ -13,12 +13,12 @@
           v-for="(item, i) in items"
           :key="i"
           :to="item.to"
-          class="white--text"
+          dark
           router
           exact
         >
           <v-list-item-action>
-            <v-icon class="white--text">
+            <v-icon>
               {{ item.icon }}
             </v-icon>
           </v-list-item-action>
@@ -29,26 +29,24 @@
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
-      class="white--text"
+      dark
       color="teal"
       fixed
       app
     >
       <v-toolbar-title v-text="title" />
       <v-spacer />
-      <v-app-bar-nav-icon class="white--text" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
     <!-- Nuxt content -->
     <v-content>
-      <v-container>
-        <nuxt />
-      </v-container>
+      <nuxt />
     </v-content>
     <v-footer
       :fixed="fixed"
       app
     >
-      <span>&copy; 2019</span>
+      <span class="ml-auto">Green Spaces &copy; 2019</span>
     </v-footer>
   </v-app>
 </template>
@@ -80,8 +78,8 @@ export default {
 
 <style lang="scss">
 
-.theme--light.v-list-item:not(.v-list-item--active):not(.v-list-item--disabled) {
-  color: #fff !important;
-}
+  .v-application a {
+    color: #fff !important;
+  }
 
 </style>
