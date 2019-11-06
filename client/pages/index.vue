@@ -3,7 +3,7 @@
     <v-flex>
 
       <v-card>
-        <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
+        <v-img :aspect-ratio="16/9" height="60vh" src="hero.jpg">
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
               <h1 class="display-3 text-shadow mb-5">
@@ -22,8 +22,7 @@
           <v-card-text>
             <p>Your help is needed to literally save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.</p>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer />
+          <v-card-actions class="justify-center">
             <v-btn
               color="primary"
               nuxt

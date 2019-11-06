@@ -2,30 +2,46 @@
   <v-layout>
     <v-flex class="text-center">
 
-      <h1>How to get started</h1>
+      <section class="container">
 
-      <div class="my-5">
+        <h1 class="display-3 my-12">
+          How to get started
+        </h1>
 
-        <v-btn
-          class="mx-3"
-          color="primary"
-          large
-          nuxt
-          to="/donate"
-        >
-          Donate
-        </v-btn>
-        <v-btn
-          class="mx-3"
-          color="info"
-          large
-          nuxt
-          to="/volunteer"
-        >
-          Volunteer
-        </v-btn>
-      </div>
+        <div class="my-12">
+
+          <v-btn
+            class="mx-10"
+            color="primary"
+            x-large
+            nuxt
+            to="/donate"
+          >
+            Donate
+          </v-btn>
+          <v-btn
+            class="mx-10"
+            color="info"
+            x-large
+            nuxt
+            to="/volunteer"
+          >
+            Volunteer
+          </v-btn>
+        </div>
+
+      </section>
 
     </v-flex>
   </v-layout>
 </template>
+
+<script>
+export default {
+
+}
+</script>
+
+<style lang="scss">
+
+</style>
