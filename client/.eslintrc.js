@@ -13,6 +13,8 @@ module.exports = {
   ],
   // add your custom rules here
   rules: {
-    'no-return-assign': 'except-parens',
+    'vue/multiline-html-element-content-newline': 'off',
+    'no-return-assign': 'off',
+    'no-console': 'off',
   }
 }

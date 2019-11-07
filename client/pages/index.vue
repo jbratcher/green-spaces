@@ -20,7 +20,9 @@
             Green Spaces provides an all in one platform for combating climate change by planting trees to reduce carbon dioxide from the air.
           </v-card-title>
           <v-card-text>
-            <p class="heading">Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.</p>
+            <p class="heading">
+              Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.
+            </p>
           </v-card-text>
           <v-card-actions class="justify-center">
             <v-btn
