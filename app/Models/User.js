@@ -40,7 +40,11 @@ class User extends Model {
   }
 
   spaces () {
-    return this.manyMany('App/Models/Spaces')
+    return this.manyMany('App/Models/Space')
+  }
+
+  spaceEvents () {
+    return this.hasOne('App/Models/SpaceEvents')
   }
 
 }
