@@ -109,12 +109,46 @@ export default {
     flex: 1 1 0;
   }
 
+  .v-card__title {
+    word-break: break-word;
+  }
+
+  .text-shadow {
+    text-shadow: 2px 2px 4px #000;
+  }
+
+  .heading {
+    font-size: 1.25rem;
+    line-height: 1.5;
+  }
+
   .box-shadow-1 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.7);
   }
 
   .theme--dark.v-sheet {
     background-color: transparent;
+  }
+
+  .btn-box-shadow-primary {
+    box-shadow: 0 0 8px rgba(0, 121, 107, 0.8);
+
+    &:hover {
+      box-shadow: none;
+      transition: all 0.5s ease;
+    }
+
+  }
+
+  .btn-box-shadow-secondary {
+
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+
+    &:hover {
+      box-shadow: none;
+      transition: all 0.5s ease;
+    }
+
   }
 
 </style>

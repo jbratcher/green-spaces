@@ -11,7 +11,7 @@
         <div class="my-12">
 
           <v-btn
-            class="mx-10"
+            class="mx-10 btn-box-shadow-primary"
             color="primary"
             x-large
             nuxt
@@ -20,7 +20,7 @@
             Donate
           </v-btn>
           <v-btn
-            class="mx-10"
+            class="mx-10 btn-box-shadow-secondary"
             color="info"
             x-large
             nuxt

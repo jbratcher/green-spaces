@@ -11,7 +11,7 @@
           <p class="headline mb-12">
             Your time helps fight climate change
           </p>
-          <v-btn x-large color="primary">
+          <v-btn x-large class="btn-box-shadow-primary" color="primary">
             Volunteer
           </v-btn>
         </section>
@@ -26,8 +26,8 @@
           <v-sheet class="my-6" height="500">
             <v-calendar
               type="month"
-              now="2019-06-11"
-              value="2019-01-11"
+              now="2019-11-07"
+              value="2019-11-01"
               :events="events"
             />
           </v-sheet>
@@ -41,7 +41,20 @@
 
 <script>
 export default {
-
+  data: () => ({
+    events: []
+  }),
+  created () {
+    this.getEvents()
+  },
+  methods: {
+    async getEvents () {
+      await fetch('http://localhost:3333/api/space-events')
+        .then(response => response.json())
+        .then(response => (this.events = response))
+        .catch(error => console.log(error))
+    }
+  }
 }
 </script>
 

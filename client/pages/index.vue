@@ -16,17 +16,18 @@
           </v-row>
         </v-img>
         <v-container>
-          <v-card-title class="headline">
+          <v-card-title class="display-1 my-10">
             Green Spaces provides an all in one platform for combating climate change by planting trees to reduce carbon dioxide from the air.
           </v-card-title>
           <v-card-text>
-            <p>Your help is needed to literally save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.</p>
+            <p class="heading">Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.</p>
           </v-card-text>
           <v-card-actions class="justify-center">
             <v-btn
               color="primary"
               nuxt
               to="/start"
+              class="headline btn-box-shadow-primary"
             >
               Get involved
             </v-btn>
@@ -45,13 +46,5 @@ export default {
 </script>
 
 <style lang="scss">
-
-  .v-card__title {
-    word-break: break-word;
-  }
-
-  .text-shadow {
-    text-shadow: 2px 2px 4px #000;
-  }
 
 </style>

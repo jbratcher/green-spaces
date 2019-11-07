@@ -43,3 +43,14 @@ Factory.blueprint('App/Models/Space', async (faker) => {
   }
 })
 
+// TODO
+
+// SpaceEvents Factory
+
+// Factory.blueprint('App/Models/SpaceEvent', async (faker) => {
+//   return {
+//     name: faker.name(),
+//     date: faker.address(),
+//     description: faker.sentence(3),
+//   }
+// })
