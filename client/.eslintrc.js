@@ -16,5 +16,8 @@ module.exports = {
     'vue/multiline-html-element-content-newline': 'off',
     'no-return-assign': 'off',
     'no-console': 'off',
+    'semi': 'off',
+    'comma-dangle': 'off',
+    'space-before-function-paren': 'off',
   }
 }

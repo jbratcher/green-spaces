@@ -26,9 +26,8 @@
           <v-sheet class="my-6" height="500">
             <v-calendar
               type="month"
-              now="2019-11-07"
               value="2019-11-01"
-              :events="events"
+              :events="spaceEvents"
             />
           </v-sheet>
         </section>
@@ -40,20 +39,27 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from 'vuex';
+
 export default {
-  data: () => ({
-    events: []
-  }),
+  computed: {
+    ...mapState('spaceEvents', [
+      'newSpaceEventName',
+      'spaceEvents',
+    ]),
+  },
   created () {
-    this.getEvents()
+    this.fetchSpaceEvents();
   },
   methods: {
-    async getEvents () {
-      await fetch('http://localhost:3333/api/space-events')
-        .then(response => response.json())
-        .then(response => (this.events = response))
-        .catch(error => console.log(error))
-    }
+    ...mapMutations('spaceEvents', [
+      'setNewSpaceEventName',
+      'setSpaceEvents',
+    ]),
+    ...mapActions('spaceEvents', [
+      'createSpaceEvent',
+      'fetchSpaceEvents',
+    ]),
   }
 }
 </script>
