@@ -2,18 +2,20 @@
 import HTTP from '../http';
 
 export const state = () => ({
-  registerEmail: null,
-  registerPassword: null,
-  registerError: null,
+  loggedIn: null,
   loginEmail: null,
   loginPassword: null,
   loginError: null,
+  registerEmail: null,
+  registerPassword: null,
+  registerError: null,
   token: null,
 });
 
 export const actions = {
   logout({ commit }) {
     commit('setToken', null);
+    commit('setLoggedIn', false);
     if (this.$router.currentRoute !== '/') {
       this.$router.replace('/');
     }
@@ -26,10 +28,11 @@ export const actions = {
     })
       .then(({ data }) => {
         commit('setToken', data.token);
+        commit('setLoggedIn', true);
         this.$router.push('/');
       })
-      .catch(() => {
-        commit('setLoginError', 'An error has occured trying to log in to your account.');
+      .catch((error) => {
+        commit('setLoginError', `Login Error: ${error}`);
       });
   },
   register({ commit, state }) {
@@ -40,10 +43,11 @@ export const actions = {
     })
       .then(({ data }) => {
         commit('setToken', data.token);
+        commit('setLoggedIn', true);
         this.$router.push('/');
       })
-      .catch(() => {
-        commit('setRegisterError', 'An error has occured trying to create your account.');
+      .catch((error) => {
+        commit('setRegisterError', `Registration error: ${error}`);
       });
   },
 };
@@ -55,6 +59,9 @@ export const getters = {
 };
 
 export const mutations = {
+  setLoggedIn(state, isLoggedIn) {
+    state.loggedIn = isLoggedIn;
+  },
   setToken(state, token) {
     state.token = token;
   },

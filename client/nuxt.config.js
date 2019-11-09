@@ -39,6 +39,7 @@ export default {
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
     '@nuxtjs/proxy',
 
   ],
@@ -55,6 +56,20 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
+  },
+  /*
+  ** Nuxtjs auth module
+  */
+ auth: {
+  strategies: {
+    local: {
+      endpoints: {
+        login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+      },
+      // tokenRequired: true,
+      // tokenType: 'bearer'
+      }
+    }
   },
   /*
   ** vuetify module configuration

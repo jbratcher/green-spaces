@@ -44,18 +44,20 @@ import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('authentication', [
+    ...mapState('auth', [
+      'loggedIn',
       'registerEmail',
       'registerPassword',
       'registerError',
     ]),
   },
   methods: {
-    ...mapMutations('authentication', [
+    ...mapMutations('auth', [
+      'setLoggedIn',
       'setRegisterEmail',
       'setRegisterPassword',
     ]),
-    ...mapActions('authentication', [
+    ...mapActions('auth', [
       'register',
     ]),
   },

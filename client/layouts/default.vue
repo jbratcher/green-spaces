@@ -39,7 +39,7 @@
       <v-spacer />
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
       <v-list
-        v-if="!isLoggedIn"
+        v-if="!$auth.loggedIn"
         class="hidden-sm-and-down row"
         color="transparent"
       >
@@ -62,7 +62,7 @@
         </v-list-item>
       </v-list>
       <v-list
-        v-if="isLoggedIn"
+        v-if="$auth.loggedIn"
         class="hidden-sm-and-down row"
         color="transparent"
       >
@@ -85,7 +85,7 @@
         </v-list-item>
       </v-list>
       <v-list
-        v-if="isLoggedIn"
+        v-if="$auth.loggedIn"
         class="hidden-sm-and-down row"
         color="transparent"
       >
@@ -164,13 +164,14 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('authentication', [
+    ...mapGetters('auth', [
       'isLoggedIn',
     ]),
   },
   methods: {
-    ...mapActions('authentication', [
+    ...mapActions('auth', [
       'logout',
+      'setLoggedIn',
     ]),
   },
 }

@@ -22,7 +22,7 @@
           @input="setLoginPassword"
         />
 
-        <v-alert type="error" :value="loginError">
+        <v-alert type="error" :value="Boolean(loginError)">
           {{ loginError }}
         </v-alert>
 
@@ -44,18 +44,20 @@ import { mapState, mapMutations, mapActions } from 'vuex';
 
 export default {
   computed: {
-    ...mapState('authentication', [
+    ...mapState('auth', [
+      'loggedIn',
       'loginEmail',
       'loginPassword',
       'loginError',
     ]),
   },
   methods: {
-    ...mapMutations('authentication', [
+    ...mapMutations('auth', [
+      'setLoggedIn',
       'setLoginEmail',
       'setLoginPassword',
     ]),
-    ...mapActions('authentication', [
+    ...mapActions('auth', [
       'login',
     ]),
   },
