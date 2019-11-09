@@ -5,14 +5,18 @@
       :mini-variant="miniVariant"
       class="teal"
       fixed
+      dark
       app
       right
     >
-      <v-list>
+      <v-list
+        class="hidden-sm-and-down row pl-5"
+      >
         <v-list-item
-          v-for="(item, i) in loggedOutLinks"
+          v-for="(item, i) in generalLinks"
           :key="i"
           :to="item.to"
+          class="column"
           dark
           router
           exact
@@ -26,6 +30,44 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
+        <v-sheet
+          v-if="!$auth.loggedIn"
+          class="column w-100"
+        >
+          <v-list-item
+            v-for="(item, i) in loggedOutLinks"
+            :key="i"
+            :to="item.to"
+            class="row-menu"
+            router
+            exact
+          >
+            <v-list-item-action>
+              <v-icon>
+                {{ item.icon }}
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-sheet>
+        <v-sheet
+          v-if="$auth.loggedIn"
+        >
+          <v-list-item
+            @click="logout"
+          >
+            <v-list-item-action>
+              <v-icon>
+                mdi-logout
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-sheet>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
@@ -39,12 +81,11 @@
       <v-spacer />
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
       <v-list
-        v-if="!$auth.loggedIn"
         class="hidden-sm-and-down row"
         color="transparent"
       >
         <v-list-item
-          v-for="(item, i) in loggedOutLinks"
+          v-for="(item, i) in generalLinks"
           :key="i"
           :to="item.to"
           class="row-menu"
@@ -60,48 +101,46 @@
             <v-list-item-title v-text="item.title" />
           </v-list-item-content>
         </v-list-item>
-      </v-list>
-      <v-list
-        v-if="$auth.loggedIn"
-        class="hidden-sm-and-down row"
-        color="transparent"
-      >
-        <v-list-item
-          v-for="(item, i) in loggedInLinks"
-          :key="i"
-          :to="item.to"
-          class="row-menu"
-          router
-          exact
+        <v-sheet
+          v-if="!$auth.loggedIn"
+          class="row"
         >
-          <v-list-item-action>
-            <v-icon>
-              {{ item.icon }}
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-      </v-list>
-      <v-list
-        v-if="$auth.loggedIn"
-        class="hidden-sm-and-down row"
-        color="transparent"
-      >
-        <v-list-item
-          class="row-menu"
-          @click="logout"
+          <v-list-item
+            v-for="(item, i) in loggedOutLinks"
+            :key="i"
+            :to="item.to"
+            class="row-menu"
+            router
+            exact
+          >
+            <v-list-item-action>
+              <v-icon>
+                {{ item.icon }}
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title v-text="item.title" />
+            </v-list-item-content>
+          </v-list-item>
+        </v-sheet>
+        <v-sheet
+          v-if="$auth.loggedIn"
+          class="row"
         >
-          <v-list-item-action>
-            <v-icon>
-              mdi-logout
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Logout</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
+          <v-list-item
+            @click="logout"
+            class="row-menu"
+          >
+            <v-list-item-action>
+              <v-icon>
+                mdi-logout
+              </v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-sheet>
       </v-list>
     </v-app-bar>
     <!-- Nuxt content -->
@@ -125,7 +164,7 @@ export default {
     return {
       drawer: false,
       fixed: false,
-      loggedOutLinks: [
+      generalLinks: [
         {
           icon: 'mdi-apps',
           title: 'Welcome',
@@ -136,6 +175,8 @@ export default {
           title: 'Start',
           to: '/start'
         },
+      ],
+      loggedOutLinks: [
         {
           icon: 'mdi-login',
           title: 'Login',
@@ -146,18 +187,6 @@ export default {
           title: 'Register',
           to: '/register'
         }
-      ],
-      loggedInLinks: [
-        {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
-        },
-        {
-          icon: 'mdi-play-circle-outline',
-          title: 'Start',
-          to: '/start'
-        },
       ],
       miniVariant: false,
       title: 'Green Spaces'
@@ -227,6 +256,10 @@ export default {
       transition: all 0.5s ease;
     }
 
+  }
+
+  .w-100 {
+    width: 100%;
   }
 
 </style>
