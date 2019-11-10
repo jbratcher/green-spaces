@@ -9,66 +9,10 @@
       app
       right
     >
-      <v-list
-        class="hidden-sm-and-down row pl-5"
-      >
-        <v-list-item
-          v-for="(item, i) in generalLinks"
-          :key="i"
-          :to="item.to"
-          class="column"
-          dark
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>
-              {{ item.icon }}
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-        <v-sheet
-          v-if="!$auth.loggedIn"
-          class="column w-100"
-        >
-          <v-list-item
-            v-for="(item, i) in loggedOutLinks"
-            :key="i"
-            :to="item.to"
-            class="row-menu"
-            router
-            exact
-          >
-            <v-list-item-action>
-              <v-icon>
-                {{ item.icon }}
-              </v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-sheet>
-        <v-sheet
-          v-if="$auth.loggedIn"
-        >
-          <v-list-item
-            @click="logout"
-          >
-            <v-list-item-action>
-              <v-icon>
-                mdi-logout
-              </v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-sheet>
-      </v-list>
+      <ColumnLinks
+        :general-links="generalLinks"
+        :logged-out-links="loggedOutLinks"
+      />
     </v-navigation-drawer>
     <v-app-bar
       color="rgba(0, 121, 107, 0.8)"
@@ -80,68 +24,10 @@
       <v-toolbar-title class="headline" v-text="title" />
       <v-spacer />
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
-      <v-list
-        class="hidden-sm-and-down row"
-        color="transparent"
-      >
-        <v-list-item
-          v-for="(item, i) in generalLinks"
-          :key="i"
-          :to="item.to"
-          class="row-menu"
-          router
-          exact
-        >
-          <v-list-item-action>
-            <v-icon>
-              {{ item.icon }}
-            </v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title v-text="item.title" />
-          </v-list-item-content>
-        </v-list-item>
-        <v-sheet
-          v-if="!$auth.loggedIn"
-          class="row"
-        >
-          <v-list-item
-            v-for="(item, i) in loggedOutLinks"
-            :key="i"
-            :to="item.to"
-            class="row-menu"
-            router
-            exact
-          >
-            <v-list-item-action>
-              <v-icon>
-                {{ item.icon }}
-              </v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title v-text="item.title" />
-            </v-list-item-content>
-          </v-list-item>
-        </v-sheet>
-        <v-sheet
-          v-if="$auth.loggedIn"
-          class="row"
-        >
-          <v-list-item
-            @click="logout"
-            class="row-menu"
-          >
-            <v-list-item-action>
-              <v-icon>
-                mdi-logout
-              </v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-sheet>
-      </v-list>
+      <RowLinks
+        :general-links="generalLinks"
+        :logged-out-links="loggedOutLinks"
+      />
     </v-app-bar>
     <!-- Nuxt content -->
     <v-content>
@@ -158,8 +44,14 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import ColumnLinks from '../components/ColumnLinks.vue';
+import RowLinks from '../components/RowLinks.vue';
 
 export default {
+  components: {
+    ColumnLinks,
+    RowLinks,
+  },
   data () {
     return {
       drawer: false,
