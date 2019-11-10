@@ -9,9 +9,11 @@
       app
       right
     >
-      <ColumnLinks
+      <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
+        list-class="listClass"
+        list-item-class="column"
       />
     </v-navigation-drawer>
     <v-app-bar
@@ -24,9 +26,11 @@
       <v-toolbar-title class="headline" v-text="title" />
       <v-spacer />
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
-      <RowLinks
+      <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
+        list-class="row hidden-md-and-down"
+        list-item-class="row-menu"
       />
     </v-app-bar>
     <!-- Nuxt content -->
@@ -44,13 +48,11 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import ColumnLinks from '../components/ColumnLinks.vue';
-import RowLinks from '../components/RowLinks.vue';
+import MenuLinks from '../components/MenuLinks.vue';
 
 export default {
   components: {
-    ColumnLinks,
-    RowLinks,
+    MenuLinks,
   },
   data () {
     return {
