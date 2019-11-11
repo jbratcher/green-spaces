@@ -1,5 +1,29 @@
 <template>
   <v-app>
+    <!-- Header Area -->
+    <v-app-bar
+      app
+      color="rgba(0, 121, 107, 0.8)"
+      dark
+      elevate-on-scroll
+      fixed
+      hide-on-scroll
+      scroll-threshold="100"
+      shrink-on-scroll
+      prominent
+      height="70px"
+    >
+      <v-toolbar-title class="headline align-self-center" v-text="title" />
+      <v-spacer />
+      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
+      <MenuLinks
+        :general-links="generalLinks"
+        :logged-out-links="loggedOutLinks"
+        list-class="row hidden-md-and-down"
+        list-item-class="row-menu"
+      />
+    </v-app-bar>
+    <!-- side/mobile navigation -->
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
@@ -16,27 +40,11 @@
         list-item-class="column"
       />
     </v-navigation-drawer>
-    <v-app-bar
-      color="rgba(0, 121, 107, 0.8)"
-      app
-      dark
-      fixed
-      class="box-shadow-1"
-    >
-      <v-toolbar-title class="headline" v-text="title" />
-      <v-spacer />
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
-      <MenuLinks
-        :general-links="generalLinks"
-        :logged-out-links="loggedOutLinks"
-        list-class="row hidden-md-and-down"
-        list-item-class="row-menu"
-      />
-    </v-app-bar>
     <!-- Nuxt content -->
     <v-content>
       <nuxt />
     </v-content>
+    <!-- Footer Area -->
     <v-footer
       :fixed="fixed"
       app
@@ -47,7 +55,6 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
 import MenuLinks from '../components/MenuLinks.vue';
 
 export default {
@@ -85,17 +92,6 @@ export default {
       miniVariant: false,
       title: 'Green Spaces'
     }
-  },
-  computed: {
-    ...mapGetters('auth', [
-      'isLoggedIn',
-    ]),
-  },
-  methods: {
-    ...mapActions('auth', [
-      'logout',
-      'setLoggedIn',
-    ]),
   },
 }
 </script>
@@ -152,8 +148,19 @@ export default {
 
   }
 
+  .justify-space-evenly {
+    justify-content: space-between;
+    justify-content: space-evenly;
+  }
+
+  .gradient-overlay {
+    background-image: linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
+      url("../static/how-it-works.jpg");
+      background-position: center center;
+  }
+
   .w-100 {
-    width: 100%;
+    width: 100vh;
   }
 
 </style>

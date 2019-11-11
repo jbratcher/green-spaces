@@ -1,9 +1,10 @@
 <template>
 
   <v-list :class="listClass">
+    <!-- General links -->
     <v-list-item
       v-for="(item, i) in generalLinks"
-      :key="i"
+      :key="i + `-${item.title}`"
       :to="item.to"
       :class="listItemClass"
       dark
@@ -19,9 +20,10 @@
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </v-list-item>
+    <!-- login/register links -->
     <v-list-item
       v-for="(item, j) in loggedOutLinks"
-      :key="j"
+      :key="j + `-${item.title}`"
       :to="item.to"
       :class="listItemClass"
       router
@@ -36,6 +38,7 @@
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </v-list-item>
+    <!-- logout link -->
     <v-list-item
       v-if="$auth.loggedIn"
       :class="listItemClass"
@@ -55,8 +58,10 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+
 export default {
-  name: 'GeneralLinks',
+  name: 'MenuLinks',
   props: {
     'generalLinks': {
       type: Array,
@@ -78,6 +83,17 @@ export default {
       type: String,
       default: '',
     }
+  },
+  computed: {
+    ...mapGetters('auth', [
+      'isLoggedIn',
+    ]),
+  },
+  methods: {
+    ...mapActions('auth', [
+      'logout',
+      'setLoggedIn',
+    ]),
   },
 };
 </script>
