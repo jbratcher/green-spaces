@@ -2,11 +2,11 @@
   <v-layout>
     <v-flex>
 
-      <v-card>
-        <v-img :aspect-ratio="16/9" height="100vh" src="hero.jpg">
+      <v-container fluid class="pa-0">
+        <v-img :aspect-ratio="16/9" height="50vh" src="hero.jpg">
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
-              <h1 class="display-3 text-shadow mb-5">
+              <h1 class="display-3 text-shadow my-5">
                 GreenSpaces
               </h1>
               <p class="display-1 text-shadow">
@@ -15,13 +15,13 @@
             </v-col>
           </v-row>
         </v-img>
-        <v-container fluid>
-          <v-card-title class="display-1 my-10">
+        <v-container>
+          <v-card-title class="display-1 my-5">
             Green Spaces provides an all in one platform for combating climate change by planting trees to reduce carbon dioxide from the air.
           </v-card-title>
           <v-card-text>
-            <p class="heading">
-              Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors.
+            <p class="headline">
+              Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors while supporting easy, cost-effective solutions now.
             </p>
           </v-card-text>
           <v-card-actions class="justify-center">
@@ -29,45 +29,47 @@
               color="primary"
               nuxt
               to="/start"
-              class="headline btn-box-shadow-primary"
+              class="headline btn-box-shadow-primary mt-5 mb-10"
             >
               Get involved
             </v-btn>
           </v-card-actions>
         </v-container>
-      </v-card>
+      </v-container>
 
-      <v-container fluid>
-        <v-card class="pb-10 text-center gradient-overlay" height="100vh">
-          <h1 class="display-3 mb-5">
+      <v-container fluid class="pa-0">
+        <v-card class="text-center gradient-overlay" height="100vh">
+          <h1 class="display-3 pt-10 pb-5">
             How It Works
           </h1>
-          <v-row class="justify-space-evenly">
-            <v-col class="col-4">
-              <v-icon x-large>
-                mdi-currency-usd
-              </v-icon>
-              <p class="headline py-5">
-                People donate to purchase land and trees
-              </p>
-            </v-col>
-            <v-col class="col-4">
-              <v-icon x-large>
-                mdi-face
-              </v-icon>
-              <p class="headline py-5">
-                People volunteer to plant trees
-              </p>
-            </v-col>
-            <v-col class="col-4">
-              <v-icon x-large>
-                mdi-tree
-              </v-icon>
-              <p class="headline py-5">
-                Trees are planted to absorb CO2
-              </p>
-            </v-col>
-          </v-row>
+          <v-container>
+            <v-row class="justify-space-evenly mt-10">
+              <v-col class="col-4">
+                <v-icon x-large>
+                  mdi-currency-usd
+                </v-icon>
+                <p class="headline py-5">
+                  People donate to purchase land and trees
+                </p>
+              </v-col>
+              <v-col class="col-4">
+                <v-icon x-large>
+                  mdi-face
+                </v-icon>
+                <p class="headline py-5">
+                  People volunteer to plant trees
+                </p>
+              </v-col>
+              <v-col class="col-4">
+                <v-icon x-large>
+                  mdi-tree
+                </v-icon>
+                <p class="headline py-5">
+                  Trees are planted to absorb CO2
+                </p>
+              </v-col>
+            </v-row>
+          </v-container>
         </v-card>
       </v-container>
 

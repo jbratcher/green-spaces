@@ -114,11 +114,6 @@ export default {
     text-shadow: 2px 2px 4px #000;
   }
 
-  .heading {
-    font-size: 1.25rem;
-    line-height: 1.5;
-  }
-
   .box-shadow-1 {
     box-shadow: 0 4px 8px rgba(0,0,0,0.7);
   }
@@ -157,10 +152,6 @@ export default {
     background-image: linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
       url("../static/how-it-works.jpg");
       background-position: center center;
-  }
-
-  .w-100 {
-    width: 100vh;
   }
 
 </style>
