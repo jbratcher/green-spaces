@@ -9,7 +9,6 @@
       fixed
       hide-on-scroll
       scroll-threshold="100"
-      shrink-on-scroll
       prominent
       height="70px"
     >
@@ -46,10 +45,30 @@
     </v-content>
     <!-- Footer Area -->
     <v-footer
-      :fixed="fixed"
-      app
+      color="primary"
+      class="pa-0"
     >
-      <span class="ml-auto">Green Spaces &copy; 2019</span>
+      <v-row
+      justify="center"
+      no-gutters
+      >
+        <v-btn
+          v-for="(link, i) in footerLinks"
+          :key="i + link.title"
+          color="white"
+          text
+          rounded
+          class="my-2"
+        >
+          {{ link.title }}
+        </v-btn>
+        <v-col
+          class="primary lighten-2 py-4 text-center white--text"
+          cols="12"
+        >
+          {{ new Date().getFullYear() }} — <strong>Green Spaces</strong>
+        </v-col>
+      </v-row>
     </v-footer>
   </v-app>
 </template>
@@ -65,6 +84,32 @@ export default {
     return {
       drawer: false,
       fixed: false,
+      footerLinks: [
+        {
+          title: 'Home',
+          to: '/'
+        },
+        {
+          title: 'About Us',
+          to: '/'
+        },
+        {
+          title: 'Team',
+          to: '/'
+        },
+        {
+          title: 'Services',
+          to: '/'
+        },
+        {
+          title: 'Blog',
+          to: '/'
+        },
+        {
+          title: 'Contact Us',
+          to: '/'
+        },
+      ],
       generalLinks: [
         {
           icon: 'mdi-apps',
@@ -149,7 +194,9 @@ export default {
   }
 
   .gradient-overlay {
-    background-image: linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
+    background-image:
+      linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
+      linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
       url("../static/how-it-works.jpg");
       background-position: center center;
   }

@@ -3,7 +3,7 @@
     <v-flex>
 
       <v-container fluid class="pa-0">
-        <v-img :aspect-ratio="16/9" height="50vh" src="hero.jpg">
+        <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
               <h1 class="display-3 text-shadow my-5">
@@ -38,22 +38,25 @@
       </v-container>
 
       <v-container fluid class="pa-0">
-        <v-card class="text-center gradient-overlay" height="100vh">
+        <v-card
+          class="text-center gradient-overlay d-flex flex-column justify-center"
+          height="500px"
+        >
           <h1 class="display-3 pt-10 pb-5">
             How It Works
           </h1>
           <v-container>
             <v-row class="justify-space-evenly mt-10">
               <v-col class="col-4">
-                <v-icon x-large>
+                <v-icon size="100px" color="primary">
                   mdi-currency-usd
                 </v-icon>
                 <p class="headline py-5">
-                  People donate to purchase land and trees
+                  People donate to purchase trees
                 </p>
               </v-col>
               <v-col class="col-4">
-                <v-icon x-large>
+                <v-icon size="100px" color="primary">
                   mdi-face
                 </v-icon>
                 <p class="headline py-5">
@@ -61,7 +64,7 @@
                 </p>
               </v-col>
               <v-col class="col-4">
-                <v-icon x-large>
+                <v-icon size="100px" color="primary">
                   mdi-tree
                 </v-icon>
                 <p class="headline py-5">
@@ -74,14 +77,30 @@
       </v-container>
 
       <v-sheet>
-        <v-card class="py-10 text-center">
-          <h1>Become a donor</h1>
+        <v-card class="py-10 text-center d-flex align-center justify-space-evenly">
+          <h1>
+            Become a donor
+          </h1>
+          <v-img
+            src="donate.svg"
+            alt="give trees"
+            max-width="35vw"
+            max-height="300px"
+          />
         </v-card>
       </v-sheet>
 
       <v-sheet>
-        <v-card class="py-10 text-center">
-          <h1>Become a volunteer</h1>
+        <v-card class="py-10 text-center d-flex flex-row-reverse align-center justify-space-evenly">
+          <h1>
+            Become a volunteer
+          </h1>
+          <v-img
+            src="volunteer.svg"
+            alt="plant trees"
+            max-width="35vw"
+            max-height="300px"
+          />
         </v-card>
       </v-sheet>
 
