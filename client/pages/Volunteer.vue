@@ -42,7 +42,6 @@
 import { mapActions, mapMutations, mapState } from 'vuex';
 
 export default {
-  middleware: 'auth',
   computed: {
     ...mapState('spaceEvents', [
       'newSpaceEventName',

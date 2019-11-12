@@ -1,3 +1,4 @@
+/* eslint-disable */
 <template>
 
   <v-list :class="listClass">
@@ -21,23 +22,26 @@
       </v-list-item-content>
     </v-list-item>
     <!-- login/register links -->
-    <v-list-item
-      v-for="(item, j) in loggedOutLinks"
-      :key="j + `-${item.title}`"
-      :to="item.to"
-      :class="listItemClass"
-      router
-      exact
-    >
-      <v-list-item-action>
-        <v-icon>
-          {{ item.icon }}
-        </v-icon>
-      </v-list-item-action>
-      <v-list-item-content>
-        <v-list-item-title v-text="item.title" />
-      </v-list-item-content>
-    </v-list-item>
+    <template v-if="!$auth.loggedIn">
+      <v-list-item
+        v-for="(item, j) in loggedOutLinks"
+
+        :key="j + `-${item.title}`"
+        :to="item.to"
+        :class="listItemClass"
+        router
+        exact
+      >
+        <v-list-item-action>
+          <v-icon>
+            {{ item.icon }}
+          </v-icon>
+        </v-list-item-action>
+        <v-list-item-content>
+          <v-list-item-title v-text="item.title" />
+        </v-list-item-content>
+      </v-list-item>
+    </template>
     <!-- logout link -->
     <v-list-item
       v-if="$auth.loggedIn"
@@ -58,7 +62,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapActions } from 'vuex';
 
 export default {
   name: 'MenuLinks',
@@ -83,11 +87,6 @@ export default {
       type: String,
       default: '',
     }
-  },
-  computed: {
-    ...mapGetters('auth', [
-      'isLoggedIn',
-    ]),
   },
   methods: {
     ...mapActions('auth', [
