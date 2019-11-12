@@ -2,7 +2,7 @@
 
   <v-container>
     <v-layout row wrap>
-      <v-flex xs6 offset-xs3>
+      <v-col xs6 offset-xs3>
 
         <h1>Login</h1>
 
@@ -33,7 +33,7 @@
           Login
         </v-btn>
 
-      </v-flex>
+      </v-col>
     </v-layout>
   </v-container>
 

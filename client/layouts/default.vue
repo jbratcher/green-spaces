@@ -49,8 +49,8 @@
       class="pa-0"
     >
       <v-row
-      justify="center"
-      no-gutters
+        justify="center"
+        no-gutters
       >
         <v-btn
           v-for="(link, i) in footerLinks"

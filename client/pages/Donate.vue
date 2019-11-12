@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex class="text-center">
+    <v-col class="text-center">
 
       <h1>Give your money</h1>
       <p>Every dollar goes to fighting climate change</p>
@@ -8,6 +8,6 @@
         Donate
       </v-btn>
 
-    </v-flex>
+    </v-col>
   </v-layout>
 </template>

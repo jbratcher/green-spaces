@@ -1,6 +1,6 @@
 <template>
   <v-layout>
-    <v-flex>
+    <v-col class="pa-0">
 
       <v-container fluid class="pa-0">
         <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
@@ -29,7 +29,7 @@
               color="primary"
               nuxt
               to="/start"
-              class="headline btn-box-shadow-primary mt-5 mb-10"
+              class="headline btn-box-shadow-primary py-5 px-10 mt-5 mb-10"
             >
               Get involved
             </v-btn>
@@ -78,33 +78,43 @@
 
       <v-sheet>
         <v-card class="py-10 text-center d-flex align-center justify-space-evenly">
-          <h1>
+          <v-btn
+            color="primary"
+            nuxt
+            to="/donate"
+          >
             Become a donor
-          </h1>
+          </v-btn>
           <v-img
             src="donate.svg"
             alt="give trees"
             max-width="35vw"
             max-height="300px"
+            contain
           />
         </v-card>
       </v-sheet>
 
       <v-sheet>
         <v-card class="py-10 text-center d-flex flex-row-reverse align-center justify-space-evenly">
-          <h1>
+          <v-btn
+            color="primary"
+            nuxt
+            to="/volunteer"
+          >
             Become a volunteer
-          </h1>
+          </v-btn>
           <v-img
             src="volunteer.svg"
             alt="plant trees"
             max-width="35vw"
             max-height="300px"
+            contain
           />
         </v-card>
       </v-sheet>
 
-    </v-flex>
+    </v-col>
   </v-layout>
 </template>
 

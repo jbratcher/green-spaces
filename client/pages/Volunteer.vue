@@ -1,40 +1,33 @@
 <template>
   <v-layout>
-    <v-flex class="text-center">
+    <v-col class="pa-0 text-center">
 
-      <section class="container">
+      <v-sheet color="primary lighten-2" class="white--text">
+        <h1 class="display-3 pt-6 pb-3">
+          Give your time
+        </h1>
+        <p class="headline pt=3 pb-6">
+          Your time helps fight climate change
+        </p>
+      </v-sheet>
 
-        <section class="mt-12">
-          <h1 class="display-3 my-5">
-            Give your time
-          </h1>
-          <p class="headline mb-12">
-            Your time helps fight climate change
-          </p>
-          <v-btn x-large class="btn-box-shadow-primary" color="primary">
-            Volunteer
-          </v-btn>
-        </section>
+      <v-sheet>
+        <h2 class="display-1 py-5">
+          Upcoming Events
+        </h2>
+        <p class="title pb-12">
+          Find volunteer events near you
+        </p>
+        <v-sheet class="my-6 mx-auto" elevation="5" width="80vw" height="500">
+          <v-calendar
+            type="month"
+            value="2019-11-01"
+            :events="spaceEvents"
+          />
+        </v-sheet>
+      </v-sheet>
 
-        <section class="calendar">
-          <h2 class="display-1 my-5">
-            Upcoming Events
-          </h2>
-          <p class="title mb-12">
-            Find volunteer events near you
-          </p>
-          <v-sheet class="my-6" height="500">
-            <v-calendar
-              type="month"
-              value="2019-11-01"
-              :events="spaceEvents"
-            />
-          </v-sheet>
-        </section>
-
-      </section>
-
-    </v-flex>
+    </v-col>
   </v-layout>
 </template>
 
@@ -65,9 +58,5 @@ export default {
 </script>
 
 <style lang="scss">
-
-  .calendar {
-    margin-top: 15vh;
-  }
 
 </style>
