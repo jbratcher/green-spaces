@@ -1,8 +1,7 @@
-// import router from '../router';
 import HTTP from '../http';
 
 export const state = () => ({
-  loggedIn: null,
+  isLoggedIn: null,
   loginEmail: null,
   loginPassword: null,
   loginError: null,
@@ -27,6 +26,7 @@ export const actions = {
       password: state.loginPassword,
     })
       .then(({ data }) => {
+        console.log(JSON.stringify(data));
         commit('setToken', data.token);
         commit('setLoggedIn', true);
         this.$router.push('/');
@@ -59,8 +59,8 @@ export const getters = {
 };
 
 export const mutations = {
-  setLoggedIn(state, isLoggedIn) {
-    state.loggedIn = isLoggedIn;
+  setLoggedIn(state, loggedIn) {
+    state.isLoggedIn = loggedIn;
   },
   setToken(state, token) {
     state.token = token;

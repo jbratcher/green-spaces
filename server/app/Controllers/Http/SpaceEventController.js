@@ -10,10 +10,12 @@ class SpaceEventController {
 
   async create({ auth, request }) {
     const user = await auth.getUser();
-    const { title } = request.all();
+    const { name, description, start } = request.all();
     const spaceEvent = new SpaceEvent();
     spaceEvent.fill({
-      title,
+      name,
+      description,
+      start,
     });
     await user.spaceEvents().save(spaceEvent);
     return spaceEvent;
@@ -33,7 +35,7 @@ class SpaceEventController {
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
     AuthorizationService.verifyPermission(spaceEvent, user);
-    spaceEvent.merge(request.only('title'));
+    spaceEvent.merge(request.only('name'));
     await spaceEvent.save();
     return spaceEvent;
   }

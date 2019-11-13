@@ -22,10 +22,9 @@
       </v-list-item-content>
     </v-list-item>
     <!-- login/register links -->
-    <template v-if="!$auth.loggedIn">
+    <template v-if="!isLoggedIn">
       <v-list-item
         v-for="(item, j) in loggedOutLinks"
-
         :key="j + `-${item.title}`"
         :to="item.to"
         :class="listItemClass"
@@ -44,7 +43,7 @@
     </template>
     <!-- logout link -->
     <v-list-item
-      v-if="$auth.loggedIn"
+      v-if="isLoggedIn"
       :class="listItemClass"
       @click="logout"
     >
@@ -62,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 
 export default {
   name: 'MenuLinks',
@@ -87,6 +86,11 @@ export default {
       type: String,
       default: '',
     }
+  },
+  computed: {
+    ...mapState('auth', [
+      'isLoggedIn',
+    ]),
   },
   methods: {
     ...mapActions('auth', [

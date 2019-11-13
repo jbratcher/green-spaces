@@ -30,6 +30,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
+    { src: '~/plugins/localStorage.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -38,10 +39,6 @@ export default {
     // Doc: https://github.com/nuxt-community/eslint-module
     '@nuxtjs/eslint-module',
     '@nuxtjs/vuetify',
-    '@nuxtjs/axios',
-    '@nuxtjs/auth',
-    '@nuxtjs/proxy',
-
   ],
   /*
   ** Nuxt.js modules
@@ -49,7 +46,9 @@ export default {
   modules: [
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    '@nuxtjs/auth',
+    '@nuxtjs/proxy',
   ],
   /*
   ** Axios module configuration
@@ -64,7 +63,9 @@ export default {
   strategies: {
     local: {
       endpoints: {
-        login: { url: '/api/auth/login', method: 'post', propertyName: 'token' },
+        login: { url: '/auth/login', method: 'post', propertyName: 'token' },
+        logout: { url: '/auth/logout', method: 'post' },
+        user: { url: '/auth/user', method: 'get', propertyName: 'user' }
       },
       // tokenRequired: true,
       // tokenType: 'bearer'

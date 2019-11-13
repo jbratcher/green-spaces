@@ -28,7 +28,7 @@
       </v-sheet>
 
       <v-sheet
-        v-if="$auth.loggedIn"
+        v-if="isLoggedIn"
         class="py-10 d-flex flex-column align-center"
         width="35vw"
       >
@@ -41,28 +41,31 @@
             lazy-validation
           >
             <v-text-field
-              v-model="name"
+              :value="newSpaceEventName"
               :counter="10"
               :rules="nameRules"
               class="my-5"
               label="Name"
               required
+              @input="setNewSpaceEventName"
             />
             <v-textarea
-              v-model="description"
+              :value="newSpaceEventDescription"
               :rules="descriptionRules"
               :counter="1000"
               label="Description"
               name="Description"
               auto-grow
               required
-            ></v-textarea>
+              @input="setNewSpaceEventDescription"
+            />
             <v-date-picker
-              v-model="date"
-              :rules="dateRules"
+              :value="newSpaceEventStart"
+              :rules="startRules"
               color="primary"
               class="my-5"
               required
+              @input="setNewSpaceEventStart"
             />
             <v-sheet>
               <v-btn
@@ -75,7 +78,7 @@
               <v-btn
                 color="primary"
                 class="my-5"
-                @click="reset"
+                @click="createSpaceEvent"
               >
                 Submit
               </v-btn>
@@ -94,16 +97,13 @@ import { mapActions, mapMutations, mapState } from 'vuex';
 export default {
   data: () => ({
     valid: true,
-    name: '',
     nameRules: [
       v => !!v || 'Name is required',
       v => (v && v.length <= 50) || 'Name must be less than 50 characters',
     ],
-    date: new Date().toISOString().substr(0, 10),
-    dateRules: [
-      v => !!v || 'Date is required'
+    startRules: [
+      v => !!v || 'Start Date is required'
     ],
-    description: '',
     descriptionRules: [
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
@@ -112,7 +112,12 @@ export default {
   computed: {
     ...mapState('spaceEvents', [
       'newSpaceEventName',
+      'newSpaceEventDescription',
+      'newSpaceEventStart',
       'spaceEvents',
+    ]),
+    ...mapState('auth', [
+      'isLoggedIn',
     ]),
   },
   created () {
@@ -121,6 +126,8 @@ export default {
   methods: {
     ...mapMutations('spaceEvents', [
       'setNewSpaceEventName',
+      'setNewSpaceEventDescription',
+      'setNewSpaceEventStart',
       'setSpaceEvents',
     ]),
     ...mapActions('spaceEvents', [

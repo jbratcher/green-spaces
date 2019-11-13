@@ -8,8 +8,8 @@ class SpaceEventsSchema extends Schema {
     this.create('space_events', (table) => {
       table.increments()
       table.string('name')
-      table.string('start')
       table.text('description')
+      table.string('start')
       table.timestamps()
     })
   }

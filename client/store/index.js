@@ -3,8 +3,6 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-export const state = () => ({
-  baseUrl: '/api',
-});
+export const state = () => ({});
 
 export const getters = {};
