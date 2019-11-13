@@ -29,44 +29,58 @@
 
       <v-sheet
         v-if="$auth.loggedIn"
-        class="py-10"
+        class="py-10 d-flex flex-column align-center"
+        width="35vw"
       >
         <h3>Add a new event</h3>
-        <v-sheet class="mx-auto my-10" width="60vw">
-          <form>
+        <v-sheet class="my-10" width="30vw">
+          <v-form
+            ref="form"
+            v-model="valid"
+            class="d-flex flex-column"
+            lazy-validation
+          >
             <v-text-field
               v-model="name"
-              :error-messages="nameErrors"
-              :counter="30"
+              :counter="10"
+              :rules="nameRules"
+              class="my-5"
               label="Name"
               required
-              @input="$v.name.$touch()"
-              @blur="$v.name.$touch()"
             />
-            <v-text-field
-              v-model="start"
-              :error-messages="startErrors"
-              label="Date"
-              required
-              @input="$v.start.$touch()"
-              @blur="$v.start.$touch()"
-            />
-            <v-text-field
+            <v-textarea
               v-model="description"
-              :error-messages="descriptionErrors"
+              :rules="descriptionRules"
+              :counter="1000"
               label="Description"
+              name="Description"
+              auto-grow
               required
-              @input="$v.description.$touch()"
-              @blur="$v.description.$touch()"
+            ></v-textarea>
+            <v-date-picker
+              v-model="date"
+              :rules="dateRules"
+              color="primary"
+              class="my-5"
+              required
             />
-
-            <v-btn class="mr-4" @click="submit">
-              submit
-            </v-btn>
-            <v-btn @click="clear">
-              clear
-            </v-btn>
-          </form>
+            <v-sheet>
+              <v-btn
+                color="info"
+                class="my-5"
+                @click="reset"
+              >
+                Reset
+              </v-btn>
+              <v-btn
+                color="primary"
+                class="my-5"
+                @click="reset"
+              >
+                Submit
+              </v-btn>
+            </v-sheet>
+          </v-form>
         </v-sheet>
       </v-sheet>
 
@@ -76,47 +90,30 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import { validationMixin } from 'vuelidate';
-import { required, maxLength } from 'vuelidate/lib/validators';
 
 export default {
-  mixins: [validationMixin],
-  validations: {
-    name: { required, maxLength: maxLength(30) },
-    start: { required, String },
-    description: { required, String },
-  },
   data: () => ({
+    valid: true,
     name: '',
-    start: '',
+    nameRules: [
+      v => !!v || 'Name is required',
+      v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+    ],
+    date: new Date().toISOString().substr(0, 10),
+    dateRules: [
+      v => !!v || 'Date is required'
+    ],
     description: '',
+    descriptionRules: [
+      v => !!v || 'Description is required',
+      v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
+    ],
   }),
   computed: {
     ...mapState('spaceEvents', [
       'newSpaceEventName',
       'spaceEvents',
     ]),
-    nameErrors () {
-      const errors = []
-      if (!this.$v.name.$dirty) { return errors }
-      !this.$v.name.maxLength && errors.push('Name must be at most 30 characters long')
-      !this.$v.name.required && errors.push('Name is required.')
-      return errors
-    },
-    startErrors () {
-      const errors = []
-      if (!this.$v.start.$dirty) { return errors }
-      !this.$v.start.start && errors.push('Must be valid date')
-      !this.$v.start.required && errors.push('Date is required')
-      return errors
-    },
-    descriptionErrors () {
-      const errors = []
-      if (!this.$v.description.$dirty) { return errors }
-      !this.$v.description.description && errors.push('Must enter a description')
-      !this.$v.description.required && errors.push('Description is required')
-      return errors
-    },
   },
   created () {
     this.fetchSpaceEvents();
@@ -130,14 +127,19 @@ export default {
       'createSpaceEvent',
       'fetchSpaceEvents',
     ]),
-    submit () {
-      this.$v.$touch()
+    validate () {
+      if (this.$refs.form.validate()) {
+        this.snackbar = true
+      }
     },
-    clear () {
-      this.$v.$reset()
-      this.name = ''
-      this.start = ''
-      this.description = ''
+    reset () {
+      this.$refs.form.reset()
+    },
+    resetValidation () {
+      this.$refs.form.resetValidation()
+    },
+    submit() {
+      console.log('Form submitted');
     },
   }
 }
