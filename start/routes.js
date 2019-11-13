@@ -22,6 +22,7 @@ Route.group(() => {
   Route.post('auth/login', 'UserController.login');
 
   Route.get('space-events', 'SpaceEventController.index');
+  Route.post('space-events', 'SpaceEventController.create');
 
 })
   .prefix('api');
