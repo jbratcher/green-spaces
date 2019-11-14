@@ -10,6 +10,7 @@ class SpaceEventsSchema extends Schema {
       table.string('name')
       table.text('description')
       table.string('start')
+      table.integer('user_id').unsigned().references('id').inTable('users')
       table.timestamps()
     })
   }
