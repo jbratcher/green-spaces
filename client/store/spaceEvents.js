@@ -1,5 +1,3 @@
-import HTTP from '../http';
-
 export const state = () => ({
   spaceEvents: [],
   newSpaceEventName: '',
@@ -8,26 +6,26 @@ export const state = () => ({
 });
 
 export const actions = {
-  createSpaceEvent({ commit, state }) {
-    return HTTP().post('/space-events', {
+  createSpaceEvent({ commit, state, rootState }) {
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    return this.$axios.$post('/space-events', {
       name: state.newSpaceEventName,
       description: state.newSpaceEventDescription,
       start: state.newSpaceEventStart,
     })
-      .then(({ data }) => {
+      .then((data) => {
         commit('appendSpaceEvent', data);
         commit('newSpaceEventName', null);
         commit('newSpaceEventDescription', null);
-        commit('newSpaceEventStart', new Date().toISOString().substr(0, 10));
+        commit('newSpaceEventStart', null);
       })
       .catch((error) => {
         commit('appendSpaceEvent', `Create event error: ${error}`);
       });
   },
   fetchSpaceEvents ({ commit }) {
-    return HTTP().get('/space-events')
-      .then(({ data }) => {
-        console.log(data);
+    return this.$axios.$get('/space-events')
+      .then((data) => {
         commit('setSpaceEvents', data);
       })
       .catch((error) => {

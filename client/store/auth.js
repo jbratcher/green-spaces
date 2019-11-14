@@ -1,5 +1,3 @@
-import HTTP from '../http';
-
 export const state = () => ({
   isLoggedIn: null,
   loginEmail: null,
@@ -19,13 +17,13 @@ export const actions = {
       this.$router.replace('/');
     }
   },
-  login({ commit, state }) {
+  async login({ commit, state }) {
     commit('setLoginError', null);
-    return HTTP().post('/auth/login', {
+    await this.$axios.$post('/auth/login', {
       email: state.loginEmail,
       password: state.loginPassword,
     })
-      .then(({ data }) => {
+      .then((data) => {
         console.log(JSON.stringify(data));
         commit('setToken', data.token);
         commit('setLoggedIn', true);
@@ -37,11 +35,11 @@ export const actions = {
   },
   register({ commit, state }) {
     commit('setRegisterError', null);
-    return HTTP().post('/auth/register', {
+    return this.$axios.$post('/auth/register', {
       email: state.registerEmail,
       password: state.registerPassword,
     })
-      .then(({ data }) => {
+      .then((data) => {
         commit('setToken', data.token);
         commit('setLoggedIn', true);
         this.$router.push('/');

@@ -50,27 +50,34 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/proxy',
   ],
-  /*
-  ** Axios module configuration
-  ** See https://axios.nuxtjs.org/options
-  */
-  axios: {
-  },
-  /*
+    /*
   ** Nuxtjs auth module
   */
  auth: {
   strategies: {
     local: {
       endpoints: {
-        login: { url: '/auth/login', method: 'post', propertyName: 'token' },
-        logout: { url: '/auth/logout', method: 'post' },
-        user: { url: '/auth/user', method: 'get', propertyName: 'user' }
+        login: { url: 'api/auth/login', method: 'post', propertyName: 'token' },
+        logout: { url: 'api/auth/logout', method: 'post' },
       },
       // tokenRequired: true,
       // tokenType: 'bearer'
       }
     }
+  },
+  /*
+  ** Axios module configuration
+  ** See https://axios.nuxtjs.org/options
+  */
+  axios: {
+    baseURL: 'http://localhost:3333/api',
+  },
+  /*
+  ** Proxy module configuration
+  ** See https://github.com/nuxt-community/proxy-module
+  */
+  proxy: {
+    // '/api': 'http://localhost:3333'
   },
   /*
   ** vuetify module configuration
@@ -103,10 +110,5 @@ export default {
     */
     extend (config, ctx) {
     }
-  },
-  proxy: {
-    '/api': {
-      target: 'http://localhost:3333'
-      }
   },
 }
