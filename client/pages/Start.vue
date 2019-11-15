@@ -2,20 +2,18 @@
   <v-layout>
     <v-col cols="12" class="pa-0 text-center">
 
-      <h1 class="display-3 my-10">
+      <h1 class="display-3 my-12">
         How to get started
       </h1>
       <v-sheet
-        class="my-15 d-flex justify-space-evenly"
-        height="500px"
+        class="my-12 py-12 start-options"
       >
         <v-sheet
-          color="primary lighten-2 d-flex flex-column align-center justify-space-evenly"
-          width="100%"
-          height="100%"
+          color="primary lighten-2 ma-5 pa-5 d-flex flex-column align-center justify-space-evenly"
+          elevation="10"
         >
           <v-btn
-            class="btn-box-shadow-primary"
+            class="btn-box-shadow-primary pa-5 my-12"
             color="primary"
             x-large
             nuxt
@@ -32,12 +30,11 @@
           />
         </v-sheet>
         <v-sheet
-          color="primary lighten-4 d-flex flex-column align-center justify-space-evenly"
-          width="100%"
-          height="100%"
+          color="primary lighten-4 ma-5 pa-5 d-flex flex-column align-center justify-space-evenly"
+          elevation="10"
         >
           <v-btn
-            class="btn-box-shadow-secondary"
+            class="btn-box-shadow-secondary pa-5 my-12"
             color="info"
             x-large
             nuxt
@@ -66,5 +63,28 @@ export default {
 </script>
 
 <style lang="scss">
+
+  .start-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &>.v-sheet {
+      min-width: 80vw;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .start-options {
+      flex-direction: row;
+      justify-content: space-around;
+      justify-content: space-evenly;
+
+      &>.v-sheet {
+        min-width: unset;
+      }
+
+    }
+  }
 
 </style>

@@ -143,6 +143,10 @@ export default {
 
 <style lang="scss">
 
+  html, body {
+    overflow-x: hidden;
+  }
+
   .v-application a {
     color: #fff !important;
   }
@@ -189,7 +193,7 @@ export default {
   }
 
   .justify-space-evenly {
-    justify-content: space-between;
+    justify-content: space-around;
     justify-content: space-evenly;
   }
 

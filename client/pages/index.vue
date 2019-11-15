@@ -38,46 +38,43 @@
       </v-container>
 
       <v-container fluid class="pa-0">
-        <v-card
-          class="text-center gradient-overlay d-flex flex-column justify-center"
-          height="500px"
+        <v-sheet
+          class="text-center gradient-overlay py-12 d-flex flex-column justify-center"
         >
-          <h1 class="display-3 pt-10 pb-5">
+          <h1 class="display-3 my-12">
             How It Works
           </h1>
-          <v-container>
-            <v-row class="justify-space-evenly mt-10">
-              <v-col class="col-4">
-                <v-icon size="100px" color="primary">
-                  mdi-currency-usd
-                </v-icon>
-                <p class="headline py-5">
-                  People donate to purchase trees
-                </p>
-              </v-col>
-              <v-col class="col-4">
-                <v-icon size="100px" color="primary">
-                  mdi-face
-                </v-icon>
-                <p class="headline py-5">
-                  People volunteer to plant trees
-                </p>
-              </v-col>
-              <v-col class="col-4">
-                <v-icon size="100px" color="primary">
-                  mdi-tree
-                </v-icon>
-                <p class="headline py-5">
-                  Trees are planted to absorb CO2
-                </p>
-              </v-col>
-            </v-row>
+          <v-container class="benefits-list py-12 px-2">
+            <v-sheet>
+              <v-icon size="100px" color="primary">
+                mdi-currency-usd
+              </v-icon>
+              <p class="headline py-5">
+                People donate to purchase trees
+              </p>
+            </v-sheet>
+            <v-sheet>
+              <v-icon size="100px" color="primary">
+                mdi-face
+              </v-icon>
+              <p class="headline py-5">
+                People volunteer to plant trees
+              </p>
+            </v-sheet>
+            <v-sheet>
+              <v-icon size="100px" color="primary">
+                mdi-tree
+              </v-icon>
+              <p class="headline py-5">
+                Trees are planted to absorb CO2
+              </p>
+            </v-sheet>
           </v-container>
-        </v-card>
+        </v-sheet>
       </v-container>
 
-      <v-sheet>
-        <v-card class="py-10 text-center d-flex align-center justify-space-evenly">
+      <v-sheet class="donor">
+        <v-sheet class="py-10 text-center">
           <v-btn
             color="primary"
             nuxt
@@ -88,15 +85,13 @@
           <v-img
             src="donate.svg"
             alt="give trees"
-            max-width="35vw"
-            max-height="300px"
             contain
           />
-        </v-card>
+        </v-sheet>
       </v-sheet>
 
-      <v-sheet>
-        <v-card class="py-10 text-center d-flex flex-row-reverse align-center justify-space-evenly">
+      <v-sheet class="volunteer">
+        <v-sheet class="py-10 text-center">
           <v-btn
             color="primary"
             nuxt
@@ -107,11 +102,9 @@
           <v-img
             src="volunteer.svg"
             alt="plant trees"
-            max-width="35vw"
-            max-height="300px"
             contain
           />
-        </v-card>
+        </v-sheet>
       </v-sheet>
 
     </v-col>
@@ -125,5 +118,58 @@ export default {
 </script>
 
 <style lang="scss">
+
+  .benefits-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .v-sheet {
+      background: transparent;
+    }
+
+  }
+
+  .donor > .v-sheet, .volunteer > .v-sheet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .v-btn {
+      margin: 2rem 0;
+    }
+
+    .v-image {
+      max-width: 75vw;
+      max-height: 50vh;
+    }
+
+  }
+
+  @media screen and (min-width: 768px) {
+
+    .benefits-list {
+      flex-direction: row;
+      justify-content: space-around;
+      justify-content: space-between;
+    }
+
+    .donor > .v-sheet, .volunteer > .v-sheet {
+      flex-direction: row;
+      justify-content: space-around;
+      justify-content: space-evenly;
+
+      .v-image {
+        max-width: 35vw;
+        max-height: 300px;
+      }
+
+    }
+
+    .volunteer > .v-sheet {
+      flex-direction: row-reverse;
+    }
+
+  }
 
 </style>

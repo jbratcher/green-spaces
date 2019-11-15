@@ -26,23 +26,21 @@
           />
         </v-sheet>
       </v-sheet>
-
       <v-sheet
         v-if="isLoggedIn"
-        class="py-10 d-flex flex-column align-center"
-        width="35vw"
+        class="py-10 add-event-form"
       >
         <h3>Add a new event</h3>
-        <v-sheet class="my-10" width="30vw">
+        <v-sheet class="my-10 px-10">
           <v-form
             ref="form"
             v-model="valid"
-            class="d-flex flex-column"
+            class="grid-2-1"
             lazy-validation
           >
             <v-text-field
               :value="newSpaceEventName"
-              :counter="10"
+              :counter="50"
               :rules="nameRules"
               class="my-5"
               label="Name"
@@ -67,9 +65,9 @@
               required
               @input="setNewSpaceEventStart"
             />
-            <v-sheet>
+            <v-sheet class="d-flex justify-space-evenly">
               <v-btn
-                color="info"
+                color="info btn-box-shadow-secondary"
                 class="my-5"
                 @click="reset"
               >
@@ -77,7 +75,7 @@
               </v-btn>
               <v-btn
                 color="primary"
-                class="my-5"
+                class="my-5 btn-box-shadow-primary"
                 @click="createSpaceEvent"
               >
                 Submit
@@ -134,24 +132,60 @@ export default {
       'createSpaceEvent',
       'fetchSpaceEvents',
     ]),
-    validate () {
-      if (this.$refs.form.validate()) {
-        this.snackbar = true
-      }
-    },
     reset () {
       this.$refs.form.reset()
-    },
-    resetValidation () {
-      this.$refs.form.resetValidation()
-    },
-    submit() {
-      console.log('Form submitted');
     },
   }
 }
 </script>
 
 <style lang="scss">
+
+  .grid-2-1 {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "nam"
+      "des"
+      "cal"
+      "btns";
+    gap: 2rem 0;
+
+      .v-text-field {
+        grid-area: nam;
+        margin-bottom: 3rem;
+      }
+
+      .v-textarea {
+        grid-area: des;
+      }
+
+      .v-picker {
+        grid-area: cal;
+      }
+
+      .v-sheet {
+        grid-area: btns;
+      }
+  }
+
+  @media screen and (min-width: 768px) {
+
+    // grid helpers
+
+    .grid-2-1 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-areas:
+        "nam cal"
+        "des cal"
+        "btns cal";
+      gap: 2rem 4rem;
+    }
+
+    .add-event-form {
+      width: 65vw;
+    }
+
+  }
 
 </style>
