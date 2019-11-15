@@ -25,6 +25,39 @@
             :events="spaceEvents"
           />
         </v-sheet>
+        <template v-for="event in spaceEvents">
+          <div :key="event.id" class="text-center">
+            <v-dialog
+              :id="event.start"
+              v-model="dialog[event.id]"
+              width="500"
+              :activator="`div[data-date='${event.start}']`"
+              hide-overlay
+            >
+              <v-card>
+                <v-card-title
+                  class="headline grey lighten-2"
+                  primary-title
+                  v-text="event.name"
+                />
+                <v-card-text
+                  v-text="event.description"
+                />
+                <v-divider />
+                <!-- <v-card-actions>
+                  <v-spacer />
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="!dialog[event.id]"
+                  >
+                    Exit
+                  </v-btn>
+                </v-card-actions> -->
+              </v-card>
+            </v-dialog>
+          </div>
+        </template>
       </v-sheet>
       <v-sheet
         v-if="isLoggedIn"
@@ -106,6 +139,7 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
+    dialog: [],
   }),
   computed: {
     ...mapState('spaceEvents', [
@@ -133,7 +167,7 @@ export default {
       'fetchSpaceEvents',
     ]),
     reset () {
-      this.$refs.form.reset()
+      this.$refs.form.reset();
     },
   }
 }
@@ -169,8 +203,6 @@ export default {
   }
 
   @media screen and (min-width: 768px) {
-
-    // grid helpers
 
     .grid-2-1 {
       display: grid;

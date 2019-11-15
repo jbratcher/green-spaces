@@ -17,7 +17,7 @@ export const actions = {
         commit('appendSpaceEvent', data);
         commit('newSpaceEventName', null);
         commit('newSpaceEventDescription', null);
-        commit('newSpaceEventStart', null);
+        commit('newSpaceEventStart', new Date().toISOString().substr(0, 10));
       })
       .catch((error) => {
         commit('appendSpaceEvent', `Create event error: ${error}`);
