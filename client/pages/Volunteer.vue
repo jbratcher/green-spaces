@@ -23,40 +23,14 @@
             type="month"
             value="2019-11-01"
             :events="spaceEvents"
+            event-color="primary"
           />
         </v-sheet>
         <template v-for="event in spaceEvents">
-          <div :key="event.id" class="text-center">
-            <v-dialog
-              :id="event.start"
-              v-model="dialog[event.id]"
-              width="500"
-              :activator="`div[data-date='${event.start}']`"
-              hide-overlay
-            >
-              <v-card>
-                <v-card-title
-                  class="headline grey lighten-2"
-                  primary-title
-                  v-text="event.name"
-                />
-                <v-card-text
-                  v-text="event.description"
-                />
-                <v-divider />
-                <!-- <v-card-actions>
-                  <v-spacer />
-                  <v-btn
-                    color="primary"
-                    text
-                    @click="!dialog[event.id]"
-                  >
-                    Exit
-                  </v-btn>
-                </v-card-actions> -->
-              </v-card>
-            </v-dialog>
-          </div>
+          <SpaceEventDialog
+            :key="event.id"
+            :event="event"
+          />
         </template>
       </v-sheet>
       <v-sheet
@@ -124,8 +98,12 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
+import SpaceEventDialog from '../components/SpaceEventDialog.vue';
 
 export default {
+  components: {
+    SpaceEventDialog,
+  },
   data: () => ({
     valid: true,
     nameRules: [
@@ -139,7 +117,6 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
-    dialog: [],
   }),
   computed: {
     ...mapState('spaceEvents', [
