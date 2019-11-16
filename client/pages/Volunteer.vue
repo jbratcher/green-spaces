@@ -33,64 +33,8 @@
           />
         </template>
       </v-sheet>
-      <v-sheet
-        v-if="isLoggedIn"
-        class="py-10 add-event-form"
-      >
-        <h3>Add a new event</h3>
-        <v-sheet class="my-10 px-10">
-          <v-form
-            ref="form"
-            v-model="valid"
-            class="grid-2-1"
-            lazy-validation
-          >
-            <v-text-field
-              :value="newSpaceEventName"
-              :counter="50"
-              :rules="nameRules"
-              class="my-5"
-              label="Name"
-              required
-              @input="setNewSpaceEventName"
-            />
-            <v-textarea
-              :value="newSpaceEventDescription"
-              :rules="descriptionRules"
-              :counter="1000"
-              label="Description"
-              name="Description"
-              auto-grow
-              required
-              @input="setNewSpaceEventDescription"
-            />
-            <v-date-picker
-              :value="newSpaceEventStart"
-              :rules="startRules"
-              color="primary"
-              class="my-5"
-              required
-              @input="setNewSpaceEventStart"
-            />
-            <v-sheet class="d-flex justify-space-evenly">
-              <v-btn
-                color="info btn-box-shadow-secondary"
-                class="my-5"
-                @click="reset"
-              >
-                Reset
-              </v-btn>
-              <v-btn
-                color="primary"
-                class="my-5 btn-box-shadow-primary"
-                @click="createSpaceEvent"
-              >
-                Submit
-              </v-btn>
-            </v-sheet>
-          </v-form>
-        </v-sheet>
-      </v-sheet>
+
+      <NewEventDialog />
 
     </v-col>
   </v-layout>
@@ -99,10 +43,12 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import SpaceEventDialog from '../components/SpaceEventDialog.vue';
+import NewEventDialog from '../components/NewEventDialog.vue';
 
 export default {
   components: {
     SpaceEventDialog,
+    NewEventDialog,
   },
   data: () => ({
     valid: true,
@@ -120,9 +66,6 @@ export default {
   }),
   computed: {
     ...mapState('spaceEvents', [
-      'newSpaceEventName',
-      'newSpaceEventDescription',
-      'newSpaceEventStart',
       'spaceEvents',
     ]),
     ...mapState('auth', [
@@ -134,18 +77,11 @@ export default {
   },
   methods: {
     ...mapMutations('spaceEvents', [
-      'setNewSpaceEventName',
-      'setNewSpaceEventDescription',
-      'setNewSpaceEventStart',
       'setSpaceEvents',
     ]),
     ...mapActions('spaceEvents', [
-      'createSpaceEvent',
       'fetchSpaceEvents',
     ]),
-    reset () {
-      this.$refs.form.reset();
-    },
   }
 }
 </script>
