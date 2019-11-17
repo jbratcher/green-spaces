@@ -3,6 +3,7 @@ export const state = () => ({
   newSpaceEventName: '',
   newSpaceEventDescription: '',
   newSpaceEventStart: new Date().toISOString().substr(0, 10),
+  newSpaceEventId: null,
 });
 
 export const actions = {
@@ -22,6 +23,10 @@ export const actions = {
       .catch((error) => {
         commit('appendSpaceEvent', `Create event error: ${error}`);
       });
+  },
+  updateSpaceEvent({ rootState }, project) {
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    return this.$axios.$patch(`/space-events/${project.id}`, project);
   },
   fetchSpaceEvents ({ commit }) {
     return this.$axios.$get('/space-events')
@@ -43,6 +48,9 @@ export const mutations = {
   },
   setNewSpaceEventStart (state, start) {
     state.newSpaceEventStart = start;
+  },
+  setNewSpaceEventId (state, id) {
+    state.newSpaceEventId = id;
   },
   appendSpaceEvent (state, spaceEvent) {
     state.spaceEvents.push(spaceEvent);
