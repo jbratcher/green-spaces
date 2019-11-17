@@ -34,8 +34,8 @@ class SpaceEventController {
     const user = await auth.getUser();
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    AuthorizationService.verifyPermission(spaceEvent, user);
-    spaceEvent.merge(request.only('name'));
+    // AuthorizationService.verifyPermission(spaceEvent, user);
+    spaceEvent.merge(request.all());
     await spaceEvent.save();
     return spaceEvent;
   }

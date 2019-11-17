@@ -23,6 +23,7 @@ Route.group(() => {
 
   Route.get('space-events', 'SpaceEventController.index');
   Route.post('space-events', 'SpaceEventController.create');
+  Route.patch('space-events/:id', 'SpaceEventController.update');
 
 })
   .prefix('api');
