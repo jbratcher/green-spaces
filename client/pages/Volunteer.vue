@@ -3,21 +3,32 @@
     <v-col class="pa-0 text-center">
 
       <v-sheet color="primary lighten-2" class="white--text">
+
         <h1 class="display-3 pt-6 pb-3">
           Give your time
         </h1>
         <p class="headline pt-3 pb-6">
           Your time helps fight climate change
         </p>
+
       </v-sheet>
 
       <v-sheet class="py-10">
+
         <h2 class="display-1 py-5">
           Upcoming Events
         </h2>
         <p class="title pb-12">
           Find volunteer events near you
         </p>
+
+        <p>
+          <v-icon class="add-new-event">
+            mdi-calendar-plus
+          </v-icon>
+          <span>Add Event</span>
+        </p>
+
         <v-sheet class="my-6 mx-auto" elevation="5" width="80vw" height="500">
           <v-calendar
             type="month"
@@ -26,12 +37,14 @@
             event-color="primary"
           />
         </v-sheet>
+
         <template v-for="event in spaceEvents">
           <SpaceEventDialog
             :key="event.id"
             :event="event"
           />
         </template>
+
       </v-sheet>
 
       <NewEventDialog />
@@ -115,6 +128,10 @@ export default {
       }
   }
 
+  .add-new-event {
+    cursor: pointer;
+  }
+
   @media screen and (min-width: 768px) {
 
     .grid-2-1 {
@@ -125,10 +142,6 @@ export default {
         "des cal"
         "btns cal";
       gap: 2rem 4rem;
-    }
-
-    .add-event-form {
-      width: 65vw;
     }
 
   }

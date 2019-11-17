@@ -1,11 +1,16 @@
 <template>
 
-  <v-sheet
+  <v-dialog
     v-if="isLoggedIn"
-    class="py-10 add-event-form"
+    v-model="dialog"
+    class="pa-10"
+    activator=".add-new-event"
   >
-    <h3>Add a new event</h3>
-    <v-sheet class="my-10 px-10">
+    <v-sheet class="pa-10 d-flex flex-column">
+      <v-icon class="align-self-end" @click="dialog = false">
+        mdi-close
+      </v-icon>
+      <h3>Add a new event</h3>
       <v-form
         ref="form"
         v-model="valid"
@@ -57,7 +62,7 @@
         </v-sheet>
       </v-form>
     </v-sheet>
-  </v-sheet>
+  </v-dialog>
 
 </template>
 
@@ -79,12 +84,14 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
+    dialog: false,
   }),
   computed: {
     ...mapState('spaceEvents', [
       'newSpaceEventName',
       'newSpaceEventDescription',
       'newSpaceEventStart',
+      'spaceEvents',
     ]),
     ...mapState('auth', [
       'isLoggedIn',
@@ -106,6 +113,16 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+.v-dialog {
+  width: 80vw;
+}
+
+@media screen and (min-width: 768px) {
+  .v-dialog {
+    width: 65vw;
+  }
+}
 
 </style>
