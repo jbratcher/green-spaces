@@ -1,6 +1,7 @@
 'use strict'
 
 const SpaceEvent = use('App/Models/SpaceEvent');
+// const AuthorizationService = use('App/Services/AuthorizationService');
 
 class SpaceEventController {
 
@@ -21,22 +22,22 @@ class SpaceEventController {
     return spaceEvent;
   }
 
-  async destroy({ auth, request, params }) {
-    const user = await auth.getUser();
-    const { id } = params;
-    const spaceEvent = await SpaceEvent.find(id);
-    AuthorizationService.verifyPermission(spaceEvent, user);
-    await spaceEvent.delete();
-    return spaceEvent;
-  }
-
   async update({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    // AuthorizationService.verifyPermission(spaceEvent, user);
     spaceEvent.merge(request.all());
+    // AuthorizationService.verifyPermission(spaceEvent, user);
     await spaceEvent.save();
+    return spaceEvent;
+  }
+
+  async destroy({ auth, request, params }) {
+    const user = await auth.getUser();
+    const { id } = params;
+    const spaceEvent = await SpaceEvent.find(id);
+    // AuthorizationService.verifyPermission(spaceEvent, user);
+    await spaceEvent.delete();
     return spaceEvent;
   }
 
