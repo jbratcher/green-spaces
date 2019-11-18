@@ -24,9 +24,16 @@ export const actions = {
         commit('appendSpaceEvent', `Create event error: ${error}`);
       });
   },
-  updateSpaceEvent({ rootState }, project) {
+  updateSpaceEvent({ rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
-    return this.$axios.$patch(`/space-events/${project.id}`, project);
+    return this.$axios.$patch(`/space-events/${spaceEvent.id}`, spaceEvent);
+  },
+  deleteSpaceEvent({ commit, rootState }, spaceEvent) {
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    return this.$axios.$delete(`/space-events/${spaceEvent.id}`, spaceEvent)
+      .then(() => {
+        commit('removeSpaceEvent', spaceEvent)
+      });
   },
   fetchSpaceEvents ({ commit }) {
     return this.$axios.$get('/space-events')
@@ -52,10 +59,22 @@ export const mutations = {
   setNewSpaceEventId (state, id) {
     state.newSpaceEventId = id;
   },
-  appendSpaceEvent (state, spaceEvent) {
-    state.spaceEvents.push(spaceEvent);
+  setUpdatedSpaceEventName (state, { spaceEven, name }) {
+    spaceEven.name = name;
+  },
+  setUpdatedSpaceEventDescription (state, { spaceEvent, description }) {
+    spaceEvent.description = description;
+  },
+  setUpdatedSpaceEventStart (state, { spaceEvent, start }) {
+    spaceEvent.start = start;
   },
   setSpaceEvents (state, spaceEvents) {
     state.spaceEvents = spaceEvents;
+  },
+  appendSpaceEvent (state, spaceEvent) {
+    state.spaceEvents.push(spaceEvent);
+  },
+  removeSpaceEvent(state, spaceEvent) {
+    state.spaceEvents.splice(state.spaceEvents.indexOf(spaceEvent), 1);
   },
 };

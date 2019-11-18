@@ -13,12 +13,12 @@
           primary-title
         >
           <h2
-            v-if="!editEvent"
+            v-if="!editMode"
           >
             {{ event.name }}
           </h2>
           <h2
-            v-if="editEvent"
+            v-if="editMode"
           >
             Edit {{ event.name }}
           </h2>
@@ -31,28 +31,28 @@
           </v-icon>
         </v-card-title>
         <v-card-text
-          v-if="!editEvent"
+          v-if="!editMode"
           class="mt-10"
           v-text="event.start"
         />
         <v-card-text
-          v-if="!editEvent"
+          v-if="!editMode"
           class="mb-5"
           v-text="event.description"
         />
         <!-- Edit Mode -->
         <v-text-field
-          v-if="editEvent"
+          v-if="editMode"
           :value="event.name"
           :counter="50"
           :rules="nameRules"
           class="ma-5"
           label="Name"
           required
-          @input="setNewSpaceEventName"
+          @input="setUpdatedSpaceEventName({ event, name: $event })"
         />
         <v-textarea
-          v-if="editEvent"
+          v-if="editMode"
           class="ma-5"
           :value="event.description"
           :rules="descriptionRules"
@@ -61,32 +61,39 @@
           name="Description"
           auto-grow
           required
-          @input="setNewSpaceEventDescription"
+          @input="setUpdatedSpaceEventDescription({ event, description: $event })"
         />
         <v-date-picker
-          v-if="editEvent"
+          v-if="editMode"
           :value="event.start"
           :rules="startRules"
           color="primary"
           class="my-5"
           required
-          @input="setNewSpaceEventStart"
+          @input="setUpdatedSpaceEventStart({ event, start: $event })"
         />
         <v-divider />
         <v-card-actions>
           <v-spacer />
           <v-btn
             color="primary"
-            @click="editEvent = true"
+            @click="editMode = true"
           >
             Edit
           </v-btn>
           <v-btn
-            v-if="editEvent"
+            v-if="editMode"
             color="primary darken-2"
             @click="updateSpaceEvent(event)"
           >
             Save
+          </v-btn>
+          <v-btn
+            v-if="editMode"
+            color="error"
+            @click="deleteSpaceEvent(event)"
+          >
+            Delete
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -103,11 +110,23 @@ export default {
     event: {
       type: Object,
       default: () => {},
+      name: {
+        type: String,
+        default: '',
+      },
+      description: {
+        type: String,
+        default: '',
+      },
+      id: {
+        type: Number,
+        default: null,
+      },
     }
   },
   data: () => ({
     dialog: false,
-    editEvent: false,
+    editMode: false,
     valid: true,
     nameRules: [
       v => !!v || 'Name is required',
@@ -133,16 +152,17 @@ export default {
   },
   methods: {
     ...mapMutations('spaceEvents', [
-      'setNewSpaceEventName',
-      'setNewSpaceEventDescription',
-      'setNewSpaceEventStart',
+      'setUpdatedSpaceEventName',
+      'setUpdatedSpaceEventDescription',
+      'setUpdatedSpaceEventStart',
     ]),
     ...mapActions('spaceEvents', [
       'updateSpaceEvent',
+      'deleteSpaceEvent',
     ]),
     reset () {
       this.dialog = false;
-      this.editEvent = false;
+      this.editMode = false;
     },
   }
 }
