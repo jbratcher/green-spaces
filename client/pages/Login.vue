@@ -49,6 +49,7 @@ export default {
       'loginEmail',
       'loginPassword',
       'loginError',
+      'user'
     ]),
   },
   methods: {

@@ -4,6 +4,15 @@ const User = use('App/Models/User');
 
 class UserController {
 
+  async index() {
+    return await User.all();
+  }
+
+  async currentUser({ auth }) {
+    const user = await auth.getUser();
+    return user;
+  }
+
   async login({ request, auth }) {
     const { email, password } = request.all();
     const token = await auth.attempt(email, password);

@@ -18,10 +18,10 @@ export const actions = {
         commit('appendSpaceEvent', data);
         commit('newSpaceEventName', null);
         commit('newSpaceEventDescription', null);
-        commit('newSpaceEventStart', new Date().toISOString().substr(0, 10));
+        commit('newSpaceEventStart', null);
       })
       .catch((error) => {
-        commit('appendSpaceEvent', `Create event error: ${error}`);
+        console.log(`Create event error: ${error}`);
       });
   },
   updateSpaceEvent({ rootState }, spaceEvent) {
@@ -33,7 +33,10 @@ export const actions = {
     return this.$axios.$delete(`/space-events/${spaceEvent.id}`, spaceEvent)
       .then(() => {
         commit('removeSpaceEvent', spaceEvent)
-      });
+      })
+      .catch((error) => {
+        console.log(`Remove event error: ${error}`);
+      })
   },
   fetchSpaceEvents ({ commit }) {
     return this.$axios.$get('/space-events')
@@ -41,7 +44,7 @@ export const actions = {
         commit('setSpaceEvents', data);
       })
       .catch((error) => {
-        commit('setSpaceEvents', `Set event error: ${error}`);
+        console.log(`Fetch event error: ${error}`);
       });
   },
 };

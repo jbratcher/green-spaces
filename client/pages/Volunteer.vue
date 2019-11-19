@@ -2,6 +2,7 @@
   <v-layout>
     <v-col class="pa-0 text-center">
 
+      <!-- Page Header -->
       <v-sheet color="primary lighten-2" class="white--text">
 
         <h1 class="display-3 pt-6 pb-3">
@@ -13,8 +14,10 @@
 
       </v-sheet>
 
+      <!-- Main Content -->
       <v-sheet class="py-10">
 
+        <!-- Content Header -->
         <h2 class="display-1 py-5">
           Upcoming Events
         </h2>
@@ -22,6 +25,7 @@
           Find volunteer events near you
         </p>
 
+        <!-- Add Event Button -->
         <p>
           <v-icon class="add-new-event">
             mdi-calendar-plus
@@ -29,6 +33,7 @@
           <span>Add Event</span>
         </p>
 
+        <!-- Event Calendar -->
         <v-sheet class="my-6 mx-auto" elevation="5" width="80vw" height="500">
           <v-calendar
             type="month"
@@ -38,6 +43,7 @@
           />
         </v-sheet>
 
+        <!-- Event Dialogs -->
         <template v-for="event in spaceEvents">
           <SpaceEventDialog
             :key="event.id"
@@ -47,6 +53,7 @@
 
       </v-sheet>
 
+      <!-- Add New Event Dialog -->
       <NewEventDialog />
 
     </v-col>
@@ -64,6 +71,7 @@ export default {
     NewEventDialog,
   },
   data: () => ({
+    calendarKey: 0,
     valid: true,
     nameRules: [
       v => !!v || 'Name is required',

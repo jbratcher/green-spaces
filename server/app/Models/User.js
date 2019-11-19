@@ -44,7 +44,7 @@ class User extends Model {
   }
 
   spaceEvents () {
-    return this.hasOne('App/Models/SpaceEvent')
+    return this.hasMany('App/Models/SpaceEvent')
   }
 
 }

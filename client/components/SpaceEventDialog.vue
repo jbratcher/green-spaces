@@ -1,4 +1,5 @@
 <template>
+  <!-- Dialog wrapper -->
   <div :key="event.id" class="text-center">
     <v-dialog
       :id="event.start"
@@ -7,7 +8,10 @@
       :activator="`div[data-date='${event.start}']`"
       hide-overlay
     >
+      <!-- Event/Form Display  -->
       <v-card class="d-flex flex-column">
+
+        <!-- Header -->
         <v-card-title
           class="headline primary white--text"
           primary-title
@@ -30,6 +34,7 @@
             mdi-close
           </v-icon>
         </v-card-title>
+        <!-- Body -->
         <v-card-text
           v-if="!editMode"
           class="mt-10"
@@ -73,9 +78,11 @@
           @input="setUpdatedSpaceEventStart({ event, start: $event })"
         />
         <v-divider />
+        <!-- Actions -->
         <v-card-actions>
           <v-spacer />
           <v-btn
+            v-if="user.id === event.user_id"
             color="primary"
             @click="editMode = true"
           >
@@ -148,6 +155,7 @@ export default {
     ]),
     ...mapState('auth', [
       'isLoggedIn',
+      'user',
     ]),
   },
   methods: {

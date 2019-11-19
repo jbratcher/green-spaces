@@ -7,6 +7,7 @@ export const state = () => ({
   registerPassword: null,
   registerError: null,
   token: null,
+  user: {}
 });
 
 export const actions = {
@@ -17,7 +18,7 @@ export const actions = {
       this.$router.replace('/');
     }
   },
-  async login({ commit, state }) {
+  async login({ commit, state, rootState }) {
     commit('setLoginError', null);
     await this.$axios.$post('/auth/login', {
       email: state.loginEmail,
@@ -29,13 +30,20 @@ export const actions = {
         commit('setLoggedIn', true);
         this.$router.push('/');
       })
+      .then(() => {
+        this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+        this.$axios.$get('/current-user')
+          .then((response) => {
+            commit('setUser', response);
+          })
+      })
       .catch((error) => {
-        commit('setLoginError', `Login Error: ${error}`);
+        console.log(`Login Error: ${error}`);
       });
   },
-  register({ commit, state }) {
+  async register({ commit, state }) {
     commit('setRegisterError', null);
-    return this.$axios.$post('/auth/register', {
+    await this.$axios.$post('/auth/register', {
       email: state.registerEmail,
       password: state.registerPassword,
     })
@@ -45,7 +53,7 @@ export const actions = {
         this.$router.push('/');
       })
       .catch((error) => {
-        commit('setRegisterError', `Registration error: ${error}`);
+        console.log(`Registration error: ${error}`);
       });
   },
 };
@@ -81,4 +89,7 @@ export const mutations = {
   setLoginPassword(state, password) {
     state.loginPassword = password;
   },
+  setUser(state, user) {
+    state.user = user;
+  }
 };

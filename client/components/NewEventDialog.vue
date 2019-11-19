@@ -7,10 +7,13 @@
     activator=".add-new-event"
   >
     <v-sheet class="pa-10 d-flex flex-column">
+
+      <!-- Dialog Header -->
       <v-icon class="align-self-end" @click="dialog = false">
         mdi-close
       </v-icon>
       <h3>Add a new event</h3>
+      <!-- Event Form -->
       <v-form
         ref="form"
         v-model="valid"
@@ -44,6 +47,7 @@
           required
           @input="setNewSpaceEventStart"
         />
+        <!-- Form Actions -->
         <v-sheet class="d-flex justify-space-evenly">
           <v-btn
             color="info btn-box-shadow-secondary"
