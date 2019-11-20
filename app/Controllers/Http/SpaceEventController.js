@@ -25,7 +25,7 @@ class SpaceEventController {
     const user = await auth.getUser();
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    spaceEvent.merge(request.only("name", "description", "start"));
+    spaceEvent.merge(request.all('name', 'description', 'start'));
     await spaceEvent.save();
     return spaceEvent;
   }
