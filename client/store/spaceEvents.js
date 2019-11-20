@@ -56,14 +56,17 @@ export const mutations = {
   setNewSpaceEventStart (state, start) {
     state.newSpaceEventStart = start;
   },
-  setUpdatedSpaceEventName (state, { event, name }) {
-    event.name = name;
+  setUpdatedSpaceEventName (state, { selectedEvent, name }) {
+    console.log(`Updated State: ${JSON.stringify(state)}`);
+    console.log(`Updated Event: ${JSON.stringify(selectedEvent)}`);
+    console.log(`Updated Name: ${JSON.stringify(name)}`);
+    selectedEvent.name = name;
   },
-  setUpdatedSpaceEventDescription (state, { event, description }) {
-    event.description = description;
+  setUpdatedSpaceEventDescription (state, { selectedEvent, description }) {
+    selectedEvent.description = description;
   },
-  setUpdatedSpaceEventStart (state, { event, start }) {
-    event.start = start;
+  setUpdatedSpaceEventStart (state, { selectedEvent, start }) {
+    selectedEvent.start = start;
   },
   setSpaceEvents (state, spaceEvents) {
     state.spaceEvents = spaceEvents;

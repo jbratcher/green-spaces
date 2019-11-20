@@ -14,6 +14,7 @@ module.exports = {
   // add your custom rules here
   rules: {
     'vue/multiline-html-element-content-newline': 'off',
+    'vue/no-v-html': 'off',
     'no-return-assign': 'off',
     'no-console': 'off',
     'semi': 'off',
