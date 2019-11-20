@@ -16,9 +16,6 @@ export const actions = {
     })
       .then((data) => {
         commit('appendSpaceEvent', data);
-        commit('newSpaceEventName', null);
-        commit('newSpaceEventDescription', null);
-        commit('newSpaceEventStart', null);
       })
       .catch((error) => {
         console.log(`Create event error: ${error}`);
@@ -59,12 +56,7 @@ export const mutations = {
   setNewSpaceEventStart (state, start) {
     state.newSpaceEventStart = start;
   },
-  setNewSpaceEventId (state, id) {
-    state.newSpaceEventId = id;
-  },
   setUpdatedSpaceEventName (state, { event, name }) {
-    console.log(`Event: ${JSON.stringify(event)}`)
-    console.log(`Name: ${name}`);
     event.name = name;
   },
   setUpdatedSpaceEventDescription (state, { event, description }) {

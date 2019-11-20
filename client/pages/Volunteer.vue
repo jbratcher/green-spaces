@@ -61,7 +61,7 @@
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import SpaceEventDialog from '../components/SpaceEventDialog.vue';
 import NewEventDialog from '../components/NewEventDialog.vue';
 
@@ -71,7 +71,6 @@ export default {
     NewEventDialog,
   },
   data: () => ({
-    calendarKey: 0,
     valid: true,
     nameRules: [
       v => !!v || 'Name is required',
@@ -97,9 +96,6 @@ export default {
     this.fetchSpaceEvents();
   },
   methods: {
-    ...mapMutations('spaceEvents', [
-      'setSpaceEvents',
-    ]),
     ...mapActions('spaceEvents', [
       'fetchSpaceEvents',
     ]),
