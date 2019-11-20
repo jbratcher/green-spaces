@@ -2,12 +2,17 @@
   <v-layout>
     <v-col cols="12" class="pa-0 text-center">
 
+      <!-- Page Header -->
       <h1 class="display-3 my-12">
         How to get started
       </h1>
+
+      <!-- Main Content -->
       <v-sheet
         class="my-12 py-12 start-options"
       >
+
+        <!-- Donate Path -->
         <v-sheet
           color="primary lighten-2 ma-5 pa-5 d-flex flex-column align-center justify-space-evenly"
           elevation="10"
@@ -29,6 +34,8 @@
             contain
           />
         </v-sheet>
+
+        <!-- Volunteer Path -->
         <v-sheet
           color="primary lighten-4 ma-5 pa-5 d-flex flex-column align-center justify-space-evenly"
           elevation="10"
@@ -50,6 +57,7 @@
             contain
           />
         </v-sheet>
+
       </v-sheet>
 
     </v-col>

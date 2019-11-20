@@ -1,5 +1,6 @@
 <template>
 
+  <!-- Dialog Wrapper -->
   <v-dialog
     v-if="isLoggedIn"
     v-model="dialog"
@@ -13,6 +14,7 @@
         mdi-close
       </v-icon>
       <h3>Add a new event</h3>
+
       <!-- Event Form -->
       <v-form
         ref="form"
@@ -47,6 +49,7 @@
           required
           @input="setNewSpaceEventStart"
         />
+
         <!-- Form Actions -->
         <v-sheet class="d-flex justify-space-evenly">
           <v-btn
@@ -65,6 +68,7 @@
           </v-btn>
         </v-sheet>
       </v-form>
+
     </v-sheet>
   </v-dialog>
 

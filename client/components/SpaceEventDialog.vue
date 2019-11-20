@@ -1,4 +1,5 @@
 <template>
+
   <!-- Dialog wrapper -->
   <div :key="event.id" class="text-center">
     <v-dialog
@@ -8,6 +9,7 @@
       :activator="`div[data-date='${event.start}']`"
       hide-overlay
     >
+
       <!-- Event/Form Display  -->
       <v-card class="d-flex flex-column">
 
@@ -34,6 +36,7 @@
             mdi-close
           </v-icon>
         </v-card-title>
+
         <!-- Body -->
         <v-card-text
           v-if="!editMode"
@@ -45,6 +48,7 @@
           class="mb-5"
           v-text="event.description"
         />
+
         <!-- Edit Mode -->
         <v-text-field
           v-if="editMode"
@@ -78,6 +82,7 @@
           @input="setUpdatedSpaceEventStart({ event, start: $event })"
         />
         <v-divider />
+
         <!-- Actions -->
         <v-card-actions>
           <v-spacer />
@@ -113,6 +118,7 @@
       </v-card>
     </v-dialog>
   </div>
+
 </template>
 
 <script>

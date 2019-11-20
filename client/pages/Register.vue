@@ -4,6 +4,7 @@
     <v-layout row wrap>
       <v-flex xs6 offset-xs3>
 
+        <!-- User Sign Up Form -->
         <h1>Register</h1>
 
         <v-text-field
@@ -12,7 +13,6 @@
           :value="registerEmail"
           @input="setRegisterEmail"
         />
-
         <v-text-field
           label="Password"
           placeholder="Password"
@@ -21,11 +21,9 @@
           :value="registerPassword"
           @input="setRegisterPassword"
         />
-
         <v-alert type="error" :value="registerError">
           {{ registerError }}
         </v-alert>
-
         <v-btn dark @click="register">
           <v-icon class="mr-5">
             mdi-account-plus

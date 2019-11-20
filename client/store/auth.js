@@ -25,7 +25,6 @@ export const actions = {
       password: state.loginPassword,
     })
       .then((data) => {
-        console.log(JSON.stringify(data));
         commit('setToken', data.token);
         commit('setLoggedIn', true);
         this.$router.push('/');

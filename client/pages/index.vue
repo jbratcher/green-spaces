@@ -2,7 +2,10 @@
   <v-layout>
     <v-col class="pa-0">
 
+      <!-- Home Page Header Section -->
       <v-container fluid class="pa-0">
+
+        <!-- Hero Section -->
         <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
@@ -15,6 +18,8 @@
             </v-col>
           </v-row>
         </v-img>
+
+        <!-- Lead In Text -->
         <v-container>
           <v-card-title class="display-1 my-5">
             Green Spaces provides an all in one platform for combating climate change by planting trees to reduce carbon dioxide from the air.
@@ -37,6 +42,7 @@
         </v-container>
       </v-container>
 
+      <!-- How It Works Section -->
       <v-container fluid class="pa-0">
         <v-sheet
           class="text-center gradient-overlay py-12 d-flex flex-column justify-center"
@@ -73,6 +79,7 @@
         </v-sheet>
       </v-container>
 
+      <!-- Donor Section -->
       <v-sheet class="donor">
         <v-sheet class="py-10 text-center">
           <v-btn
@@ -90,6 +97,7 @@
         </v-sheet>
       </v-sheet>
 
+      <!-- Volunteer Section -->
       <v-sheet class="volunteer">
         <v-sheet class="py-10 text-center">
           <v-btn

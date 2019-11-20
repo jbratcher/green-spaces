@@ -4,6 +4,7 @@
     <v-layout row wrap>
       <v-col xs6 offset-xs3>
 
+        <!-- User Login Form -->
         <h1>Login</h1>
 
         <v-text-field
@@ -12,7 +13,6 @@
           :value="loginEmail"
           @input="setLoginEmail"
         />
-
         <v-text-field
           label="Password"
           placeholder="Password"
@@ -21,11 +21,9 @@
           :value="loginPassword"
           @input="setLoginPassword"
         />
-
         <v-alert type="error" :value="Boolean(loginError)">
           {{ loginError }}
         </v-alert>
-
         <v-btn dark @click="login">
           <v-icon class="mr-5">
             mdi-login

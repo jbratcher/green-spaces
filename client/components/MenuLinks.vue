@@ -1,7 +1,9 @@
 /* eslint-disable */
 <template>
 
+  <!-- Links Wrapper -->
   <v-list :class="listClass">
+
     <!-- General links -->
     <v-list-item
       v-for="(item, i) in generalLinks"
@@ -21,6 +23,7 @@
         <v-list-item-title v-text="item.title" />
       </v-list-item-content>
     </v-list-item>
+
     <!-- login/register links -->
     <template v-if="!isLoggedIn">
       <v-list-item
@@ -41,6 +44,7 @@
         </v-list-item-content>
       </v-list-item>
     </template>
+
     <!-- logout link -->
     <v-list-item
       v-if="isLoggedIn"
