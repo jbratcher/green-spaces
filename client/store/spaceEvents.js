@@ -24,7 +24,7 @@ export const actions = {
         console.log(`Create event error: ${error}`);
       });
   },
-  updateSpaceEvent({ rootState }, spaceEvent) {
+  updateSpaceEvent({ commit, state, rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$patch(`/space-events/${spaceEvent.id}`, spaceEvent);
   },
@@ -62,14 +62,16 @@ export const mutations = {
   setNewSpaceEventId (state, id) {
     state.newSpaceEventId = id;
   },
-  setUpdatedSpaceEventName (state, { spaceEven, name }) {
-    spaceEven.name = name;
+  setUpdatedSpaceEventName (state, { event, name }) {
+    console.log(`Event: ${JSON.stringify(event)}`)
+    console.log(`Name: ${name}`);
+    event.name = name;
   },
-  setUpdatedSpaceEventDescription (state, { spaceEvent, description }) {
-    spaceEvent.description = description;
+  setUpdatedSpaceEventDescription (state, { event, description }) {
+    event.description = description;
   },
-  setUpdatedSpaceEventStart (state, { spaceEvent, start }) {
-    spaceEvent.start = start;
+  setUpdatedSpaceEventStart (state, { event, start }) {
+    event.start = start;
   },
   setSpaceEvents (state, spaceEvents) {
     state.spaceEvents = spaceEvents;

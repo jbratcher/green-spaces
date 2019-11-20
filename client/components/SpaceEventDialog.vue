@@ -82,11 +82,18 @@
         <v-card-actions>
           <v-spacer />
           <v-btn
-            v-if="user.id === event.user_id"
+            v-if="!editMode && user.id === event.user_id"
             color="primary"
             @click="editMode = true"
           >
             Edit
+          </v-btn>
+          <v-btn
+            v-if="editMode && user.id === event.user_id"
+            color="info"
+            @click="editMode = false"
+          >
+            Cancel
           </v-btn>
           <v-btn
             v-if="editMode"
