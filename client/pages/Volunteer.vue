@@ -127,7 +127,7 @@
                 >
 
                   <!-- Event/Form Display  -->
-                  <v-card class="d-flex flex-column" width="35vw">
+                  <v-card class="d-flex flex-column">
 
                     <!-- Header -->
                     <v-card-title
@@ -435,6 +435,10 @@ export default {
     cursor: pointer;
   }
 
+  .v-menu__content {
+    width: 80vw;
+  }
+
   @media screen and (min-width: 768px) {
 
     .grid-2-1 {
@@ -445,6 +449,10 @@ export default {
         "des cal"
         "btns cal";
       gap: 2rem 4rem;
+    }
+
+    .v-menu__content {
+      width: 65vw;
     }
 
   }
