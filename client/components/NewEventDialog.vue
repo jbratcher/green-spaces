@@ -3,14 +3,14 @@
   <!-- Dialog Wrapper -->
   <v-dialog
     v-if="isLoggedIn"
-    v-model="dialog"
+    v-model="menuOpen"
     class="pa-10"
     activator=".add-new-event"
   >
     <v-sheet class="pa-10 d-flex flex-column">
 
       <!-- Dialog Header -->
-      <v-icon class="align-self-end" @click="dialog = false">
+      <v-icon class="align-self-end" @click="menuOpen = false">
         mdi-close
       </v-icon>
       <h3>Add a new event</h3>
@@ -55,14 +55,14 @@
           <v-btn
             color="info btn-box-shadow-secondary"
             class="my-5"
-            @click="reset"
+            @click="resetCreateEventForm"
           >
             Reset
           </v-btn>
           <v-btn
             color="primary"
             class="my-5 btn-box-shadow-primary"
-            @click="createSpaceEvent"
+            @click="createEvent"
           >
             Submit
           </v-btn>
@@ -92,7 +92,7 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
-    dialog: false,
+    menuOpen: false,
   }),
   computed: {
     ...mapState('spaceEvents', [
@@ -114,8 +114,13 @@ export default {
     ...mapActions('spaceEvents', [
       'createSpaceEvent',
     ]),
-    reset () {
+    createEvent () {
+      this.createSpaceEvent();
+      this.resetCreateEventForm();
+    },
+    resetCreateEventForm () {
       this.$refs.form.reset();
+      this.menuOpen = false;
     },
   }
 }

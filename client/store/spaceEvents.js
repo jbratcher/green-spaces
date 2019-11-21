@@ -57,9 +57,6 @@ export const mutations = {
     state.newSpaceEventStart = start;
   },
   setUpdatedSpaceEventName (state, { selectedEvent, name }) {
-    console.log(`Updated State: ${JSON.stringify(state)}`);
-    console.log(`Updated Event: ${JSON.stringify(selectedEvent)}`);
-    console.log(`Updated Name: ${JSON.stringify(name)}`);
     selectedEvent.name = name;
   },
   setUpdatedSpaceEventDescription (state, { selectedEvent, description }) {

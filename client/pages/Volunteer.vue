@@ -33,30 +33,24 @@
           <span>Add Event</span>
         </p>
 
-        <!-- Prev/Next Month Buttons -->
-        <!-- <v-sheet class="mx-auto d-flex justify-space-between" width="80vw">
-          <v-btn
-            @click="$refs.calendar.prev()"
-          >
-            Previous Month
-          </v-btn>
-          <v-btn
-            @click="$refs.calendar.next()"
-          >
-            Next Month
-          </v-btn>
-        </v-sheet> -->
+        <!-- Add New Event Dialog -->
+        <NewEventDialog />
 
         <!-- Vuetify Event Calendar Template -->
         <template>
           <v-row class="fill-height">
             <v-col>
+
+              <!-- Calendar Header -->
               <v-sheet class="mx-auto" height="64" width="80vw">
-                <!-- Calendar Header -->
                 <v-toolbar flat color="white">
+
+                  <!-- Focus Current Date -->
                   <v-btn outlined class="mr-4" @click="setToday">
                     Today
                   </v-btn>
+
+                  <!-- Prev/Next Month Buttons -->
                   <v-btn fab text small @click="prev">
                     <v-icon small>
                       mdi-chevron-left
@@ -67,8 +61,13 @@
                       mdi-chevron-right
                     </v-icon>
                   </v-btn>
+
+                  <!-- Month Display -->
                   <v-toolbar-title>{{ title }}</v-toolbar-title>
+
                   <v-spacer />
+
+                  <!-- Change Calendar Type -->
                   <v-menu bottom right>
                     <template v-slot:activator="{ on }">
                       <v-btn
@@ -98,6 +97,7 @@
                   </v-menu>
                 </v-toolbar>
               </v-sheet>
+
               <!-- Calendar Content -->
               <v-sheet class="mx-auto" elevation="5" width="80vw" height="500">
                 <v-calendar
@@ -114,23 +114,24 @@
                   @click:date="viewDay"
                   @change="updateRange"
                 />
+
                 <!-- Selected Event Modal -->
                 <v-menu
                   v-model="selectedOpen"
                   :close-on-content-click="false"
                   :activator="selectedElement"
                   :color="selectedEvent.color"
-                  top
+                  center
                   offset-x
-                  max-height="80vh"
+                  max-height="60vh"
                 >
 
                   <!-- Event/Form Display  -->
-                  <v-card class="d-flex flex-column">
+                  <v-card class="d-flex flex-column" width="35vw">
 
                     <!-- Header -->
                     <v-card-title
-                      class="headline primary white--text"
+                      class="headline primary white--text justify-space-between"
                       primary-title
                     >
                       <h2
@@ -146,7 +147,7 @@
 
                       <v-icon
                         dark
-                        @click="reset"
+                        @click="resetEventForm"
                       >
                         mdi-close
                       </v-icon>
@@ -155,12 +156,12 @@
                     <!-- Body -->
                     <v-card-text
                       v-if="!editMode"
-                      class="mt-10"
+                      class="mt-10 mx-10"
                       v-text="selectedEvent.start"
                     />
                     <v-card-text
                       v-if="!editMode"
-                      class="mb-5"
+                      class="mb-5 mx-10"
                       v-text="selectedEvent.description"
                     />
 
@@ -170,14 +171,14 @@
                       :value="selectedEvent.name"
                       :counter="50"
                       :rules="nameRules"
-                      class="ma-5"
+                      class="ma-5 mx-10"
                       label="Name"
                       required
                       @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
                     />
                     <v-textarea
                       v-if="editMode"
-                      class="ma-5"
+                      class="ma-5 mx-10"
                       :value="selectedEvent.description"
                       :rules="descriptionRules"
                       :counter="1000"
@@ -192,7 +193,7 @@
                       :value="selectedEvent.start"
                       :rules="startRules"
                       color="primary"
-                      class="my-5"
+                      class="my-5 mx-10"
                       required
                       @input="setUpdatedSpaceEventStart({ selectedEvent, start: $event })"
                     />
@@ -218,14 +219,14 @@
                       <v-btn
                         v-if="editMode"
                         color="primary darken-2"
-                        @click="updateSpaceEvent(selectedEvent)"
+                        @click="updateEvent"
                       >
                         Save
                       </v-btn>
                       <v-btn
                         v-if="editMode"
                         color="error"
-                        @click="deleteSpaceEvent(selectedEvent)"
+                        @click="deleteEvent"
                       >
                         Delete
                       </v-btn>
@@ -237,33 +238,7 @@
           </v-row>
         </template>
 
-        <!-- Event Calendar -->
-        <!-- <v-sheet class="my-6 mx-auto" elevation="5" width="80vw" height="500">
-          <v-calendar
-            ref="calendar"
-            v-model="focus"
-            :end="end"
-            :events="spaceEvents"
-            event-color="primary"
-            :focus="focus"
-            :now="today"
-            :start="start"
-            @change="updateRange"
-          />
-        </v-sheet> -->
-
-        <!-- Event Dialogs -->
-        <!-- <template v-for="event in spaceEvents">
-          <SpaceEventDialog
-            :key="event.id"
-            :event="event"
-          />
-        </template> -->
-
       </v-sheet>
-
-      <!-- Add New Event Dialog -->
-      <NewEventDialog />
 
     </v-col>
   </v-layout>
@@ -271,18 +246,15 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-// import SpaceEventMenu from '../components/SpaceEventMenu.vue';
 import NewEventDialog from '../components/NewEventDialog.vue';
 
 export default {
   components: {
-    // SpaceEventMenu,
     NewEventDialog,
   },
   data: () => ({
     editMode: false,
     end: null,
-    dialog: false,
     focus: new Date().toISOString().substr(0, 10),
     start: null,
     selectedElement: null,
@@ -406,7 +378,6 @@ export default {
       nativeEvent.stopPropagation()
     },
     updateRange ({ start, end }) {
-      // You could load events from an outside source (like database) now that we have the start and end dates on the calendar
       this.start = start
       this.end = end
     },
@@ -415,10 +386,18 @@ export default {
         ? 'th'
         : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     },
-    reset () {
-      this.dialog = false;
+    deleteEvent () {
+      this.deleteSpaceEvent(this.selectedEvent);
+      this.resetEventForm();
+    },
+    resetEventForm () {
+      this.selectedOpen = false;
       this.editMode = false;
     },
+    updateEvent () {
+      this.updateSpaceEvent(this.selectedEvent);
+      this.resetEventForm();
+    }
   }
 }
 </script>
