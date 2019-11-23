@@ -147,7 +147,7 @@
 
                       <v-icon
                         dark
-                        @click="resetEventForm"
+                        @click="cancelEventEdit"
                       >
                         mdi-close
                       </v-icon>
@@ -212,7 +212,7 @@
                       <v-btn
                         v-if="editMode && user.id === selectedEvent.user_id"
                         color="info"
-                        @click="editMode = false"
+                        @click="cancelEventEdit"
                       >
                         Cancel
                       </v-btn>
@@ -386,6 +386,10 @@ export default {
         ? 'th'
         : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     },
+    cancelEventEdit () {
+      this.fetchSpaceEvents();
+      this.resetEventForm();
+    },
     deleteEvent () {
       this.deleteSpaceEvent(this.selectedEvent);
       this.resetEventForm();
@@ -452,7 +456,7 @@ export default {
     }
 
     .v-menu__content {
-      width: 65vw;
+      width: 40vw;
     }
 
   }

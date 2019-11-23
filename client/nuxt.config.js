@@ -50,7 +50,7 @@ export default {
     '@nuxtjs/auth',
     '@nuxtjs/proxy',
   ],
-    /*
+  /*
   ** Nuxtjs auth module
   */
  auth: {
