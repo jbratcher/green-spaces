@@ -338,7 +338,7 @@ export default {
       this.resetEventForm();
     },
     deleteEvent () {
-      this.deleteSpaceEvent(this.spaceEvent);
+      this.deleteSpaceEvent(this.selectedEvent);
       this.resetEventForm();
     },
     resetEventForm () {
@@ -346,7 +346,7 @@ export default {
       this.editMode = false;
     },
     updateEvent () {
-      this.updateSpaceEvent(this.spaceEvent);
+      this.updateSpaceEvent(this.selectedEvent);
       this.resetEventForm();
     }
   }
