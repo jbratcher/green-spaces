@@ -125,6 +125,19 @@
               class="mb-5 mx-10"
               v-text="selectedEvent.description"
             />
+            <v-btn
+              color="primary"
+              nuxt
+              :to="'/events/' + selectedEvent.id"
+              width="30%"
+            >
+              <v-icon
+                dark
+              >
+                mdi-close
+              </v-icon>
+              More...
+            </v-btn>
 
             <!-- Edit Mode -->
             <v-text-field
@@ -158,6 +171,7 @@
               required
               @input="setUpdatedSpaceEventStart({ selectedEvent, start: $event })"
             />
+
             <v-divider />
 
             <!-- Actions -->
@@ -290,6 +304,7 @@ export default {
       'setUpdatedSpaceEventName',
       'setUpdatedSpaceEventDescription',
       'setUpdatedSpaceEventStart',
+      'setSpaceEvent',
     ]),
     viewDay ({ date }) {
       this.focus = date
@@ -313,6 +328,7 @@ export default {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
         setTimeout(() => this.selectedOpen = true, 10)
+        this.setSpaceEvent(this.selectedEvent);
       }
 
       if (this.selectedOpen) {
