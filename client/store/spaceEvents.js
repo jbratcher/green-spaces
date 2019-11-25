@@ -1,4 +1,5 @@
 export const state = () => ({
+  spaceEvent: {},
   spaceEvents: [],
   newSpaceEventName: '',
   newSpaceEventDescription: '',
@@ -41,6 +42,15 @@ export const actions = {
         commit('setSpaceEvents', data);
       })
       .catch((error) => {
+        console.log(`Fetch events error: ${error}`);
+      });
+  },
+  fetchSpaceEventById ({ commit, state }) {
+    return this.$axios.$get(`/space-events/${state.spaceEvent.id}`)
+      .then((data) => {
+        commit('setSpaceEvent', data);
+      })
+      .catch((error) => {
         console.log(`Fetch event error: ${error}`);
       });
   },
@@ -67,6 +77,9 @@ export const mutations = {
   },
   setSpaceEvents (state, spaceEvents) {
     state.spaceEvents = spaceEvents;
+  },
+  setSpaceEvent (state, spaceEvent) {
+    state.spaceEvent = spaceEvent;
   },
   appendSpaceEvent (state, spaceEvent) {
     state.spaceEvents.push(spaceEvent);

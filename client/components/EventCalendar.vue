@@ -97,11 +97,13 @@
             >
               <h2
                 v-if="!editMode"
+                class="display-1"
               >
                 {{ selectedEvent.name }}
               </h2>
               <h2
                 v-if="editMode"
+                class="display-1"
               >
                 Edit {{ selectedEvent.name }}
               </h2>
@@ -117,14 +119,24 @@
             <!-- Body -->
             <v-card-text
               v-if="!editMode"
-              class="mt-10 mx-10"
+              class="subtitle-2 mt-10 mx-10"
               v-text="selectedEvent.start"
             />
             <v-card-text
               v-if="!editMode"
-              class="mb-5 mx-10"
+              class="body-1 mb-5 mx-10"
               v-text="selectedEvent.description"
             />
+            <v-btn
+              v-if="!editMode"
+              class="mb-10 ml-12"
+              color="primary"
+              nuxt
+              :to="'/events/' + selectedEvent.id"
+              width="25%"
+            >
+              More...
+            </v-btn>
 
             <!-- Edit Mode -->
             <v-text-field
@@ -158,6 +170,7 @@
               required
               @input="setUpdatedSpaceEventStart({ selectedEvent, start: $event })"
             />
+
             <v-divider />
 
             <!-- Actions -->
@@ -290,6 +303,7 @@ export default {
       'setUpdatedSpaceEventName',
       'setUpdatedSpaceEventDescription',
       'setUpdatedSpaceEventStart',
+      'setSpaceEvent',
     ]),
     viewDay ({ date }) {
       this.focus = date
@@ -313,6 +327,7 @@ export default {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
         setTimeout(() => this.selectedOpen = true, 10)
+        this.setSpaceEvent(this.selectedEvent);
       }
 
       if (this.selectedOpen) {
