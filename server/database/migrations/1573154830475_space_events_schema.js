@@ -11,6 +11,10 @@ class SpaceEventsSchema extends Schema {
       table.string('name').notNullable()
       table.text('description')
       table.string('start').notNullable()
+      table.string('end')
+      table.string('address_name')
+      table.string('full_address')
+      table.string('image_source')
       table.timestamps()
     })
   }

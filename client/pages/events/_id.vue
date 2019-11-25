@@ -2,19 +2,19 @@
   <v-layout>
     <v-col>
 
-      <v-card>
+      <v-card class="d-flex flex-column align-center mx-auto" width="80vw">
 
-        <h1 class="display-1">
+        <v-card-title class="display-1">
           {{ spaceEvent.name }}
-        </h1>
+        </v-card-title>
 
-        <p class="subtitle-1">
-          {{ spaceEvent.description }}
-        </p>
+        <v-card-subtitle class="subtitle-1">
+          {{ spaceEvent.start }}
+        </v-card-subtitle>
 
-        <p class="headline">
+        <v-card-text class="headline">
           {{ spaceEvent.description }}
-        </p>
+        </v-card-text>
 
       </v-card>
 
