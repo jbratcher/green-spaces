@@ -161,22 +161,13 @@
               required
               @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
             />
-            <!-- <v-date-picker
-              v-if="editMode"
-              :value="selectedEvent.start"
-              :rules="startRules"
-              color="primary"
-              class="my-5 mx-10"
-              required
-              @input="setUpdatedSpaceEventStart({ selectedEvent, start: $event })"
-            /> -->
             <datetime
               v-if="editMode"
               v-model="date"
               type="datetime"
               value-zone="local"
               zone="local"
-              use12-time
+              use12-hour
               :minute-step="15"
             />
 
