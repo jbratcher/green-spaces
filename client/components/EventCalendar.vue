@@ -174,6 +174,10 @@
               v-if="editMode"
               v-model="date"
               type="datetime"
+              value-zone="local"
+              zone="local"
+              use12-time
+              :minute-step="15"
             />
 
             <v-divider />
@@ -221,6 +225,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { Datetime } from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css'
 
 export default {
   components: {
@@ -302,6 +307,8 @@ export default {
     date() {
       const formatted = this.date.substr(0, 19).replace('T', ' ');
       console.log(formatted);
+      const final = new Date(formatted);
+      console.log(final);
       this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted })
     }
   },
