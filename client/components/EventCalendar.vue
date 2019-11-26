@@ -161,7 +161,7 @@
               required
               @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
             />
-            <v-date-picker
+            <!-- <v-date-picker
               v-if="editMode"
               :value="selectedEvent.start"
               :rules="startRules"
@@ -169,6 +169,11 @@
               class="my-5 mx-10"
               required
               @input="setUpdatedSpaceEventStart({ selectedEvent, start: $event })"
+            /> -->
+            <datetime
+              v-if="editMode"
+              v-model="date"
+              type="datetime"
             />
 
             <v-divider />
@@ -215,9 +220,14 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
+import { Datetime } from 'vue-datetime';
 
 export default {
+  components: {
+    datetime: Datetime,
+  },
   data: () => ({
+    date: new Date().toJSON(),
     editMode: false,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
@@ -286,6 +296,14 @@ export default {
         timeZone: 'UTC', month: 'long',
       })
     },
+  },
+  watch: {
+    // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
+    date() {
+      const formatted = this.date.substr(0, 19).replace('T', ' ');
+      console.log(formatted);
+      this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted })
+    }
   },
   created () {
     this.fetchSpaceEvents();
