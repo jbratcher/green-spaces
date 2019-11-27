@@ -42,7 +42,7 @@
           @input="setNewSpaceEventDescription"
         />
         <datetime
-          :value="newSpaceEventStart"
+          v-model="startDateTime"
           type="datetime"
           value-zone="local"
           zone="local"
@@ -53,7 +53,7 @@
           required
         />
         <datetime
-          :value="newSpaceEventEnd"
+          v-model="endDateTime"
           type="datetime"
           value-zone="local"
           zone="local"
@@ -128,6 +128,8 @@ export default {
     datetime: Datetime,
   },
   data: () => ({
+    startDateTime: new Date().toJSON(),
+    endDateTime: new Date().toJSON(),
     valid: true,
     nameRules: [
       v => !!v || 'Name is required',
@@ -172,13 +174,17 @@ export default {
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
-    newSpaceEventStart() {
-      console.log(`Start value: ${this.newSpaceEventStart}`);
-      this.setNewSpaceEventStart(this.newSpaceEventStart);
+    startDateTime () {
+      console.log(this.startDateTime);
+      const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
+      console.log(`Start value: ${formatted}`);
+      this.setNewSpaceEventStart(formatted);
     },
-    newSpaceEventEnd() {
-      console.log(`End value: ${this.newSpaceEventEnd}`);
-      this.setNewSpaceEventEnd(this.newSpaceEventEnd);
+    endDateTime () {
+      console.log(this.endDateTime);
+      const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
+      console.log(`End value: ${formatted}`);
+      this.setNewSpaceEventEnd(formatted);
     },
   },
   methods: {
