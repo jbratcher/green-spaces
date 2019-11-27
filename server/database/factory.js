@@ -47,14 +47,14 @@ Factory.blueprint('App/Models/Space', async (faker) => {
 
 // SpaceEvents Factory
 
-Factory.blueprint('App/Models/SpaceEvent', async (faker) => {
-  return {
-    name: faker.name(),
-    description: faker.sentence(3),
-    start: faker.date(),
-    end: faker.date(),
-    address_name: faker.named_location(),
-    full_address: faker.address(),
-    image_source: faker.URL(),
-  }
-})
+// Factory.blueprint('App/Models/SpaceEvent', async (faker) => {
+//   return {
+//     name: faker.name(),
+//     description: faker.sentence(3),
+//     start: faker.date(),
+//     end: faker.date(),
+//     address_name: faker.named_location(),
+//     full_address: faker.address(),
+//     image_source: faker.URL(),
+//   }
+// })

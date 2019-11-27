@@ -19,7 +19,7 @@
       <v-form
         ref="form"
         v-model="valid"
-        class="grid-2-1"
+        class="newEventForm"
         lazy-validation
       >
         <v-text-field
@@ -41,13 +41,56 @@
           required
           @input="setNewSpaceEventDescription"
         />
-        <v-date-picker
+        <datetime
           :value="newSpaceEventStart"
-          :rules="startRules"
+          type="datetime"
+          value-zone="local"
+          zone="local"
+          use12-hour
+          :minute-step="15"
           color="primary"
           class="my-5"
           required
-          @input="setNewSpaceEventStart"
+        />
+        <datetime
+          :value="newSpaceEventEnd"
+          type="datetime"
+          value-zone="local"
+          zone="local"
+          use12-hour
+          :minute-step="15"
+          color="primary"
+          class="my-5"
+        />
+        <v-textarea
+          :value="newSpaceEventAddressName"
+          :rules="addressNameRules"
+          :counter="1000"
+          label="AddressName"
+          name="AddressName"
+          auto-grow
+          required
+          @input="setNewSpaceEventAddressName"
+        />
+        <v-textarea
+          :value="newSpaceEventFullAddress"
+          :rules="fullAddressRules"
+          :counter="1000"
+          label="FullAddress"
+          name="FullAddress"
+          auto-grow
+          required
+          @input="setNewSpaceEventFullAddress"
+        />
+        <v-textarea
+          :value="newSpaceEventImageSource"
+          :rules="imageSourceRules"
+          :counter="1000"
+          label="ImageSource"
+          name="ImageSource"
+          auto-grow
+          required
+          @input="setNewSpaceEventImageSource"
         />
 
         <!-- Form Actions -->
@@ -76,9 +119,14 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
+import { Datetime } from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css'
 
 export default {
   name: 'NewEventDialog',
+  components: {
+    datetime: Datetime,
+  },
   data: () => ({
     valid: true,
     nameRules: [
@@ -92,6 +140,18 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
+    addressNameRules: [
+      v => !!v || 'Address Name is required',
+      v => (v && v.length <= 1000) || 'Address Name must be less than 1000 characters',
+    ],
+    fullAddressRules: [
+      v => !!v || 'Full Address is required',
+      v => (v && v.length <= 1000) || 'Full Address must be less than 1000 characters',
+    ],
+    imageSourceRules: [
+      v => !!v || 'Image Source is required',
+      v => (v && v.length <= 1000) || 'Image Source must be less than 1000 characters',
+    ],
     menuOpen: false,
   }),
   computed: {
@@ -99,17 +159,37 @@ export default {
       'newSpaceEventName',
       'newSpaceEventDescription',
       'newSpaceEventStart',
+      'newSpaceEventEnd',
+      'newSpaceEventAddressName',
+      'newSpaceEventFullAddress',
+      'newSpaceEventImageSource',
       'spaceEvents',
     ]),
     ...mapState('auth', [
       'isLoggedIn',
+      'user',
     ]),
+  },
+  watch: {
+    // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
+    newSpaceEventStart() {
+      console.log(`Start value: ${this.newSpaceEventStart}`);
+      this.setNewSpaceEventStart(this.newSpaceEventStart);
+    },
+    newSpaceEventEnd() {
+      console.log(`End value: ${this.newSpaceEventEnd}`);
+      this.setNewSpaceEventEnd(this.newSpaceEventEnd);
+    },
   },
   methods: {
     ...mapMutations('spaceEvents', [
       'setNewSpaceEventName',
       'setNewSpaceEventDescription',
       'setNewSpaceEventStart',
+      'setNewSpaceEventEnd',
+      'setNewSpaceEventAddressName',
+      'setNewSpaceEventFullAddress',
+      'setNewSpaceEventImageSource',
     ]),
     ...mapActions('spaceEvents', [
       'createSpaceEvent',

@@ -23,7 +23,6 @@ Getting Started
 Future Features:
 * More details for events
     * spaces available
-    * event times
     * Number of RSVPs
     * Volunteer list
 * Volunteer RSVP for events
@@ -34,5 +33,4 @@ Future Features:
     * earmark monetary donations for spaces or tree types
 
 Known bugs:
-* No event emission from newly created events (must refresh page)
 * Page refresh redirects to homepage

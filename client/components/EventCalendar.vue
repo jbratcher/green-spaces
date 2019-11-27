@@ -3,7 +3,7 @@
     <v-col>
 
       <!-- Calendar Header -->
-      <v-sheet class="mx-auto" height="64" width="80vw">
+      <v-sheet class="calendar-header mx-auto" height="64">
         <v-toolbar flat color="white">
 
           <!-- Focus Current Date -->
@@ -12,13 +12,13 @@
           </v-btn>
 
           <!-- Prev/Next Month Buttons -->
-          <v-btn fab text small @click="prev">
-            <v-icon small>
+          <v-btn fab text medium @click="prev">
+            <v-icon large>
               mdi-chevron-left
             </v-icon>
           </v-btn>
-          <v-btn fab text small @click="next">
-            <v-icon small>
+          <v-btn fab text medium @click="next">
+            <v-icon large>
               mdi-chevron-right
             </v-icon>
           </v-btn>
@@ -60,7 +60,7 @@
       </v-sheet>
 
       <!-- Calendar Content -->
-      <v-sheet class="mx-auto" elevation="5" width="75vw" height="500">
+      <v-sheet class="mx-auto calendar-content" elevation="5">
         <v-calendar
           ref="calendar"
           v-model="focus"
@@ -84,7 +84,6 @@
           :color="selectedEvent.color"
           center
           offset-x
-          max-height="60vh"
         >
 
           <!-- Event/Form Display  -->
@@ -298,8 +297,6 @@ export default {
     date() {
       const formatted = this.date.substr(0, 19).replace('T', ' ');
       console.log(formatted);
-      const final = new Date(formatted);
-      console.log(final);
       this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted })
     }
   },
@@ -384,6 +381,14 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+
+  .calendar-header, .calendar-content {
+    width: 80vw;
+  }
+
+  .v-calendar-weekly__week {
+    min-height: 20vh;
+  }
 
 </style>

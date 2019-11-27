@@ -15,7 +15,7 @@
       </v-sheet>
 
       <!-- Main Content -->
-      <v-sheet class="py-10">
+      <v-sheet class="py-10 d-flex flex-column">
 
         <!-- Content Header -->
         <h2 class="display-1 py-5">
@@ -26,11 +26,13 @@
         </p>
 
         <!-- Add Event Button -->
-        <p>
-          <v-icon class="add-new-event">
+        <p class="add-new-event d-flex align-center">
+          <v-icon class="mr-2">
             mdi-calendar-plus
           </v-icon>
-          <span>Add Event</span>
+          <span class="headline">
+            New Event
+          </span>
         </p>
 
         <!-- Add New Event Dialog -->
@@ -59,52 +61,21 @@ export default {
 
 <style lang="scss">
 
-  .grid-2-1 {
-    grid-template-columns: 1fr;
-    grid-template-areas:
-      "nam"
-      "des"
-      "cal"
-      "btns";
-    gap: 2rem 0;
-
-      .v-text-field {
-        grid-area: nam;
-        margin-bottom: 3rem;
-      }
-
-      .v-textarea {
-        grid-area: des;
-      }
-
-      .v-picker {
-        grid-area: cal;
-      }
-
-      .v-sheet {
-        grid-area: btns;
-      }
-  }
-
   .add-new-event {
-    cursor: pointer;
+    width: 75vw;
+    margin: 0 auto;
+
+    v-icon {
+      cursor: pointer;
+    }
+
   }
 
   .v-menu__content {
-    width: 80vw;
+    width: 75vw;
   }
 
   @media screen and (min-width: 768px) {
-
-    .grid-2-1 {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-areas:
-        "nam cal"
-        "des cal"
-        "btns cal";
-      gap: 2rem 4rem;
-    }
 
     .v-menu__content {
       width: 40vw;

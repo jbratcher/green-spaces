@@ -4,7 +4,10 @@ export const state = () => ({
   newSpaceEventName: '',
   newSpaceEventDescription: '',
   newSpaceEventStart: new Date().toISOString().substr(0, 10),
-  newSpaceEventId: null,
+  newSpaceEventEnd: new Date().toISOString().substr(0, 10),
+  newSpaceEventAddressName: '',
+  newSpaceEventFullAddress: '',
+  newSpaceEventImageSource: '',
 });
 
 export const actions = {
@@ -14,6 +17,10 @@ export const actions = {
       name: state.newSpaceEventName,
       description: state.newSpaceEventDescription,
       start: state.newSpaceEventStart,
+      end: state.newSpaceEventEnd ? state.newSpaceEventEnd : state.newSpaceEventStart,
+      address_name: state.newSpaceEventAddressName,
+      full_address: state.newSpaceEventFullAddress,
+      image_source: state.newSpaceEventImageSource ? state.newSpaceEventImageSource : 'https://picsum.photos/id/977/1280/920',
     })
       .then((data) => {
         commit('appendSpaceEvent', data);
@@ -36,15 +43,6 @@ export const actions = {
         console.log(`Remove event error: ${error}`);
       })
   },
-  fetchSpaceEvents ({ commit }) {
-    return this.$axios.$get('/space-events')
-      .then((data) => {
-        commit('setSpaceEvents', data);
-      })
-      .catch((error) => {
-        console.log(`Fetch events error: ${error}`);
-      });
-  },
   fetchSpaceEventById ({ commit, state }) {
     return this.$axios.$get(`/space-events/${state.spaceEvent.id}`)
       .then((data) => {
@@ -52,6 +50,15 @@ export const actions = {
       })
       .catch((error) => {
         console.log(`Fetch event error: ${error}`);
+      });
+  },
+  fetchSpaceEvents ({ commit }) {
+    return this.$axios.$get('/space-events')
+      .then((data) => {
+        commit('setSpaceEvents', data);
+      })
+      .catch((error) => {
+        console.log(`Fetch events error: ${error}`);
       });
   },
 };
@@ -66,6 +73,18 @@ export const mutations = {
   setNewSpaceEventStart (state, start) {
     state.newSpaceEventStart = start;
   },
+  setNewSpaceEventEnd (state, end) {
+    state.newSpaceEventEnd = end;
+  },
+  setNewSpaceEventAddressName (state, addressName) {
+    state.newSpaceEventAddressName = addressName;
+  },
+  setNewSpaceEventFullAddress (state, fullAddress) {
+    state.newSpaceEventFullAddress = fullAddress;
+  },
+  setNewSpaceEventImageSource (state, imageSource) {
+    state.newSpaceEventImageSource = imageSource;
+  },
   setUpdatedSpaceEventName (state, { selectedEvent, name }) {
     selectedEvent.name = name;
   },
@@ -75,8 +94,17 @@ export const mutations = {
   setUpdatedSpaceEventStart (state, { selectedEvent, start }) {
     selectedEvent.start = start;
   },
-  setSpaceEvents (state, spaceEvents) {
-    state.spaceEvents = spaceEvents;
+  setUpdatedSpaceEventEnd (state, { selectedEvent, end }) {
+    selectedEvent.end = end;
+  },
+  setUpdatedSpaceEventAddressName (state, { selectedEvent, addressName }) {
+    selectedEvent.addressName = addressName;
+  },
+  setUpdatedSpaceEventFullAddress (state, { selectedEvent, fullAddress }) {
+    selectedEvent.fullAddress = fullAddress;
+  },
+  setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
+    selectedEvent.imageSource = imageSource;
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;
@@ -86,5 +114,8 @@ export const mutations = {
   },
   removeSpaceEvent(state, spaceEvent) {
     state.spaceEvents.splice(state.spaceEvents.indexOf(spaceEvent), 1);
+  },
+  setSpaceEvents (state, spaceEvents) {
+    state.spaceEvents = spaceEvents;
   },
 };

@@ -10,12 +10,16 @@ class SpaceEventController {
 
   async create({ auth, request }) {
     const user = await auth.getUser();
-    const { name, description, start } = request.all();
+    const { name, description, start, end, address_name, full_address, image_source } = request.all();
     const spaceEvent = new SpaceEvent();
     spaceEvent.fill({
       name,
       description,
       start,
+      end,
+      address_name,
+      full_address,
+      image_source,
     });
     await user.spaceEvents().save(spaceEvent);
     return spaceEvent;
@@ -25,7 +29,7 @@ class SpaceEventController {
     const user = await auth.getUser();
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    spaceEvent.merge(request.all('name', 'description', 'start'));
+    spaceEvent.merge(request.all('name', 'description', 'start', 'end', 'address_name', 'full_address', 'image_source'));
     await spaceEvent.save();
     return spaceEvent;
   }

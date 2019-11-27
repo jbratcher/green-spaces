@@ -4,6 +4,15 @@
 
       <v-card class="d-flex flex-column align-center mx-auto" width="80vw">
 
+        <!-- <img src="https://picsum.photos/id/977/500/300" alt="an image" /> -->
+
+        <v-img
+          :src="'../' + spaceEvent.image_source"
+          lazy-src="https://picsum.photos/id/977/1280/920"
+          width="1280"
+          max-height="300"
+        />
+
         <v-card-title class="display-1">
           {{ spaceEvent.name }}
         </v-card-title>
@@ -11,6 +20,14 @@
         <v-card-subtitle class="subtitle-1">
           {{ spaceEvent.start }}
         </v-card-subtitle>
+
+        <v-card-title class="display-1">
+          {{ spaceEvent.address_name }}
+        </v-card-title>
+
+        <v-card-title class="display-1">
+          {{ spaceEvent.full_address }}
+        </v-card-title>
 
         <v-card-text class="headline">
           {{ spaceEvent.description }}
