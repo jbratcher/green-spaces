@@ -162,12 +162,59 @@
             />
             <datetime
               v-if="editMode"
-              v-model="date"
+              v-model="startDateTime"
               type="datetime"
               value-zone="local"
               zone="local"
               use12-hour
               :minute-step="15"
+              color="primary"
+              class="my-5"
+              required
+            />
+            <datetime
+              v-if="editMode"
+              v-model="endDateTime"
+              type="datetime"
+              value-zone="local"
+              zone="local"
+              use12-hour
+              :minute-step="15"
+              color="primary"
+              class="my-5"
+            />
+            <v-textarea
+              v-if="editMode"
+              :value="selectedEvent.address_name"
+              :rules="addressNameRules"
+              :counter="1000"
+              label="Address Name"
+              name="AddressName"
+              auto-grow
+              required
+              @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
+            />
+            <v-textarea
+              v-if="editMode"
+              :value="selectedEvent.full_address"
+              :rules="fullAddressRules"
+              :counter="1000"
+              label="Full Address"
+              name="FullAddress"
+              auto-grow
+              required
+              @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
+            />
+            <v-textarea
+              v-if="editMode"
+              :value="selectedEvent.image_source"
+              :rules="imageSourceRules"
+              :counter="1000"
+              label="Image Source"
+              name="ImageSource"
+              auto-grow
+              required
+              @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
             />
 
             <v-divider />
@@ -223,6 +270,8 @@ export default {
   },
   data: () => ({
     date: new Date().toJSON(),
+    startDateTime: new Date().toJSON(),
+    endDateTime: new Date().toJSON(),
     editMode: false,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
@@ -247,8 +296,17 @@ export default {
       v => !!v || 'Description is required',
       v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
     ],
-    startRules: [
-      v => !!v || 'Start Date is required'
+    addressNameRules: [
+      v => !!v || 'Address Name is required',
+      v => (v && v.length <= 1000) || 'Address Name must be less than 1000 characters',
+    ],
+    fullAddressRules: [
+      v => !!v || 'Full Address is required',
+      v => (v && v.length <= 1000) || 'Full Address must be less than 1000 characters',
+    ],
+    imageSourceRules: [
+      v => !!v || 'Image Source is required',
+      v => (v && v.length <= 1000) || 'Image Source must be less than 1000 characters',
     ],
   }),
   computed: {
@@ -256,6 +314,10 @@ export default {
       'newSpaceEventName',
       'newSpaceEventDescription',
       'newSpaceEventStart',
+      'newSpaceEventEnd',
+      'newSpaceEventAddressName',
+      'newSpaceEventFullAddress',
+      'newSpaceEventImageSource',
       'spaceEvents',
     ]),
     ...mapState('auth', [
@@ -294,11 +356,18 @@ export default {
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
-    date() {
-      const formatted = this.date.substr(0, 19).replace('T', ' ');
-      console.log(formatted);
-      this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted })
-    }
+    startDateTime () {
+      console.log(this.startDateTime);
+      const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
+      console.log(`Start value: ${formatted}`);
+      this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted });
+    },
+    endDateTime () {
+      console.log(this.endDateTime);
+      const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
+      console.log(`End value: ${formatted}`);
+      this.setUpdatedSpaceEventEnd({ selectedEvent: this.selectedEvent, end: formatted });
+    },
   },
   created () {
     this.fetchSpaceEvents();
@@ -316,6 +385,10 @@ export default {
       'setUpdatedSpaceEventName',
       'setUpdatedSpaceEventDescription',
       'setUpdatedSpaceEventStart',
+      'setUpdatedSpaceEventEnd',
+      'setUpdatedSpaceEventAddressName',
+      'setUpdatedSpaceEventFullAddress',
+      'setUpdatedSpaceEventImageSource',
       'setSpaceEvent',
     ]),
     viewDay ({ date }) {

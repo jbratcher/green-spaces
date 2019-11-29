@@ -66,7 +66,7 @@
           :value="newSpaceEventAddressName"
           :rules="addressNameRules"
           :counter="1000"
-          label="AddressName"
+          label="Address Name"
           name="AddressName"
           auto-grow
           required
@@ -76,7 +76,7 @@
           :value="newSpaceEventFullAddress"
           :rules="fullAddressRules"
           :counter="1000"
-          label="FullAddress"
+          label="Full Address"
           name="FullAddress"
           auto-grow
           required
@@ -86,7 +86,7 @@
           :value="newSpaceEventImageSource"
           :rules="imageSourceRules"
           :counter="1000"
-          label="ImageSource"
+          label="Image Source"
           name="ImageSource"
           auto-grow
           required
@@ -188,6 +188,9 @@ export default {
     },
   },
   methods: {
+    ...mapActions('spaceEvents', [
+      'createSpaceEvent',
+    ]),
     ...mapMutations('spaceEvents', [
       'setNewSpaceEventName',
       'setNewSpaceEventDescription',
@@ -196,9 +199,6 @@ export default {
       'setNewSpaceEventAddressName',
       'setNewSpaceEventFullAddress',
       'setNewSpaceEventImageSource',
-    ]),
-    ...mapActions('spaceEvents', [
-      'createSpaceEvent',
     ]),
     createEvent () {
       this.createSpaceEvent();

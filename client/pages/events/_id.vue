@@ -4,10 +4,8 @@
 
       <v-card class="d-flex flex-column align-center mx-auto" width="80vw">
 
-        <!-- <img src="https://picsum.photos/id/977/500/300" alt="an image" /> -->
-
         <v-img
-          :src="'../' + spaceEvent.image_source"
+          :src="spaceEvent.image_source"
           lazy-src="https://picsum.photos/id/977/1280/920"
           width="1280"
           max-height="300"

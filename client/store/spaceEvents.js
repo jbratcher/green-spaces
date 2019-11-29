@@ -98,13 +98,13 @@ export const mutations = {
     selectedEvent.end = end;
   },
   setUpdatedSpaceEventAddressName (state, { selectedEvent, addressName }) {
-    selectedEvent.addressName = addressName;
+    selectedEvent.address_name = addressName;
   },
   setUpdatedSpaceEventFullAddress (state, { selectedEvent, fullAddress }) {
-    selectedEvent.fullAddress = fullAddress;
+    selectedEvent.full_address = fullAddress;
   },
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
-    selectedEvent.imageSource = imageSource;
+    selectedEvent.image_source = imageSource;
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;
