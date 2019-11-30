@@ -118,12 +118,12 @@
             <!-- Body -->
             <v-card-text
               v-if="!editMode"
-              class="subtitle-2 mt-10 mx-10"
+              class="subtitle-2"
               v-text="selectedEvent.start"
             />
             <v-card-text
               v-if="!editMode"
-              class="body-1 mb-5 mx-10"
+              class="body-1"
               v-text="selectedEvent.description"
             />
             <v-btn
@@ -143,14 +143,12 @@
               :value="selectedEvent.name"
               :counter="50"
               :rules="nameRules"
-              class="ma-5 mx-10"
               label="Name"
               required
               @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
             />
             <v-textarea
               v-if="editMode"
-              class="ma-5 mx-10"
               :value="selectedEvent.description"
               :rules="descriptionRules"
               :counter="1000"
@@ -169,7 +167,6 @@
               use12-hour
               :minute-step="15"
               color="primary"
-              class="my-5"
               required
             />
             <datetime
@@ -181,7 +178,6 @@
               use12-hour
               :minute-step="15"
               color="primary"
-              class="my-5"
             />
             <v-textarea
               v-if="editMode"
@@ -225,7 +221,7 @@
               <v-btn
                 v-if="!editMode && user.id === selectedEvent.user_id"
                 color="primary"
-                @click="editMode = true"
+                @click="enterEditMode"
               >
                 Edit
               </v-btn>
@@ -357,17 +353,18 @@ export default {
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
     startDateTime () {
-      console.log(this.startDateTime);
       const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
-      console.log(`Start value: ${formatted}`);
       this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted });
     },
     endDateTime () {
-      console.log(this.endDateTime);
       const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
-      console.log(`End value: ${formatted}`);
       this.setUpdatedSpaceEventEnd({ selectedEvent: this.selectedEvent, end: formatted });
     },
+    // convert stored datetime format to tz datetime to match picker format
+    selectedEvent () {
+      this.startDateTime = new Date(this.selectedEvent.start).toISOString();
+      this.endDateTime = new Date(this.selectedEvent.end).toISOString();
+    }
   },
   created () {
     this.fetchSpaceEvents();
@@ -408,7 +405,6 @@ export default {
       this.$refs.calendar.next()
     },
     showEvent ({ nativeEvent, event }) {
-      console.log(`Selected event: ${JSON.stringify(event)}`);
       const open = () => {
         this.selectedEvent = event
         this.selectedElement = nativeEvent.target
@@ -442,6 +438,11 @@ export default {
       this.deleteSpaceEvent(this.selectedEvent);
       this.resetEventForm();
     },
+    enterEditMode () {
+      this.editMode = true;
+      // this.startDateTime = this.selectedEvent.start;
+      // this.endDateTime = this.selectedEvent.end;
+    },
     resetEventForm () {
       this.selectedOpen = false;
       this.editMode = false;
@@ -457,11 +458,23 @@ export default {
 <style lang="scss">
 
   .calendar-header, .calendar-content {
-    width: 80vw;
+    width: 90vw;
   }
 
   .v-calendar-weekly__week {
-    min-height: 20vh;
+    min-height: 100px;
+  }
+
+  .v-card {
+
+    &>.v-input {
+      margin: 0.5rem 1rem;
+    }
+
+    &>.vdatetime {
+      margin: 1.5rem 1rem;
+    }
+
   }
 
 </style>

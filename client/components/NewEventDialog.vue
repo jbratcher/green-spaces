@@ -48,7 +48,7 @@
           zone="local"
           use12-hour
           :minute-step="15"
-          color="primary"
+          color="teal"
           class="my-5"
           required
         />
@@ -59,7 +59,7 @@
           zone="local"
           use12-hour
           :minute-step="15"
-          color="primary"
+          color="teal"
           class="my-5"
         />
         <v-textarea
@@ -218,10 +218,16 @@ export default {
   width: 80vw;
 }
 
+.v-text-field__slot {
+  height: 60px;
+}
+
 @media screen and (min-width: 768px) {
+
   .v-dialog {
-    width: 65vw;
+    width: 50vw;
   }
+
 }
 
 </style>

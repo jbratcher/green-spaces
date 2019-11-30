@@ -33,4 +33,4 @@ Future Features:
     * earmark monetary donations for spaces or tree types
 
 Known bugs:
-* Page refresh redirects to homepage
+* Page refresh redirects to homepage (vuex router)

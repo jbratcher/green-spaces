@@ -62,17 +62,13 @@ export default {
 <style lang="scss">
 
   .add-new-event {
-    width: 75vw;
+    width: 85vw;
     margin: 0 auto;
 
     v-icon {
       cursor: pointer;
     }
 
-  }
-
-  .v-menu__content {
-    width: 75vw;
   }
 
   @media screen and (min-width: 768px) {
