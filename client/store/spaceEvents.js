@@ -92,6 +92,7 @@ export const mutations = {
     selectedEvent.description = description;
   },
   setUpdatedSpaceEventStart (state, { selectedEvent, start }) {
+    console.log(`Start time set: ${start}`)
     selectedEvent.start = start;
   },
   setUpdatedSpaceEventEnd (state, { selectedEvent, end }) {

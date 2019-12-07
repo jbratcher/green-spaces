@@ -22,8 +22,8 @@ class SpaceEventSeeder {
     model1 = {
       name: "First Friday",
       description: "A first Friday planting event for everyone",
-      start: "2019-11-01 13:00",
-      end: "2019-11-01 15:00",
+      start: "2019-12-01 13:00",
+      end: "2019-12-01 15:00",
       address_name: "Clifton Park",
       full_address: "100 Arlington Avenue, Louisville, KY 40206",
       image_source: "https://picsum.photos/1280/960",
@@ -40,8 +40,8 @@ class SpaceEventSeeder {
     model2 = {
       name: "Last Friday",
       description: "A last Friday planting event for everyone",
-      start: "2019-11-29 13:00",
-      end: "2019-11-29 15:00",
+      start: "2019-12-29 13:00",
+      end: "2019-12-29 15:00",
       address_name: "Shelby Park",
       full_address: "600 East Oak Street, Louisville, KY 40203",
       image_source: "https://picsum.photos/1280/960",
@@ -56,8 +56,8 @@ class SpaceEventSeeder {
     model3 = {
       name: "MIddle Monday",
       description: "Middle of the month planting event for everyone",
-      start: "2019-11-15 13:00",
-      end: "2019-11-15 15:00",
+      start: "2019-12-15 13:00",
+      end: "2019-12-15 15:00",
       address_name: "Dirt Park",
       full_address: "1 Dirt Alley, Louisville, KY 40203",
       image_source: "https://picsum.photos/1280/960",

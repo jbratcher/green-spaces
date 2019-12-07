@@ -362,8 +362,8 @@ export default {
     },
     // convert stored datetime format to tz datetime to match picker format
     selectedEvent () {
-      this.startDateTime = new Date(this.selectedEvent.start).toISOString();
-      this.endDateTime = new Date(this.selectedEvent.end).toISOString();
+      this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
+      this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
     }
   },
   created () {
@@ -388,6 +388,11 @@ export default {
       'setUpdatedSpaceEventImageSource',
       'setSpaceEvent',
     ]),
+    toISOLocal (d) {
+      const z = n => ('0' + n).slice(-2);
+      const zz = n => ('00' + n).slice(-3);
+      return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()) + ':' + z(d.getSeconds()) + '.' + zz(d.getMilliseconds()) + 'Z';
+    },
     viewDay ({ date }) {
       this.focus = date
       this.type = 'day'

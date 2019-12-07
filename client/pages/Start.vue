@@ -75,7 +75,6 @@ export default {
   .start-options {
     display: flex;
     flex-direction: column;
-    align-items: center;
 
     &>.v-sheet {
       min-width: 80vw;
