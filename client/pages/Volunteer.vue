@@ -71,12 +71,4 @@ export default {
 
   }
 
-  @media screen and (min-width: 768px) {
-
-    .v-menu__content {
-      width: 40vw;
-    }
-
-  }
-
 </style>

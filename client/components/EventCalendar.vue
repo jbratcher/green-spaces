@@ -82,8 +82,6 @@
           :close-on-content-click="false"
           :activator="selectedElement"
           :color="selectedEvent.color"
-          center
-          offset-x
         >
 
           <!-- Event/Form Display  -->
@@ -96,124 +94,116 @@
             >
               <h2
                 v-if="!editMode"
-                class="display-1"
               >
                 {{ selectedEvent.name }}
               </h2>
               <h2
                 v-if="editMode"
-                class="display-1"
               >
                 Edit {{ selectedEvent.name }}
               </h2>
 
               <v-icon
+                class="close-icon"
                 dark
                 @click="cancelEventEdit"
               >
-                mdi-close
+                mdi-close-circle-outline
               </v-icon>
             </v-card-title>
 
             <!-- Body -->
-            <v-card-text
-              v-if="!editMode"
-              class="subtitle-2"
-              v-text="selectedEvent.start"
-            />
-            <v-card-text
-              v-if="!editMode"
-              class="body-1"
-              v-text="selectedEvent.description"
-            />
-            <v-btn
-              v-if="!editMode"
-              class="mb-10 ml-12"
-              color="primary"
-              nuxt
-              :to="'/events/' + selectedEvent.id"
-              width="25%"
-            >
-              More...
-            </v-btn>
+            <v-container v-if="!editMode">
+              <v-card-text
+                class="py-0"
+                v-text="eventDate"
+              />
+              <v-card-text
+                class="py-5"
+                v-text="selectedEvent.description"
+              />
+              <v-btn
+                class="more-button ml-4"
+                color="primary"
+                nuxt
+                :to="'/events/' + selectedEvent.id"
+              >
+                More...
+              </v-btn>
+            </v-container>
 
             <!-- Edit Mode -->
-            <v-text-field
-              v-if="editMode"
-              :value="selectedEvent.name"
-              :counter="50"
-              :rules="nameRules"
-              label="Name"
-              required
-              @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
-            />
-            <v-textarea
-              v-if="editMode"
-              :value="selectedEvent.description"
-              :rules="descriptionRules"
-              :counter="1000"
-              label="Description"
-              name="Description"
-              auto-grow
-              required
-              @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
-            />
-            <datetime
-              v-if="editMode"
-              v-model="startDateTime"
-              type="datetime"
-              value-zone="local"
-              zone="local"
-              use12-hour
-              :minute-step="15"
-              color="primary"
-              required
-            />
-            <datetime
-              v-if="editMode"
-              v-model="endDateTime"
-              type="datetime"
-              value-zone="local"
-              zone="local"
-              use12-hour
-              :minute-step="15"
-              color="primary"
-            />
-            <v-textarea
-              v-if="editMode"
-              :value="selectedEvent.address_name"
-              :rules="addressNameRules"
-              :counter="1000"
-              label="Address Name"
-              name="AddressName"
-              auto-grow
-              required
-              @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
-            />
-            <v-textarea
-              v-if="editMode"
-              :value="selectedEvent.full_address"
-              :rules="fullAddressRules"
-              :counter="1000"
-              label="Full Address"
-              name="FullAddress"
-              auto-grow
-              required
-              @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
-            />
-            <v-textarea
-              v-if="editMode"
-              :value="selectedEvent.image_source"
-              :rules="imageSourceRules"
-              :counter="1000"
-              label="Image Source"
-              name="ImageSource"
-              auto-grow
-              required
-              @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
-            />
+            <v-container v-if="editMode">
+              <v-text-field
+                :value="selectedEvent.name"
+                :counter="50"
+                :rules="nameRules"
+                label="Name"
+                required
+                @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
+              />
+              <v-textarea
+                :value="selectedEvent.description"
+                :rules="descriptionRules"
+                :counter="1000"
+                label="Description"
+                name="Description"
+                auto-grow
+                required
+                @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
+              />
+              <datetime
+                v-model="startDateTime"
+                type="datetime"
+                value-zone="local"
+                zone="local"
+                use12-hour
+                :minute-step="15"
+                color="primary"
+                required
+              />
+              <datetime
+                v-model="endDateTime"
+                type="datetime"
+                value-zone="local"
+                zone="local"
+                use12-hour
+                :minute-step="15"
+                color="primary"
+              />
+              <v-textarea
+                :value="selectedEvent.address_name"
+                :rules="addressNameRules"
+                :counter="1000"
+                label="Address Name"
+                name="AddressName"
+                auto-grow
+                required
+                @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
+              />
+              <v-textarea
+                :value="selectedEvent.full_address"
+                :rules="fullAddressRules"
+                :counter="1000"
+                label="Full Address"
+                name="FullAddress"
+                auto-grow
+                required
+                @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
+              />
+              <v-textarea
+                :value="selectedEvent.image_source"
+                :rules="imageSourceRules"
+                :counter="1000"
+                label="Image Source"
+                name="ImageSource"
+                auto-grow
+                required
+                @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
+              />
+            </v-container>
 
-            <v-divider />
+            <v-divider v-if="user.id === selectedEvent.user_id" />
 
             <!-- Actions -->
             <v-card-actions>
@@ -349,6 +339,9 @@ export default {
         timeZone: 'UTC', month: 'long',
       })
     },
+    eventDate () {
+      return new Date(this.selectedEvent.start).toLocaleString();
+    }
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
@@ -388,10 +381,11 @@ export default {
       'setUpdatedSpaceEventImageSource',
       'setSpaceEvent',
     ]),
-    toISOLocal (d) {
+    // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
+    toISOLocal (date) {
       const z = n => ('0' + n).slice(-2);
       const zz = n => ('00' + n).slice(-3);
-      return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()) + 'T' + z(d.getHours()) + ':' + z(d.getMinutes()) + ':' + z(d.getSeconds()) + '.' + zz(d.getMilliseconds()) + 'Z';
+      return date.getFullYear() + '-' + z(date.getMonth() + 1) + '-' + z(date.getDate()) + 'T' + z(date.getHours()) + ':' + z(date.getMinutes()) + ':' + z(date.getSeconds()) + '.' + zz(date.getMilliseconds()) + 'Z';
     },
     viewDay ({ date }) {
       this.focus = date
@@ -478,6 +472,44 @@ export default {
 
     &>.vdatetime {
       margin: 1.5rem 1rem;
+    }
+
+  }
+
+  .v-menu__content {
+    width: 80vw;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .close-icon {
+      font-size: 2rem;
+    }
+
+    .more-button {
+      width: 30%;
+    }
+
+  }
+
+  @media screen and (min-width: 768px) {
+
+    .v-menu__content {
+      width: 30vw;
+
+      h2 {
+        font-size: 2.25rem;
+      }
+
+      .close-icon {
+        font-size: 2.5rem;
+      }
+
+      .more-button {
+        width: 25%;
+      }
+
     }
 
   }
