@@ -26,11 +26,10 @@
         </p>
 
         <!-- Event List -->
-
-        <v-container class="events">
+        <v-container class="events mx-12 px-12">
           <v-container class="events-list">
             <ul>
-              <li v-for="event in spaceEvents" :key="event.id">
+              <li v-for="event in eventsByDateOld" :key="event.id">
                 <h3 class="mb-3">
                   {{ listDate(event.start) }}
                 </h3>
@@ -54,13 +53,41 @@
             </ul>
           </v-container>
           <v-sheet class="mini-calendar-container" elevation="5">
+            <!-- Calendar Header -->
+            <v-sheet class="calendar-header mx-auto" height="64">
+              <v-toolbar flat color="white">
+
+                <!-- Focus Current Date -->
+                <v-btn outlined class="mr-4" @click="setToday">
+                  Today
+                </v-btn>
+
+                <!-- Prev/Next Month Buttons -->
+                <v-btn fab text small @click="prev">
+                  <v-icon small>
+                    mdi-chevron-left
+                  </v-icon>
+                </v-btn>
+                <v-btn fab text small @click="next">
+                  <v-icon small>
+                    mdi-chevron-right
+                  </v-icon>
+                </v-btn>
+
+                <!-- Month Display -->
+                <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+              </v-toolbar>
+            </v-sheet>
             <v-calendar
-              ref="mini-calendar"
+              ref="miniCal"
               v-model="focus"
               class="mini-calendar"
               color="primary"
               event-color="primary"
               :now="today"
+              type="month"
+              @change="updateRange"
             />
           </v-sheet>
         </v-container>
@@ -98,8 +125,10 @@ export default {
     NewEventDialog,
   },
   data: () => ({
+    end: null,
     focus: new Date().toISOString().substr(0, 10),
     today: new Date().toISOString().substr(0, 10),
+    start: null,
   }),
   computed: {
     ...mapState('spaceEvents', [
@@ -107,6 +136,32 @@ export default {
       'days',
       'months',
     ]),
+    // return temporary array of events from newest to oldest
+    eventsByDateNew () {
+      return this.spaceEvents.slice().sort((a, b) => new Date(b.start) - new Date(a.start))
+    },
+    // return temporary array of events from oldest to newest
+    eventsByDateOld () {
+      return this.spaceEvents.slice().sort((a, b) => new Date(a.start) - new Date(b.start))
+    },
+    monthFormatter () {
+      return this.$refs.miniCal.getFormatter({
+        timeZone: 'UTC', month: 'long',
+      })
+    },
+    // get current month long name
+    title () {
+      const { start, end } = this;
+      if (!start || !end) {
+        return ''
+      }
+      const startMonth = this.monthFormatter(start);
+      const startYear = start.year;
+      return `${startMonth} ${startYear}`;
+    },
+  },
+  mounted () {
+    this.$refs.miniCal.checkChange();
   },
   methods: {
     getDayName (date) {
@@ -117,13 +172,16 @@ export default {
       const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
       return months[date.getMonth()];
     },
+    // format event date to dayName, Month yy
     listDate (start) {
       return this.getDayName(new Date(start)) + ', ' + this.getMonthName(new Date(start)) + ' ' + new Date(start).getDate();
     },
+    // format event time to hh:mm AM/PM
     listTime (start) {
       const hours = new Date(start).getHours() % 12 || 12;
       const minutes = new Date(start).getMinutes();
       const suffix = new Date(start).getHours() > 11 ? 'PM' : 'AM';
+      // format minutes to mm
       if (minutes === 0) {
         return hours + ':' + minutes + '0' + ' ' + suffix;
       } else if (minutes < 10) {
@@ -131,7 +189,26 @@ export default {
       } else {
         return hours + ':' + minutes + ' ' + suffix;
       }
-    }
+    },
+    next () {
+      this.$refs.miniCal.next()
+    },
+    // get suffix value for each numbered date
+    nth (d) {
+      return d > 3 && d < 21
+        ? 'th'
+        : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
+    },
+    prev () {
+      this.$refs.miniCal.prev()
+    },
+    setToday () {
+      this.focus = this.today
+    },
+    updateRange ({ start, end }) {
+      this.start = start
+      this.end = end
+    },
   },
 }
 </script>
@@ -152,9 +229,10 @@ export default {
     .events {
       display: grid;
       grid-template-areas:
+        "eList eList eList eList . miniCal"
         "eList eList eList eList . ."
-        "eList eList eList eList . ."
-        "eList eList eList eList . miniCal";
+        "eList eList eList eList . .";
+      grid-template-columns: repeat(5, 1fr) 30vw;
     }
 
     .events-list {
@@ -196,6 +274,10 @@ export default {
 
     .mini-calendar-container {
       grid-area: miniCal;
+
+      .calendar-header {
+        width: auto;
+      }
 
       .v-calendar-weekly__week, .v-calendar-weekly__day {
         min-height: 50px;

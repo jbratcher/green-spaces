@@ -249,7 +249,7 @@
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
 import { Datetime } from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css'
+import 'vue-datetime/dist/vue-datetime.css';
 
 export default {
   components: {
