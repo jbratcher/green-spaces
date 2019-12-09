@@ -147,6 +147,10 @@ export default {
     overflow-x: hidden;
   }
 
+  ul {
+    list-style-type: none;
+  }
+
   .v-application a {
     color: #fff !important;
   }
