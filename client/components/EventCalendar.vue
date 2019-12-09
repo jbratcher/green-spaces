@@ -82,6 +82,7 @@
           :close-on-content-click="false"
           :activator="selectedElement"
           :color="selectedEvent.color"
+          center
         >
 
           <!-- Event/Form Display  -->
@@ -113,9 +114,9 @@
             </v-card-title>
 
             <!-- Body -->
-            <v-container v-if="!editMode">
+            <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
               <v-card-text
-                class="py-0"
+                class="py-0 event-date"
                 v-text="eventDate"
               />
               <v-card-text
@@ -477,7 +478,20 @@ export default {
   }
 
   .v-menu__content {
-    width: 80vw;
+
+    .v-card {
+      width: 80vw;
+
+      .container {
+        min-height: 250px;
+      }
+
+    }
+
+    .v-card__text:first-of-type {
+      font-size: 1.25rem;
+      font-weight: 900;
+    }
 
     h2 {
       font-size: 1.5rem;
@@ -496,7 +510,14 @@ export default {
   @media screen and (min-width: 768px) {
 
     .v-menu__content {
-      width: 30vw;
+
+      .v-card {
+        width: 35vw;
+      }
+
+      .v-card__text:first-of-type {
+        font-weight: 900;
+      }
 
       h2 {
         font-size: 2.25rem;
