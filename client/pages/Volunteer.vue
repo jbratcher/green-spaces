@@ -26,7 +26,7 @@
         </p>
 
         <!-- Event List -->
-        <v-container class="events mx-12 px-12">
+        <v-container class="events ma-12 pa-12">
           <v-container class="events-list">
             <ul>
               <li v-for="event in eventsByDateOld" :key="event.id">
@@ -216,7 +216,7 @@ export default {
 <style lang="scss">
 
   .add-new-event {
-    width: 85vw;
+    width: 80vw;
     margin: 0 auto;
 
     v-icon {

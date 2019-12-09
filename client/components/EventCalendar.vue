@@ -458,7 +458,7 @@ export default {
 <style lang="scss">
 
   .calendar-header, .calendar-content {
-    width: 90vw;
+    width: 80vw;
   }
 
   .v-calendar-weekly__week {

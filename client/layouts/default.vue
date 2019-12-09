@@ -12,7 +12,10 @@
       prominent
       height="70px"
     >
-      <v-toolbar-title class="headline align-self-center" v-text="title" />
+      <v-toolbar-title class="headline align-self-center d-flex align-center">
+        <v-img class="invertColor" height="50px" width="50px" src="logo.svg" />
+        <p class="toolbar-title-text mx-6 my-0">GreenSpaces</p>
+      </v-toolbar-title>
       <v-spacer />
       <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
       <MenuLinks
@@ -167,10 +170,6 @@ export default {
     text-shadow: 2px 2px 4px #000;
   }
 
-  .box-shadow-1 {
-    box-shadow: 0 4px 8px rgba(0,0,0,0.7);
-  }
-
   .theme--dark.v-sheet {
     background-color: transparent;
   }
@@ -196,6 +195,10 @@ export default {
 
   }
 
+  .toolbar-title-text {
+    font-size: 2rem;
+  }
+
   .justify-space-evenly {
     justify-content: space-around;
     justify-content: space-evenly;
@@ -207,6 +210,10 @@ export default {
       linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
       url("../static/how-it-works.jpg");
       background-position: center center;
+  }
+
+  .invertColor {
+    filter: invert(1);
   }
 
 </style>
