@@ -5,12 +5,16 @@ const Model = use('Model')
 
 class SpaceEvent extends Model {
 
-  users () {
-    return this.hasMany('App/Models/User')
-  }
-
   space () {
     return this.hasOne('App/Models/Space')
+  }
+
+  creator() {
+    return this.belongsTo('App/Models/User');
+  }
+
+  attendees() {
+    return this.belongsToMany('App/Models/User');
   }
 
 }
