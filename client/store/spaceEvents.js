@@ -21,6 +21,7 @@ export const actions = {
       address_name: state.newSpaceEventAddressName,
       full_address: state.newSpaceEventFullAddress,
       image_source: state.newSpaceEventImageSource ? state.newSpaceEventImageSource : 'https://picsum.photos/id/977/1280/920',
+      attendess: [],
     })
       .then((data) => {
         commit('appendSpaceEvent', data);
@@ -92,7 +93,6 @@ export const mutations = {
     selectedEvent.description = description;
   },
   setUpdatedSpaceEventStart (state, { selectedEvent, start }) {
-    console.log(`Start time set: ${start}`)
     selectedEvent.start = start;
   },
   setUpdatedSpaceEventEnd (state, { selectedEvent, end }) {
@@ -106,6 +106,9 @@ export const mutations = {
   },
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
     selectedEvent.image_source = imageSource;
+  },
+  setUpdatedSpaceEventAttendees (state, { selectedEvent, attendees }) {
+    selectedEvent.attendees = attendees;
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;

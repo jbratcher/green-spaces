@@ -47,6 +47,10 @@ class User extends Model {
     return this.hasMany('App/Models/SpaceEvent')
   }
 
+  attending_events() {
+    return this.belongsToMany('App/Models/SpaceEvent');
+  }
+
 }
 
 module.exports = User

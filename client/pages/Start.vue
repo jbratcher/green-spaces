@@ -9,7 +9,7 @@
 
       <!-- Main Content -->
       <v-sheet
-        class="my-12 py-12 start-options"
+        class="py-12 start-options"
       >
 
         <!-- Donate Path -->

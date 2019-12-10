@@ -15,18 +15,18 @@
       </v-sheet>
 
       <!-- Main Content -->
-      <v-sheet class="py-10 d-flex flex-column">
+      <v-sheet class="py-5 d-flex flex-column">
 
         <!-- Content Header -->
         <h2 class="display-1 py-5">
           Upcoming Events
         </h2>
-        <p class="title pb-12">
+        <p class="title">
           Find volunteer events near you
         </p>
 
         <!-- Event List -->
-        <v-container class="events ma-12 pa-12">
+        <v-container class="events">
           <v-container class="events-list">
             <ul>
               <li v-for="event in eventsByDateOld" :key="event.id">
@@ -215,25 +215,11 @@ export default {
 
 <style lang="scss">
 
-  .add-new-event {
-    width: 80vw;
-    margin: 0 auto;
-
-    v-icon {
-      cursor: pointer;
-    }
-
-  }
-
-  @media screen and (min-width: 768px) {
-    .events {
-      display: grid;
-      grid-template-areas:
-        "eList eList eList eList . miniCal"
-        "eList eList eList eList . ."
-        "eList eList eList eList . .";
-      grid-template-columns: repeat(5, 1fr) 30vw;
-    }
+  .events {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 2rem 0;
 
     .events-list {
       grid-area: eList;
@@ -270,6 +256,30 @@ export default {
 
       }
 
+    }
+
+  }
+
+  .add-new-event {
+    width: 80vw;
+    margin: 0 auto;
+
+    v-icon {
+      cursor: pointer;
+    }
+
+  }
+
+  @media screen and (min-width: 768px) {
+    .events {
+      display: grid;
+      grid-template-areas:
+        "eList eList eList eList . miniCal"
+        "eList eList eList eList . ."
+        "eList eList eList eList . .";
+      grid-template-columns: repeat(5, 1fr) 30vw;
+      margin: 3rem;
+      padding: 3rem;
     }
 
     .mini-calendar-container {

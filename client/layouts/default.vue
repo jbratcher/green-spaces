@@ -12,12 +12,14 @@
       prominent
       height="70px"
     >
-      <v-toolbar-title class="headline align-self-center d-flex align-center">
-        <v-img class="invertColor" height="50px" width="50px" src="logo.svg" />
-        <p class="toolbar-title-text mx-6 my-0">GreenSpaces</p>
+      <v-toolbar-title class="align-self-center d-flex align-center">
+        <v-img class="invertColor" src="logo.svg" />
+        <p class="toolbar-title-text">
+          GreenSpaces
+        </p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon class="hidden-md-and-up" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon class="hidden-md-and-up display-1" @click.stop="drawer = !drawer" />
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
@@ -150,8 +152,9 @@ export default {
     overflow-x: hidden;
   }
 
-  ul {
+  .v-application ul {
     list-style-type: none;
+    padding-left: 0;
   }
 
   .v-application a {
@@ -195,8 +198,25 @@ export default {
 
   }
 
-  .toolbar-title-text {
-    font-size: 2rem;
+  .v-icon.notranslate.mdi.mdi-menu.theme--dark {
+    font-size: 3rem;
+    margin-top: 0.33rem;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .v-toolbar__title {
+
+    .v-image {
+      width: 35px;
+      height: 35px;
+    }
+
+    .toolbar-title-text {
+      font-size: 2.33rem;
+      margin: auto 0 auto 0.5rem;
+    }
+
   }
 
   .justify-space-evenly {
@@ -214,6 +234,14 @@ export default {
 
   .invertColor {
     filter: invert(1);
+  }
+
+  @media screen and (min-width: 768px) {
+
+    .toolbar-title-text {
+      font-size: 2.33rem;
+    }
+
   }
 
 </style>
