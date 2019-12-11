@@ -123,6 +123,11 @@
                 class="py-5"
                 v-text="selectedEvent.description"
               />
+              <v-switch
+                v-model="switch1"
+                label="attending"
+                @change="toggleUserAttending"
+              />
               <v-btn
                 class="more-button ml-4"
                 color="primary"
@@ -262,10 +267,12 @@ export default {
     editMode: false,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
+    rsvp: false,
     start: null,
     selectedElement: null,
     selectedEvent: {},
     selectedOpen: false,
+    switch1: false,
     today: new Date().toISOString().substr(0, 10),
     type: 'month',
     typeToLabel: {
@@ -380,6 +387,7 @@ export default {
       'setUpdatedSpaceEventAddressName',
       'setUpdatedSpaceEventFullAddress',
       'setUpdatedSpaceEventImageSource',
+      'setUpdatedSpaceEventAttendees',
       'setSpaceEvent',
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
@@ -420,6 +428,16 @@ export default {
       }
 
       nativeEvent.stopPropagation()
+    },
+    toggleUserAttending () {
+      this.rsvp = !this.rsvp;
+      console.log(`Toggle rsvp: ${this.rsvp}`);
+      console.log(`Add attendee: ${JSON.stringify(this.user)}`);
+      this.setUpdatedSpaceEventAttendees({
+        selectedEvent: this.selectedEvent,
+        user: this.user,
+        rsvp: this.rsvp
+      })
     },
     updateRange ({ start, end }) {
       this.start = start

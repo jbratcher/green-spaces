@@ -21,7 +21,7 @@ export const actions = {
       address_name: state.newSpaceEventAddressName,
       full_address: state.newSpaceEventFullAddress,
       image_source: state.newSpaceEventImageSource ? state.newSpaceEventImageSource : 'https://picsum.photos/id/977/1280/920',
-      attendess: [],
+      attendees: [],
     })
       .then((data) => {
         commit('appendSpaceEvent', data);
@@ -57,6 +57,9 @@ export const actions = {
     return this.$axios.$get('/space-events')
       .then((data) => {
         commit('setSpaceEvents', data);
+      })
+      .then(() => {
+        commit('normalizeAttendees');
       })
       .catch((error) => {
         console.log(`Fetch events error: ${error}`);
@@ -107,8 +110,44 @@ export const mutations = {
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
     selectedEvent.image_source = imageSource;
   },
-  setUpdatedSpaceEventAttendees (state, { selectedEvent, attendees }) {
-    selectedEvent.attendees = attendees;
+  setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
+    console.log(`Running setUpdatedSpaceEventAttendees()`);
+    console.log(`Selected event: ${JSON.stringify(selectedEvent)}`);
+    console.log(`User: ${JSON.stringify(user)}`);
+    console.log(`Rsvp value: ${rsvp}`);
+    try {
+      if (rsvp) {
+        selectedEvent.attendees.push(user);
+        console.log(`Added user: ${JSON.stringify(user)}`);
+        console.log(`Updated attendees list: ${JSON.stringify(selectedEvent.attendees)}`);
+      } else if (!rsvp) {
+        selectedEvent.attendees = selectedEvent.attendees
+          .filter(attendee => Boolean(attendee))
+          .filter(attendee => attendee.id !== user.id)
+        console.log(`Removed user: ${JSON.stringify(user)}`);
+        console.log(`Updated attendees list: ${JSON.stringify(selectedEvent.attendees)}`);
+      } else {
+        console.log(`Attendess could not be set due to a ${rsvp} value of rsvp`);
+      }
+    } catch (error) {
+      console.log(error);
+      console.log(`\n Attendees was not able to be set due to an error: \n ${error}`);
+    }
+    return null;
+  },
+  // remove falsy values ("", null, undefined, NaN, 0) from attendees array [issue: when seeding, not able to  set array as default value, uses ""]
+  normalizeAttendees (state) {
+    console.log(`Turning attendees list into an array`);
+    state.spaceEvents.map(
+      spaceEvent => spaceEvent.attendees = Array.from(spaceEvent.attendees)
+    );
+    console.log(`Attendees arrayified: ${state.spaceEvents[2].attendees}`);
+    state.spaceEvents.map(
+      spaceEvent => spaceEvent.attendees.filter(attendee =>
+        Boolean(attendee) === true
+      )
+    );
+    console.log(`Turning attendees list into an array`);
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;

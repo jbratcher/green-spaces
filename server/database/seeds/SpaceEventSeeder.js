@@ -27,6 +27,7 @@ class SpaceEventSeeder {
       address_name: "Clifton Park",
       full_address: "100 Arlington Avenue, Louisville, KY 40206",
       image_source: "https://picsum.photos/1280/960",
+      attendees: [""],
     }
 
     await Database
@@ -45,6 +46,7 @@ class SpaceEventSeeder {
       address_name: "Shelby Park",
       full_address: "600 East Oak Street, Louisville, KY 40203",
       image_source: "https://picsum.photos/1280/960",
+      attendees: [""],
     }
 
     await Database
@@ -61,6 +63,7 @@ class SpaceEventSeeder {
       address_name: "Dirt Park",
       full_address: "1 Dirt Alley, Louisville, KY 40203",
       image_source: "https://picsum.photos/1280/960",
+      attendees: [""],
     }
 
     await Database

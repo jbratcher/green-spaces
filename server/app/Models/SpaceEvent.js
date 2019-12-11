@@ -10,11 +10,11 @@ class SpaceEvent extends Model {
   }
 
   creator() {
-    return this.belongsTo('App/Models/User');
+    return this.belongsTo('App/Models/User')
   }
 
   attendees() {
-    return this.belongsToMany('App/Models/User');
+    return this.belongsToMany('App/Models/User', 'space_event_user')
   }
 
 }
