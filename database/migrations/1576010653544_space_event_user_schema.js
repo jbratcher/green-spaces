@@ -6,10 +6,15 @@ const Schema = use('Schema')
 class SpaceEventUserSchema extends Schema {
   up () {
     this.create('space_event_users', (table) => {
+
+      // space event id
       table.integer('space_event_id').unsigned().index()
       table.foreign('space_event_id').references('id').inTable('space_events')
+
+      // user id
       table.integer('user_id').unsigned().index()
       table.foreign('user_id').references('id').inTable('users')
+
       table.timestamps()
     })
   }
