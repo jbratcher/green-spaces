@@ -24,6 +24,7 @@ Route.group(() => {
 
   Route.get('space-events', 'SpaceEventController.index');
   Route.post('space-events', 'SpaceEventController.create');
+  Route.get('space-events/:id', 'SpaceEventController.show');
   Route.patch('space-events/:id', 'SpaceEventController.update');
   Route.delete('space-events/:id', 'SpaceEventController.destroy');
 

@@ -14,6 +14,7 @@ export const actions = {
   logout({ commit }) {
     commit('setToken', null);
     commit('setLoggedIn', false);
+    commit('setUser', {});
     if (this.$router.currentRoute !== '/') {
       this.$router.replace('/');
     }
@@ -40,7 +41,7 @@ export const actions = {
         console.log(`Login Error: ${error}`);
       });
   },
-  async register({ commit, state }) {
+  async register({ commit, state, rootState }) {
     commit('setRegisterError', null);
     await this.$axios.$post('/auth/register', {
       email: state.registerEmail,
@@ -50,6 +51,13 @@ export const actions = {
         commit('setToken', data.token);
         commit('setLoggedIn', true);
         this.$router.push('/');
+      })
+      .then(() => {
+        this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+        this.$axios.$get('/current-user')
+          .then((response) => {
+            commit('setUser', response);
+          })
       })
       .catch((error) => {
         console.log(`Registration error: ${error}`);

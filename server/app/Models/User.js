@@ -48,7 +48,7 @@ class User extends Model {
   }
 
   attending_events() {
-    return this.belongsToMany('App/Models/SpaceEvent');
+    return this.belongsToMany('App/Models/SpaceEvent', 'space_event_user')
   }
 
 }

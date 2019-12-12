@@ -125,7 +125,7 @@
               />
               <v-switch
                 v-model="switch1"
-                label="attending"
+                label="RSVP"
                 @change="toggleUserAttending"
               />
               <v-btn
@@ -377,6 +377,7 @@ export default {
     ...mapActions('spaceEvents', [
       'fetchSpaceEvents',
       'updateSpaceEvent',
+      'updateSpaceEventAttendees',
       'deleteSpaceEvent',
     ]),
     ...mapMutations('spaceEvents', [
@@ -431,13 +432,11 @@ export default {
     },
     toggleUserAttending () {
       this.rsvp = !this.rsvp;
-      console.log(`Toggle rsvp: ${this.rsvp}`);
-      console.log(`Add attendee: ${JSON.stringify(this.user)}`);
-      this.setUpdatedSpaceEventAttendees({
+      this.updateSpaceEventAttendees({
         selectedEvent: this.selectedEvent,
         user: this.user,
         rsvp: this.rsvp
-      })
+      });
     },
     updateRange ({ start, end }) {
       this.start = start

@@ -34,6 +34,12 @@ export const actions = {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$patch(`/space-events/${spaceEvent.id}`, spaceEvent);
   },
+  updateSpaceEventAttendees({ commit, state, rootState }, payload) {
+    const { selectedEvent, user, rsvp } = payload;
+    commit('setUpdatedSpaceEventAttendees', { selectedEvent, user, rsvp })
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    return this.$axios.$patch(`/space-events/${selectedEvent.id}`, selectedEvent);
+  },
   deleteSpaceEvent({ commit, rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$delete(`/space-events/${spaceEvent.id}`, spaceEvent)
@@ -57,9 +63,6 @@ export const actions = {
     return this.$axios.$get('/space-events')
       .then((data) => {
         commit('setSpaceEvents', data);
-      })
-      .then(() => {
-        commit('normalizeAttendees');
       })
       .catch((error) => {
         console.log(`Fetch events error: ${error}`);
@@ -111,21 +114,21 @@ export const mutations = {
     selectedEvent.image_source = imageSource;
   },
   setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
-    console.log(`Running setUpdatedSpaceEventAttendees()`);
-    console.log(`Selected event: ${JSON.stringify(selectedEvent)}`);
-    console.log(`User: ${JSON.stringify(user)}`);
-    console.log(`Rsvp value: ${rsvp}`);
     try {
       if (rsvp) {
-        selectedEvent.attendees.push(user);
-        console.log(`Added user: ${JSON.stringify(user)}`);
-        console.log(`Updated attendees list: ${JSON.stringify(selectedEvent.attendees)}`);
+        selectedEvent.attendees = [ ...selectedEvent.attendees, user ]
+        // filters duplicates
+        selectedEvent.attendees = Array.from(new Set(selectedEvent.attendees.map(JSON.stringify))).map(JSON.parse);
       } else if (!rsvp) {
         selectedEvent.attendees = selectedEvent.attendees
-          .filter(attendee => Boolean(attendee))
+          .filter(attendee => console.log(attendee))
           .filter(attendee => attendee.id !== user.id)
-        console.log(`Removed user: ${JSON.stringify(user)}`);
-        console.log(`Updated attendees list: ${JSON.stringify(selectedEvent.attendees)}`);
+        if (selectedEvent.attendees.length === 0) {
+          selectedEvent.attendees = '';
+        }
+        console.log(`Attendees array: ${JSON.stringify(selectedEvent.attendees)}`);
+        console.log(`Attendees array: ${selectedEvent.attendees}`);
+        console.log(`Event: ${JSON.stringify(selectedEvent)}`);
       } else {
         console.log(`Attendess could not be set due to a ${rsvp} value of rsvp`);
       }
@@ -134,20 +137,6 @@ export const mutations = {
       console.log(`\n Attendees was not able to be set due to an error: \n ${error}`);
     }
     return null;
-  },
-  // remove falsy values ("", null, undefined, NaN, 0) from attendees array [issue: when seeding, not able to  set array as default value, uses ""]
-  normalizeAttendees (state) {
-    console.log(`Turning attendees list into an array`);
-    state.spaceEvents.map(
-      spaceEvent => spaceEvent.attendees = Array.from(spaceEvent.attendees)
-    );
-    console.log(`Attendees arrayified: ${state.spaceEvents[2].attendees}`);
-    state.spaceEvents.map(
-      spaceEvent => spaceEvent.attendees.filter(attendee =>
-        Boolean(attendee) === true
-      )
-    );
-    console.log(`Turning attendees list into an array`);
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;
