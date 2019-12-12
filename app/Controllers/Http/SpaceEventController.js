@@ -8,6 +8,11 @@ class SpaceEventController {
     return await SpaceEvent.all();
   }
 
+  async show({ params }) {
+    const { id } = params;
+    return await SpaceEvent.find(id);
+  }
+
   async create({ auth, request }) {
     const user = await auth.getUser();
     const { name, description, start, end, address_name, full_address, image_source, attendees } = request.all();
