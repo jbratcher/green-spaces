@@ -119,16 +119,17 @@ export const mutations = {
         selectedEvent.attendees = [ ...selectedEvent.attendees, user ]
         // filters duplicates
         selectedEvent.attendees = Array.from(new Set(selectedEvent.attendees.map(JSON.stringify))).map(JSON.parse);
+        // ensures array for db
+        selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
       } else if (!rsvp) {
-        selectedEvent.attendees = selectedEvent.attendees
+        selectedEvent.attendees = Array.from(selectedEvent.attendees)
           .filter(attendee => console.log(attendee))
           .filter(attendee => attendee.id !== user.id)
         if (selectedEvent.attendees.length === 0) {
           selectedEvent.attendees = '';
         }
-        console.log(`Attendees array: ${JSON.stringify(selectedEvent.attendees)}`);
-        console.log(`Attendees array: ${selectedEvent.attendees}`);
-        console.log(`Event: ${JSON.stringify(selectedEvent)}`);
+        // ensures array for db
+        selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
       } else {
         console.log(`Attendess could not be set due to a ${rsvp} value of rsvp`);
       }
