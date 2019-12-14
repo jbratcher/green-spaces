@@ -34,6 +34,8 @@ class SpaceEventController {
   async update({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
+    const { attendees } = request.all();
+    console.log(`Attendees: ${JSON.stringify(request.only('attendees'))}`);
     const spaceEvent = await SpaceEvent.find(id);
     spaceEvent.merge(request.all('name', 'description', 'start', 'end', 'address_name', 'full_address', 'image_source', 'attendees'));
     await spaceEvent.save();
