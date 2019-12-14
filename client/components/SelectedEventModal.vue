@@ -295,8 +295,6 @@ export default {
     },
     toggleUserAttending () {
       this.rsvp = !this.rsvp;
-      console.log(`Toggle rsvp: ${this.rsvp}`);
-      console.log(`Toggle selected event: ${JSON.stringify(this.selectedEvent)}`);
       this.updateSpaceEventAttendees({
         selectedEvent: this.selectedEvent,
         user: this.user,
@@ -306,7 +304,6 @@ export default {
     cancelEventEdit () {
       this.fetchSpaceEvents();
       this.resetEventForm();
-      this.rsvp = false;
     },
     deleteEvent () {
       this.deleteSpaceEvent(this.selectedEvent);

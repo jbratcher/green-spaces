@@ -21,5 +21,6 @@ module.exports = {
     'comma-dangle': 'off',
     'space-before-function-paren': 'off',
     'object-shorthand': 'off',
+    'quotes': 'off',
   }
 }
