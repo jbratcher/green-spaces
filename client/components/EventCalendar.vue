@@ -104,12 +104,10 @@ export default {
     editMode: false,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
-    rsvp: false,
     start: null,
     selectedElement: null,
     selectedEvent: {},
     selectedOpen: false,
-    switch1: false,
     today: new Date().toISOString().substr(0, 10),
     type: 'month',
     typeToLabel: {
@@ -222,7 +220,6 @@ export default {
       'setUpdatedSpaceEventAddressName',
       'setUpdatedSpaceEventFullAddress',
       'setUpdatedSpaceEventImageSource',
-      'setUpdatedSpaceEventAttendees',
       'setSpaceEvent',
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
@@ -248,32 +245,25 @@ export default {
       this.$refs.calendar.next()
     },
     showEvent ({ nativeEvent, event }) {
+      console.log(`Show event: ${this.selectedOpen}`);
       const open = () => {
-        this.selectedEvent = event
-        this.selectedElement = nativeEvent.target
-        setTimeout(() => this.selectedOpen = true, 10)
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        this.selectedOpen = true;
         this.setSpaceEvent(this.selectedEvent);
       }
-
+      console.log(`Before Condition: ${this.selectedOpen}`);
       if (this.selectedOpen) {
-        this.selectedOpen = false
-        setTimeout(open, 10)
+        this.selectedOpen = false;
+        setTimeout(open, 10);
       } else {
-        open()
+        open();
       }
-
+      console.log(`After Condition: ${this.selectedOpen}`);
       nativeEvent.stopPropagation()
     },
-    toggleUserAttending () {
-      this.rsvp = !this.rsvp;
-      this.updateSpaceEventAttendees({
-        selectedEvent: this.selectedEvent,
-        user: this.user,
-        rsvp: this.rsvp
-      });
-    },
-    toggleOpen () {
-      this.selectedOpen = !this.selectedOpen;
+    toggleOpen (openBoolean) {
+      this.selectedOpen = openBoolean;
     },
     updateRange ({ start, end }) {
       this.start = start

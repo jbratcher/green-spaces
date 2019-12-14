@@ -115,16 +115,18 @@ export const mutations = {
   },
   setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
     console.log(`User: ${JSON.stringify(user)}`);
+    console.log(`Attendees: ${selectedEvent.attendees}`);
+    if (!selectedEvent.attendees) {
+      selectedEvent.attendees = [];
+    }
     try {
       if (rsvp) {
-        console.log(`Attendees: ${selectedEvent.attendees}`);
-        console.log(`To array: ${Array.from(selectedEvent.attendees)}`);
-        selectedEvent.attendees = [ ...selectedEvent.attendees, user ];
+        selectedEvent.attendees = [ ...Array.from(selectedEvent.attendees), user ];
         // filters duplicates
         // selectedEvent.attendees = Array.from(new Set(selectedEvent.attendees));
         // ensures array for db
         if (selectedEvent.attendees.length !== 0) {
-          selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
+          selectedEvent.attendees = JSON.stringify(JSON.parse(JSON.stringify(selectedEvent.attendees)));
         }
         console.log(`Add attendeee: ${selectedEvent.attendees}`);
       } else if (!rsvp) {

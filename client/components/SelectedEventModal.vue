@@ -187,6 +187,7 @@ export default {
   },
   props: {
     selectedElement: {
+      type: null,
       default: null,
     },
     selectedEvent: {
@@ -264,9 +265,6 @@ export default {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
     },
-    localOpen () {
-      this.$emit('toggleOpen')
-    }
   },
   created () {
     this.fetchSpaceEvents();
@@ -297,6 +295,8 @@ export default {
     },
     toggleUserAttending () {
       this.rsvp = !this.rsvp;
+      console.log(`Toggle rsvp: ${this.rsvp}`);
+      console.log(`Toggle selected event: ${JSON.stringify(this.selectedEvent)}`);
       this.updateSpaceEventAttendees({
         selectedEvent: this.selectedEvent,
         user: this.user,
@@ -306,6 +306,7 @@ export default {
     cancelEventEdit () {
       this.fetchSpaceEvents();
       this.resetEventForm();
+      this.rsvp = false;
     },
     deleteEvent () {
       this.deleteSpaceEvent(this.selectedEvent);
@@ -317,6 +318,7 @@ export default {
     resetEventForm () {
       this.localOpen = false;
       this.editMode = false;
+      this.$emit('toggleOpen', this.localOpen);
     },
     updateEvent () {
       this.updateSpaceEvent(this.selectedEvent);
