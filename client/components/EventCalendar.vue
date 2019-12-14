@@ -77,174 +77,12 @@
         />
 
         <!-- Selected Event Modal -->
-        <v-menu
-          v-model="selectedOpen"
-          :close-on-content-click="false"
-          :activator="selectedElement"
-          :color="selectedEvent.color"
-          center
-        >
-
-          <!-- Event/Form Display  -->
-          <v-card class="d-flex flex-column">
-
-            <!-- Header -->
-            <v-card-title
-              class="headline primary white--text justify-space-between"
-              primary-title
-            >
-              <h2
-                v-if="!editMode"
-              >
-                {{ selectedEvent.name }}
-              </h2>
-              <h2
-                v-if="editMode"
-              >
-                Edit {{ selectedEvent.name }}
-              </h2>
-
-              <v-icon
-                class="close-icon"
-                dark
-                @click="cancelEventEdit"
-              >
-                mdi-close-circle-outline
-              </v-icon>
-            </v-card-title>
-
-            <!-- Body -->
-            <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
-              <v-card-text
-                class="py-0 event-date"
-                v-text="eventDate"
-              />
-              <v-card-text
-                class="py-5"
-                v-text="selectedEvent.description"
-              />
-              <v-switch
-                v-model="switch1"
-                label="RSVP"
-                @change="toggleUserAttending"
-              />
-              <v-btn
-                class="more-button ml-4"
-                color="primary"
-                nuxt
-                :to="'/events/' + selectedEvent.id"
-              >
-                More...
-              </v-btn>
-            </v-container>
-
-            <!-- Edit Mode -->
-            <v-container v-if="editMode">
-              <v-text-field
-                :value="selectedEvent.name"
-                :counter="50"
-                :rules="nameRules"
-                label="Name"
-                required
-                @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
-              />
-              <v-textarea
-                :value="selectedEvent.description"
-                :rules="descriptionRules"
-                :counter="1000"
-                label="Description"
-                name="Description"
-                auto-grow
-                required
-                @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
-              />
-              <datetime
-                v-model="startDateTime"
-                type="datetime"
-                value-zone="local"
-                zone="local"
-                use12-hour
-                :minute-step="15"
-                color="primary"
-                required
-              />
-              <datetime
-                v-model="endDateTime"
-                type="datetime"
-                value-zone="local"
-                zone="local"
-                use12-hour
-                :minute-step="15"
-                color="primary"
-              />
-              <v-textarea
-                :value="selectedEvent.address_name"
-                :rules="addressNameRules"
-                :counter="1000"
-                label="Address Name"
-                name="AddressName"
-                auto-grow
-                required
-                @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
-              />
-              <v-textarea
-                :value="selectedEvent.full_address"
-                :rules="fullAddressRules"
-                :counter="1000"
-                label="Full Address"
-                name="FullAddress"
-                auto-grow
-                required
-                @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
-              />
-              <v-textarea
-                :value="selectedEvent.image_source"
-                :rules="imageSourceRules"
-                :counter="1000"
-                label="Image Source"
-                name="ImageSource"
-                auto-grow
-                required
-                @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
-              />
-            </v-container>
-
-            <v-divider v-if="user.id === selectedEvent.user_id" />
-
-            <!-- Actions -->
-            <v-card-actions>
-              <v-spacer />
-              <v-btn
-                v-if="!editMode && user.id === selectedEvent.user_id"
-                color="primary"
-                @click="enterEditMode"
-              >
-                Edit
-              </v-btn>
-              <v-btn
-                v-if="editMode && user.id === selectedEvent.user_id"
-                color="info"
-                @click="cancelEventEdit"
-              >
-                Cancel
-              </v-btn>
-              <v-btn
-                v-if="editMode"
-                color="primary darken-2"
-                @click="updateEvent"
-              >
-                Save
-              </v-btn>
-              <v-btn
-                v-if="editMode"
-                color="error"
-                @click="deleteEvent"
-              >
-                Delete
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-menu>
+        <SelectedEventModal
+          :selected-open="selectedOpen"
+          :selected-element="selectedElement"
+          :selected-event="selectedEvent"
+          @toggleOpen="toggleOpen"
+        />
 
       </v-sheet>
     </v-col>
@@ -253,12 +91,11 @@
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import { Datetime } from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css';
+import SelectedEventModal from '../components/SelectedEventModal.vue';
 
 export default {
   components: {
-    datetime: Datetime,
+    SelectedEventModal,
   },
   data: () => ({
     date: new Date().toJSON(),
@@ -347,9 +184,6 @@ export default {
         timeZone: 'UTC', month: 'long',
       })
     },
-    eventDate () {
-      return new Date(this.selectedEvent.start).toLocaleString();
-    }
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
@@ -438,6 +272,9 @@ export default {
         rsvp: this.rsvp
       });
     },
+    toggleOpen () {
+      this.selectedOpen = !this.selectedOpen;
+    },
     updateRange ({ start, end }) {
       this.start = start
       this.end = end
@@ -457,8 +294,6 @@ export default {
     },
     enterEditMode () {
       this.editMode = true;
-      // this.startDateTime = this.selectedEvent.start;
-      // this.endDateTime = this.selectedEvent.end;
     },
     resetEventForm () {
       this.selectedOpen = false;
