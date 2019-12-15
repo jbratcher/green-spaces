@@ -116,12 +116,17 @@ export const mutations = {
   setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
     try {
       if (rsvp) {
+        // logs starting value returned from db/orm, expects string or array (of user objects)
         console.log(`Before Add: ${selectedEvent.attendees}`);
-        // ensures array
-        selectedEvent.attendees = Array.of(selectedEvent.attendees);
-        // filters out falsy values
-        selectedEvent.attendees = Array.from(selectedEvent).filter(Boolean);
-        console.log(`After array of mod: ${selectedEvent.attendees}`);
+        // ensures array (possible parameters: array, string, null)
+        // if (JSON.stringify(Array.of(selectedEvent.attendees)))
+        selectedEvent.attendees = JSON.parse(JSON.stringify(Array.of(selectedEvent.attendees)));
+        // filters out falsy values from attendees array
+        selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
+        // console.log(`After array of mod: ${selectedEvent.attendees}`);
+        // if attendees type is array, use push otherwise create a new array with the user object
+        // if attendees type is string, array is assumed to be empty and create with the current user id
+        // expects array or sting
         if (selectedEvent.attendees) {
           selectedEvent.attendees.push(user);
         } else {
@@ -131,31 +136,41 @@ export const mutations = {
         // filters duplicates
         // selectedEvent.attendees = Array.from(new Set(selectedEvent.attendees));
         // ensures array for db
+        // if attendees type is array and value is not exactly [""],
+        // transform value into a string for db storage
         if (selectedEvent.attendees.length !== 0 && selectedEvent.attendees !== [""]) {
           selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
         }
         console.log(`After Add: ${selectedEvent.attendees}`);
       } else if (!rsvp) {
-        console.log(`Before remove: ${JSON.stringify(JSON.parse(selectedEvent.attendees))}`);
+        // logs starting value returned from db/orm, expects string or array (of user objects)
+        console.log(`Before remove: ${selectedEvent.attendees}`);
+        // if attendees avlue is an array that is not empty, null, undefined, etc
+        // expects array (or stirng)
         if (selectedEvent.attendees) {
-          console.log('is array')
+          console.log('array')
+          // filters objects in array matching the current user id, parse string to array, array to array
+          // if JSON.parse if omitted, [object Object] string literal can be passed which does not store the data
           selectedEvent.attendees = JSON.parse(selectedEvent.attendees)
             .filter(attendee => attendee.id !== user.id);
+          // if removal empties array, set value to '' for db storage transformation
           if (selectedEvent.attendees.length === 0) {
-            console.log(`not set`);
+            console.log('empty array');
             selectedEvent.attendees = '';
           }
         } else {
-          console.log('is not array')
+          // if attendees is falsy, it is assumed to be an empty string
+          console.log('empty string');
+          console.log(`Attendees: ${selectedEvent.attendees}`);
           selectedEvent.attendees = JSON.stringify(JSON.parse(selectedEvent.attendees));
         }
         console.log(`After Remove: ${JSON.stringify(selectedEvent.attendees)}`);
       } else {
-        console.log(`Attendess could not be set due to a ${rsvp} value of rsvp`);
+        console.warn(`Attendess could not be set due to a ${rsvp} value of rsvp`);
       }
     } catch (error) {
-      console.log(error);
-      console.log(`\n Attendees was not able to be set due to an error: \n ${error}`);
+      console.error(error);
+      console.error(`\n Attendees was not able to be set due to an error: \n ${error}`);
     }
     return null;
   },
