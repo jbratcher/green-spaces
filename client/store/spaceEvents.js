@@ -8,6 +8,7 @@ export const state = () => ({
   newSpaceEventAddressName: '',
   newSpaceEventFullAddress: '',
   newSpaceEventImageSource: '',
+  rsvp: false,
 });
 
 export const actions = {
@@ -116,55 +117,58 @@ export const mutations = {
   setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
     try {
       if (rsvp) {
-        // logs starting value returned from db/orm, expects string or array (of user objects)
-        console.log(`Before Add: ${selectedEvent.attendees}`);
         // ensures array (possible parameters: array, string, null)
-        // if (JSON.stringify(Array.of(selectedEvent.attendees)))
-        selectedEvent.attendees = JSON.parse(JSON.stringify(Array.of(selectedEvent.attendees)));
-        // filters out falsy values from attendees array
-        selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
-        // console.log(`After array of mod: ${selectedEvent.attendees}`);
         // if attendees type is array, use push otherwise create a new array with the user object
         // if attendees type is string, array is assumed to be empty and create with the current user id
-        // expects array or sting
-        if (selectedEvent.attendees) {
+        if (Array.isArray(selectedEvent.attendees)) {
           selectedEvent.attendees.push(user);
-        } else {
-          selectedEvent.attendees = [ user ];
+          // filters out falsy values from attendees array
+          selectedEvent.attendees = selectedEvent.attendees.filter(Boolean);
+        } else if (typeof selectedEvent.attendees === "string") {
+          if (selectedEvent.attendees) {
+            console.log(`Before parse: ${JSON.stringify(selectedEvent.attendees)}`);
+            selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
+            console.log(`After parse: ${JSON.stringify(selectedEvent.attendees)}`);
+            console.log(`Before check: ${Array.isArray(selectedEvent.attendees)}`);
+            // prevent adding a duplicate user to the array
+            // if user id is not found in array
+            if (!selectedEvent.attendees.find(attendee => attendee.id === user.id)) {
+              console.log('triggered');
+              selectedEvent.attendees = [ ...selectedEvent.attendees, user ];
+            } else {
+              console.log('duplicate entry blocked');
+              state.rsvp = false;
+            }
+          } else {
+            selectedEvent.attendees = [ user ];
+          }
+          // filters out falsy values from attendees array
+          selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
         }
-        console.log(`After assignment: ${JSON.stringify(selectedEvent.attendees)}`);
-        // filters duplicates
-        // selectedEvent.attendees = Array.from(new Set(selectedEvent.attendees));
         // ensures array for db
-        // if attendees type is array and value is not exactly [""],
+        // if attendees type is a non-empty array and value is not exactly [""],
         // transform value into a string for db storage
         if (selectedEvent.attendees.length !== 0 && selectedEvent.attendees !== [""]) {
           selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
         }
-        console.log(`After Add: ${selectedEvent.attendees}`);
       } else if (!rsvp) {
-        // logs starting value returned from db/orm, expects string or array (of user objects)
-        console.log(`Before remove: ${selectedEvent.attendees}`);
         // if attendees avlue is an array that is not empty, null, undefined, etc
-        // expects array (or stirng)
         if (selectedEvent.attendees) {
-          console.log('array')
           // filters objects in array matching the current user id, parse string to array, array to array
           // if JSON.parse if omitted, [object Object] string literal can be passed which does not store the data
           selectedEvent.attendees = JSON.parse(selectedEvent.attendees)
             .filter(attendee => attendee.id !== user.id);
-          // if removal empties array, set value to '' for db storage transformation
-          if (selectedEvent.attendees.length === 0) {
-            console.log('empty array');
+          if (selectedEvent.attendees.length > 0) {
+            selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
+          } else if (selectedEvent.attendees.length === 0) {
             selectedEvent.attendees = '';
+          } else {
+            console.log('attendees is not an array');
           }
         } else {
           // if attendees is falsy, it is assumed to be an empty string
-          console.log('empty string');
-          console.log(`Attendees: ${selectedEvent.attendees}`);
-          selectedEvent.attendees = JSON.stringify(JSON.parse(selectedEvent.attendees));
+          selectedEvent.attendees = '';
         }
-        console.log(`After Remove: ${JSON.stringify(selectedEvent.attendees)}`);
       } else {
         console.warn(`Attendess could not be set due to a ${rsvp} value of rsvp`);
       }
@@ -173,6 +177,10 @@ export const mutations = {
       console.error(`\n Attendees was not able to be set due to an error: \n ${error}`);
     }
     return null;
+  },
+  toggleRsvp (state) {
+    state.rsvp = !state.rsvp;
+    console.log(`Rsvp value: ${state.rsvp}`)
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;

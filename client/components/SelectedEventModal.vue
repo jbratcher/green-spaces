@@ -50,7 +50,7 @@
               v-text="selectedEvent.description"
             />
             <v-switch
-              v-model="switch1"
+              :value="rsvp"
               label="RSVP"
               @change="toggleUserAttending"
             />
@@ -205,7 +205,6 @@ export default {
       endDateTime: new Date().toJSON(),
       editMode: false,
       localOpen: this.selectedOpen,
-      rsvp: false,
       startDateTime: new Date().toJSON(),
       switch1: false,
       valid: true,
@@ -240,6 +239,7 @@ export default {
       'newSpaceEventAddressName',
       'newSpaceEventFullAddress',
       'newSpaceEventImageSource',
+      'rsvp',
       'spaceEvents',
     ]),
     ...mapState('auth', [
@@ -285,6 +285,7 @@ export default {
       'setUpdatedSpaceEventFullAddress',
       'setUpdatedSpaceEventImageSource',
       'setUpdatedSpaceEventAttendees',
+      'toggleRsvp',
       'setSpaceEvent',
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
@@ -294,7 +295,7 @@ export default {
       return date.getFullYear() + '-' + z(date.getMonth() + 1) + '-' + z(date.getDate()) + 'T' + z(date.getHours()) + ':' + z(date.getMinutes()) + ':' + z(date.getSeconds()) + '.' + zz(date.getMilliseconds()) + 'Z';
     },
     toggleUserAttending () {
-      this.rsvp = !this.rsvp;
+      this.toggleRsvp();
       this.updateSpaceEventAttendees({
         selectedEvent: this.selectedEvent,
         user: this.user,

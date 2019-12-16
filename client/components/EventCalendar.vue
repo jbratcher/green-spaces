@@ -197,6 +197,7 @@ export default {
     selectedEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
+      // this.selectedOpen = this.selectedEvent.attendees.filter(attee)
     }
   },
   created () {
