@@ -245,8 +245,8 @@ export default {
     next () {
       this.$refs.calendar.next()
     },
+    // have to click twice to open modal?
     showEvent ({ nativeEvent, event }) {
-      console.log(`Show event: ${this.selectedOpen}`);
       const open = () => {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
@@ -254,10 +254,10 @@ export default {
         this.setSpaceEvent(this.selectedEvent);
       }
       console.log(`Before Condition: ${this.selectedOpen}`);
-      if (this.selectedOpen) {
-        this.selectedOpen = false;
-        setTimeout(open, 10);
+      if (!this.selectedOpen) {
+        open();
       } else {
+        this.selectedOpen = false;
         open();
       }
       console.log(`After Condition: ${this.selectedOpen}`);

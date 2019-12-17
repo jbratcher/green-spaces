@@ -316,7 +316,7 @@ export default {
     resetEventForm () {
       this.localOpen = false;
       this.editMode = false;
-      this.$emit('toggleOpen', this.localOpen);
+      this.$emit('toggleOpen', false);
     },
     updateEvent () {
       this.updateSpaceEvent(this.selectedEvent);
