@@ -8,23 +8,23 @@
         <h1>Register</h1>
 
         <v-text-field
-          label="Email"
-          placeholder="Email"
           :value="registerEmail"
           @input="setRegisterEmail"
+          label="Email"
+          placeholder="Email"
         />
         <v-text-field
+          :value="registerPassword"
+          @input="setRegisterPassword"
           label="Password"
           placeholder="Password"
           type="password"
           autocomplete="new-password"
-          :value="registerPassword"
-          @input="setRegisterPassword"
         />
-        <v-alert type="error" :value="registerError">
+        <v-alert :value="registerError" type="error">
           {{ registerError }}
         </v-alert>
-        <v-btn dark @click="register">
+        <v-btn @click="register" dark>
           <v-icon class="mr-5">
             mdi-account-plus
           </v-icon>

@@ -8,23 +8,23 @@
         <h1>Login</h1>
 
         <v-text-field
-          label="Email"
-          placeholder="Email"
           :value="loginEmail"
           @input="setLoginEmail"
+          label="Email"
+          placeholder="Email"
         />
         <v-text-field
+          :value="loginPassword"
+          @input="setLoginPassword"
           label="Password"
           placeholder="Password"
           type="password"
           autocomplete="new-password"
-          :value="loginPassword"
-          @input="setLoginPassword"
         />
-        <v-alert type="error" :value="Boolean(loginError)">
+        <v-alert :value="Boolean(loginError)" type="error">
           {{ loginError }}
         </v-alert>
-        <v-btn dark @click="login">
+        <v-btn @click="login" dark>
           <v-icon class="mr-5">
             mdi-login
           </v-icon>

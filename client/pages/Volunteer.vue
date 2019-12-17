@@ -58,17 +58,17 @@
               <v-toolbar flat color="white">
 
                 <!-- Focus Current Date -->
-                <v-btn outlined class="mr-4" @click="setToday">
+                <v-btn @click="setToday" outlined class="mr-4">
                   Today
                 </v-btn>
 
                 <!-- Prev/Next Month Buttons -->
-                <v-btn fab text small @click="prev">
+                <v-btn @click="prev" fab text small>
                   <v-icon small>
                     mdi-chevron-left
                   </v-icon>
                 </v-btn>
-                <v-btn fab text small @click="next">
+                <v-btn @click="next" fab text small>
                   <v-icon small>
                     mdi-chevron-right
                   </v-icon>
@@ -82,12 +82,12 @@
             <v-calendar
               ref="miniCal"
               v-model="focus"
+              :now="today"
+              @change="updateRange"
               class="mini-calendar"
               color="primary"
               event-color="primary"
-              :now="today"
               type="month"
-              @change="updateRange"
             />
           </v-sheet>
         </v-container>

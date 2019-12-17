@@ -19,7 +19,7 @@
         </p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon class="hidden-md-and-up display-1" @click.stop="drawer = !drawer" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up display-1" />
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"

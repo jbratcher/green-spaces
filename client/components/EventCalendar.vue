@@ -7,17 +7,17 @@
         <v-toolbar flat color="white">
 
           <!-- Focus Current Date -->
-          <v-btn outlined class="mr-4" @click="setToday">
+          <v-btn @click="setToday" outlined class="mr-4">
             Today
           </v-btn>
 
           <!-- Prev/Next Month Buttons -->
-          <v-btn fab text medium @click="prev">
+          <v-btn @click="prev" fab text medium>
             <v-icon large>
               mdi-chevron-left
             </v-icon>
           </v-btn>
-          <v-btn fab text medium @click="next">
+          <v-btn @click="next" fab text medium>
             <v-icon large>
               mdi-chevron-right
             </v-icon>
@@ -32,8 +32,8 @@
           <v-menu bottom right>
             <template v-slot:activator="{ on }">
               <v-btn
-                outlined
                 v-on="on"
+                outlined
               >
                 <span>{{ typeToLabel[type] }}</span>
                 <v-icon right>
@@ -64,16 +64,16 @@
         <v-calendar
           ref="calendar"
           v-model="focus"
-          color="primary"
           :events="spaceEvents"
-          event-color="primary"
-          :event-margin-bottom="3"
           :now="today"
           :type="type"
           @click:event="showEvent"
           @click:more="viewDay"
           @click:date="viewDay"
           @change="updateRange"
+          color="primary"
+          event-color="primary"
+          event-margin-bottom="3"
         />
 
         <!-- Selected Event Modal -->

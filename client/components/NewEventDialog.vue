@@ -10,7 +10,7 @@
     <v-sheet class="pa-10 d-flex flex-column">
 
       <!-- Dialog Header -->
-      <v-icon class="align-self-end" @click="menuOpen = false">
+      <v-icon @click="menuOpen = false" class="align-self-end">
         mdi-close
       </v-icon>
       <h3>Add a new event</h3>
@@ -26,39 +26,39 @@
           :value="newSpaceEventName"
           :counter="50"
           :rules="nameRules"
+          @input="setNewSpaceEventName"
           class="my-5"
           label="Name"
           required
-          @input="setNewSpaceEventName"
         />
         <v-textarea
           :value="newSpaceEventDescription"
           :rules="descriptionRules"
           :counter="1000"
+          @input="setNewSpaceEventDescription"
           label="Description"
           name="Description"
           auto-grow
           required
-          @input="setNewSpaceEventDescription"
         />
         <datetime
           v-model="startDateTime"
+          :minute-step="15"
           type="datetime"
           value-zone="local"
           zone="local"
           use12-hour
-          :minute-step="15"
           color="teal"
           class="my-5"
           required
         />
         <datetime
           v-model="endDateTime"
+          :minute-step="15"
           type="datetime"
           value-zone="local"
           zone="local"
           use12-hour
-          :minute-step="15"
           color="teal"
           class="my-5"
         />
@@ -66,46 +66,46 @@
           :value="newSpaceEventAddressName"
           :rules="addressNameRules"
           :counter="1000"
+          @input="setNewSpaceEventAddressName"
           label="Address Name"
           name="AddressName"
           auto-grow
           required
-          @input="setNewSpaceEventAddressName"
         />
         <v-textarea
           :value="newSpaceEventFullAddress"
           :rules="fullAddressRules"
           :counter="1000"
+          @input="setNewSpaceEventFullAddress"
           label="Full Address"
           name="FullAddress"
           auto-grow
           required
-          @input="setNewSpaceEventFullAddress"
         />
         <v-textarea
           :value="newSpaceEventImageSource"
           :rules="imageSourceRules"
           :counter="1000"
+          @input="setNewSpaceEventImageSource"
           label="Image Source"
           name="ImageSource"
           auto-grow
           required
-          @input="setNewSpaceEventImageSource"
         />
 
         <!-- Form Actions -->
         <v-sheet class="d-flex justify-space-evenly">
           <v-btn
+            @click="resetCreateEventForm"
             color="info btn-box-shadow-secondary"
             class="my-5"
-            @click="resetCreateEventForm"
           >
             Reset
           </v-btn>
           <v-btn
+            @click="createEvent"
             color="primary"
             class="my-5 btn-box-shadow-primary"
-            @click="createEvent"
           >
             Submit
           </v-btn>

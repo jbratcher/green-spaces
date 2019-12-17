@@ -31,9 +31,9 @@
             </h2>
 
             <v-icon
+              @click="cancelEventEdit"
               class="close-icon"
               dark
-              @click="cancelEventEdit"
             >
               mdi-close-circle-outline
             </v-icon>
@@ -42,23 +42,23 @@
           <!-- Body -->
           <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
             <v-card-text
-              class="py-0 event-date"
               v-text="eventDate"
+              class="py-0 event-date"
             />
             <v-card-text
-              class="py-5"
               v-text="selectedEvent.description"
+              class="py-5"
             />
             <v-switch
               :value="rsvp"
-              label="RSVP"
               @change="toggleUserAttending"
+              label="RSVP"
             />
             <v-btn
+              :to="'/events/' + selectedEvent.id"
               class="more-button ml-4"
               color="primary"
               nuxt
-              :to="'/events/' + selectedEvent.id"
             >
               More...
             </v-btn>
@@ -70,19 +70,19 @@
               :value="selectedEvent.name"
               :counter="50"
               :rules="nameRules"
+              @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
               label="Name"
               required
-              @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
             />
             <v-textarea
               :value="selectedEvent.description"
               :rules="descriptionRules"
               :counter="1000"
+              @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
               label="Description"
               name="Description"
               auto-grow
               required
-              @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
             />
             <datetime
               v-model="startDateTime"
@@ -90,7 +90,7 @@
               value-zone="local"
               zone="local"
               use12-hour
-              :minute-step="15"
+              minute-step="15"
               color="primary"
               required
             />
@@ -100,38 +100,38 @@
               value-zone="local"
               zone="local"
               use12-hour
-              :minute-step="15"
+              minute-step="15"
               color="primary"
             />
             <v-textarea
               :value="selectedEvent.address_name"
               :rules="addressNameRules"
               :counter="1000"
+              @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
               label="Address Name"
               name="AddressName"
               auto-grow
               required
-              @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
             />
             <v-textarea
               :value="selectedEvent.full_address"
               :rules="fullAddressRules"
               :counter="1000"
+              @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
               label="Full Address"
               name="FullAddress"
               auto-grow
               required
-              @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
             />
             <v-textarea
               :value="selectedEvent.image_source"
               :rules="imageSourceRules"
               :counter="1000"
+              @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
               label="Image Source"
               name="ImageSource"
               auto-grow
               required
-              @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
             />
           </v-container>
 
@@ -142,29 +142,29 @@
             <v-spacer />
             <v-btn
               v-if="!editMode && user.id === selectedEvent.user_id"
-              color="primary"
               @click="enterEditMode"
+              color="primary"
             >
               Edit
             </v-btn>
             <v-btn
               v-if="editMode && user.id === selectedEvent.user_id"
-              color="info"
               @click="cancelEventEdit"
+              color="info"
             >
               Cancel
             </v-btn>
             <v-btn
               v-if="editMode"
-              color="primary darken-2"
               @click="updateEvent"
+              color="primary darken-2"
             >
               Save
             </v-btn>
             <v-btn
               v-if="editMode"
-              color="error"
               @click="deleteEvent"
+              color="error"
             >
               Delete
             </v-btn>

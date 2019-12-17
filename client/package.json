@@ -1,5 +1,5 @@
 {
-  "name": "GreenSpaces",
+  "name": "green_spaces",
   "version": "1.0.0",
   "description": "Crowd-sourced tree planting for climate control",
   "author": "jbratcher",
@@ -17,7 +17,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "luxon": "^1.21.2",
-    "nuxt": "^2.0.0",
+    "nuxt": "^2.11.0",
     "vue-datetime": "^1.0.0-beta.11",
     "vuex-persistedstate": "^2.7.0",
     "weekstart": "^1.0.1"
