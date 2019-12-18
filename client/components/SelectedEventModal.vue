@@ -313,7 +313,6 @@ export default {
       this.editMode = true;
     },
     resetEventForm () {
-      this.localOpen = false;
       this.editMode = false;
       this.$emit('toggleOpen', false);
     },

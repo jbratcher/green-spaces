@@ -3,16 +3,16 @@
     <v-col class="pa-0">
 
       <!-- Home Page Header Section -->
-      <v-container fluid class="pa-0">
+      <v-container fluid class="pa-0" id="hero">
 
         <!-- Hero Section -->
         <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
           <v-row align="center" class="lightbox white--text pa-2 fill-height">
             <v-col class="text-center">
-              <h1 class="display-3 text-shadow my-5">
+              <h1 class="text-shadow my-5">
                 GreenSpaces
               </h1>
-              <p class="display-1 text-shadow">
+              <p class="text-shadow">
                 Crowd-sourced Climate Action
               </p>
             </v-col>
@@ -20,12 +20,12 @@
         </v-img>
 
         <!-- Lead In Text -->
-        <v-container>
-          <v-card-title class="display-1 my-5">
+        <v-container class="lead-in">
+          <v-card-title class="my-5">
             Green Spaces provides an all in one platform for combating climate change by planting trees to reduce carbon dioxide from the air.
           </v-card-title>
           <v-card-text>
-            <p class="headline">
+            <p>
               Your help is needed to save the world.  Help by donating or volunteer to plant trees.  Trees are still the best way to reduce atomospheric carbon dioxide which is the largest contributor to climate change.  Fund future technologies such as algae bioreactors while supporting easy, cost-effective solutions now.
             </p>
           </v-card-text>
@@ -34,20 +34,21 @@
               color="primary"
               nuxt
               to="/start"
-              class="headline btn-box-shadow-primary py-5 px-10 mt-5 mb-10"
+              class="btn-box-shadow-primary py-5 px-10 mt-5 mb-10"
             >
               Get involved
             </v-btn>
           </v-card-actions>
         </v-container>
+
       </v-container>
 
       <!-- How It Works Section -->
-      <v-container fluid class="pa-0">
+      <v-container fluid class="pa-0" id="how-it-works">
         <v-sheet
-          class="text-center gradient-overlay py-12 d-flex flex-column justify-center"
+          class="text-center gradient-overlay py-12"
         >
-          <h1 class="display-3 my-12">
+          <h1 class="my-12">
             How It Works
           </h1>
           <v-container class="benefits-list py-12 px-2">
@@ -55,7 +56,7 @@
               <v-icon size="100px" color="primary">
                 mdi-currency-usd
               </v-icon>
-              <p class="headline py-5">
+              <p class="py-5">
                 People donate to purchase trees
               </p>
             </v-sheet>
@@ -63,7 +64,7 @@
               <v-icon size="100px" color="primary">
                 mdi-face
               </v-icon>
-              <p class="headline py-5">
+              <p class="py-5">
                 People volunteer to plant trees
               </p>
             </v-sheet>
@@ -71,7 +72,7 @@
               <v-icon size="100px" color="primary">
                 mdi-tree
               </v-icon>
-              <p class="headline py-5">
+              <p class="py-5">
                 Trees are planted to absorb CO2
               </p>
             </v-sheet>
@@ -80,7 +81,7 @@
       </v-container>
 
       <!-- Donor Section -->
-      <v-sheet class="donor">
+      <v-sheet id="donor">
         <v-sheet class="py-10 text-center">
           <v-btn
             color="primary"
@@ -98,7 +99,7 @@
       </v-sheet>
 
       <!-- Volunteer Section -->
-      <v-sheet class="volunteer">
+      <v-sheet id="volunteer">
         <v-sheet class="py-10 text-center">
           <v-btn
             color="primary"
@@ -127,25 +128,98 @@ export default {
 
 <style lang="scss">
 
-  .benefits-list {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  #hero {
 
-    .v-sheet {
-      background: transparent;
+    h1 {
+      font-size: 3rem;
+      font-weight: 400;
+    }
+
+    p:first-of-type {
+      font-size: 2rem;
+      font-weight: 400;
+    }
+
+    .lead-in {
+
+      .v-card__title {
+        font-size: 1.33rem;
+        font-weight: 400;
+        line-height: 1;
+      }
+
     }
 
   }
 
-  .donor > .v-sheet, .volunteer > .v-sheet {
+  #hero, #donor > .v-sheet, #volunteer > .v-sheet {
+
+    .v-btn {
+      padding: 1rem;
+      width: 80vw;
+
+      .v-btn__content {
+        font-size: 1.5rem;
+      }
+
+    }
+
+    .lead-in {
+
+      .v-card__title {
+        font-size: 1.33rem;
+        font-weight: 400;
+        line-height: 1.25;
+      }
+
+      p:first-of-type {
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+      }
+
+    }
+
+  }
+
+  #how-it-works {
+
+    .v-sheet {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 300;
+    }
+
+    p {
+      font-size: 1.33rem;
+      font-weight: 400;
+    }
+
+    .benefits-list {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .v-sheet {
+        background: transparent;
+      }
+
+  }
+
+  }
+
+  #donor > .v-sheet, #volunteer > .v-sheet {
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    .v-btn {
-      margin: 2rem 0;
-    }
+    justify-content: space-evenly;
+    justify-content: space-around;
+    min-height: 80vh;
 
     .v-image {
       max-width: 75vw;
@@ -156,16 +230,69 @@ export default {
 
   @media screen and (min-width: 768px) {
 
-    .benefits-list {
-      flex-direction: row;
-      justify-content: space-around;
-      justify-content: space-between;
+    #hero {
+
+      h1 {
+        font-size: 4rem;
+        font-weight: 400;
+      }
+
+      p:first-of-type {
+        font-size: 2.33rem;
+        font-weight: 400;
+      }
+
+      .lead-in {
+
+        .v-card__title {
+          font-size: 2rem;
+        }
+
+        p:first-of-type {
+          font-size: 1.67rem;
+        }
+
+      }
+
     }
 
-    .donor > .v-sheet, .volunteer > .v-sheet {
+    #hero, #donor > .v-sheet, #volunteer > .v-sheet {
+
+      .v-btn {
+        width: auto;
+
+        .v-btn__content {
+          font-size: 1.67rem;
+        }
+
+      }
+
+    }
+
+    #how-it-works {
+
+      .benefits-list {
+        flex-direction: row;
+        justify-content: space-around;
+        justify-content: space-between;
+      }
+
+      h1 {
+        font-size: 4rem;
+      }
+
+      p {
+        font-size: 2rem;
+        padding: 1rem;
+      }
+
+    }
+
+    #donor > .v-sheet, #volunteer > .v-sheet {
       flex-direction: row;
       justify-content: space-around;
       justify-content: space-evenly;
+      min-height: 400px;
 
       .v-image {
         max-width: 35vw;
@@ -174,7 +301,7 @@ export default {
 
     }
 
-    .volunteer > .v-sheet {
+    #volunteer > .v-sheet {
       flex-direction: row-reverse;
     }
 
