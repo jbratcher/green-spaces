@@ -251,14 +251,15 @@ export default {
         this.selectedEvent = event;
         this.selectedElement = nativeEvent.target;
         this.selectedOpen = true;
+        setTimeout(() => this.selectedOpen = true, 10)
         this.setSpaceEvent(this.selectedEvent);
       }
       console.log(`Before Condition: ${this.selectedOpen}`);
-      if (!this.selectedOpen) {
-        open();
+      if (this.selectedOpen) {
+        this.selectedOpen = false
+        setTimeout(open, 10)
       } else {
-        this.selectedOpen = false;
-        open();
+        open()
       }
       console.log(`After Condition: ${this.selectedOpen}`);
       nativeEvent.stopPropagation()

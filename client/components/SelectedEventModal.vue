@@ -4,7 +4,7 @@
 
       <!-- Selected Event Modal -->
       <v-menu
-        v-model="localOpen"
+        v-model="selectedOpen"
         :close-on-content-click="false"
         :activator="selectedElement"
         :color="selectedEvent.color"
@@ -204,7 +204,6 @@ export default {
       date: new Date().toJSON(),
       endDateTime: new Date().toJSON(),
       editMode: false,
-      localOpen: this.selectedOpen,
       startDateTime: new Date().toJSON(),
       switch1: false,
       valid: true,
