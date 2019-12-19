@@ -263,10 +263,21 @@ export default {
     selectedEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
+      if (!(Object.entries(this.selectedEvent).length === 0 && this.selectedEvent.constructor === Object)) {
+        console.log('set rsvp by user');
+        this.setRsvpByUser({
+          selectedEvent: this.selectedEvent,
+          user: this.user,
+        });
+      } else {
+        console.log('user rsvp not set');
+      }
     },
   },
   created () {
     this.fetchSpaceEvents();
+  },
+  mounted() {
   },
   methods: {
     ...mapActions('spaceEvents', [
@@ -285,6 +296,7 @@ export default {
       'setUpdatedSpaceEventImageSource',
       'setUpdatedSpaceEventAttendees',
       'toggleRsvp',
+      'setRsvpByUser',
       'setSpaceEvent',
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)

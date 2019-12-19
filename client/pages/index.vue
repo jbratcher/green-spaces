@@ -3,7 +3,7 @@
     <v-col class="pa-0">
 
       <!-- Home Page Header Section -->
-      <v-container fluid class="pa-0" id="hero">
+      <v-container id="hero" fluid class="pa-0">
 
         <!-- Hero Section -->
         <v-img :aspect-ratio="16/9" height="300px" src="hero.jpg">
@@ -44,7 +44,7 @@
       </v-container>
 
       <!-- How It Works Section -->
-      <v-container fluid class="pa-0" id="how-it-works">
+      <v-container id="how-it-works" fluid class="pa-0">
         <v-sheet
           class="text-center gradient-overlay py-12"
         >
@@ -160,6 +160,7 @@ export default {
 
       .v-btn__content {
         font-size: 1.5rem;
+        padding: 0 1rem;
       }
 
     }

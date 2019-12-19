@@ -65,6 +65,7 @@
           ref="calendar"
           v-model="focus"
           :events="spaceEvents"
+          :event-margin-bottom="3"
           :now="today"
           :type="type"
           @click:event="showEvent"
@@ -73,7 +74,6 @@
           @change="updateRange"
           color="primary"
           event-color="primary"
-          event-margin-bottom="3"
         />
 
         <!-- Selected Event Modal -->

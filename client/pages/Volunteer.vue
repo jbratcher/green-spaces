@@ -274,10 +274,11 @@ export default {
     .events {
       display: grid;
       grid-template-areas:
-        "eList eList eList eList . miniCal"
-        "eList eList eList eList . ."
-        "eList eList eList eList . .";
+        "eList eList eList eList eList miniCal"
+        "eList eList eList eList eList ."
+        "eList eList eList eList eList .";
       grid-template-columns: repeat(5, 1fr) 30vw;
+      gap: 1rem;
       margin: 3rem;
       padding: 3rem;
     }

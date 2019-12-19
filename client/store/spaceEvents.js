@@ -158,6 +158,7 @@ export const mutations = {
           // if JSON.parse if omitted, [object Object] string literal can be passed which does not store the data
           selectedEvent.attendees = JSON.parse(selectedEvent.attendees)
             .filter(attendee => attendee.id !== user.id);
+          console.log(`Attendees Mod: ${selectedEvent.attendees}`)
           if (selectedEvent.attendees.length > 0) {
             selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
           } else if (selectedEvent.attendees.length === 0) {
@@ -177,6 +178,25 @@ export const mutations = {
       console.error(`\n Attendees was not able to be set due to an error: \n ${error}`);
     }
     return null;
+  },
+  setRsvpByUser (state, { selectedEvent, user }) {
+    console.log(`Selected Event: ${JSON.stringify(selectedEvent)}`);
+    console.log(`User: ${JSON.stringify(user)}`);
+    // check if user is in attendees
+    // set rsvp to match attendees
+    // convert to array
+    let attendeesArray = [];
+    if (selectedEvent.attendees) {
+      attendeesArray = JSON.parse(selectedEvent.attendees);
+    }
+    console.log(`Mod Event: ${JSON.stringify(attendeesArray)}`);
+    if (attendeesArray.find(attendee => attendee.id === user.id)) {
+      console.log('user in attendees');
+      state.rsvp = true;
+    } else {
+      console.log('user not in attendees');
+      state.rsvp = false;
+    }
   },
   toggleRsvp (state) {
     state.rsvp = !state.rsvp;
