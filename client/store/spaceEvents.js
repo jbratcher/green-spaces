@@ -114,64 +114,68 @@ export const mutations = {
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
     selectedEvent.image_source = imageSource;
   },
+  // set attendees list by adding or removing users
   setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
     try {
+      // add user
       if (rsvp) {
-        // ensures array (possible parameters: array, string, null)
-        // if attendees type is array, use push otherwise create a new array with the user object
-        // if attendees type is string, array is assumed to be empty and create with the current user id
-        if (Array.isArray(selectedEvent.attendees)) {
-          selectedEvent.attendees.push(user);
-          // filters out falsy values from attendees array
-          selectedEvent.attendees = selectedEvent.attendees.filter(Boolean);
-        } else if (typeof selectedEvent.attendees === "string") {
+        // expects stringified array from db
+        // if attendees type is non-null string, parse string to array for transformations
+        if (typeof selectedEvent.attendees === 'string') {
+          // if string is not null/empty
           if (selectedEvent.attendees) {
-            console.log(`Before parse: ${JSON.stringify(selectedEvent.attendees)}`);
+            // convert string back to array
             selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
-            console.log(`After parse: ${JSON.stringify(selectedEvent.attendees)}`);
-            console.log(`Before check: ${Array.isArray(selectedEvent.attendees)}`);
             // prevent adding a duplicate user to the array
             // if user id is not found in array
             if (!selectedEvent.attendees.find(attendee => attendee.id === user.id)) {
-              console.log('triggered');
+              // add user to end of attendees list
               selectedEvent.attendees = [ ...selectedEvent.attendees, user ];
+            // if user is already in the attendees list, set rsvp back to false
             } else {
-              console.log('duplicate entry blocked');
-              state.rsvp = false;
+              console.warn('user already in attendees, duplicate entry blocked');
             }
+          // if string is null/empty, replace with array containing the current user
           } else {
             selectedEvent.attendees = [ user ];
           }
-          // filters out falsy values from attendees array
+          // removes falsy values from attendees array
           selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
+        } else if (selectedEvent.attendees === null) {
+          selectedEvent.attendees = [ user ];
+          // removes falsy values from attendees array
+          selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
+        } else {
+          console.warn(`selecteEvent.attendees add exception`);
+          selectedEvent.attendees = '';
         }
-        // ensures array for db
-        // if attendees type is a non-empty array and value is not exactly [""],
-        // transform value into a string for db storage
+        // if attendees type is a non-empty array and value is not exactly [""], transform value into a string for db storage
         if (selectedEvent.attendees.length !== 0 && selectedEvent.attendees !== [""]) {
           selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
         }
+      // remove user
       } else if (!rsvp) {
-        // if attendees avlue is an array that is not empty, null, undefined, etc
+        // if attendees value is not null/empty
         if (selectedEvent.attendees) {
-          // filters objects in array matching the current user id, parse string to array, array to array
-          // if JSON.parse if omitted, [object Object] string literal can be passed which does not store the data
+          // remove user from attendees
+          // Note: must parse to json before db storage, otherwise stores '[object Object]'
           selectedEvent.attendees = JSON.parse(selectedEvent.attendees)
             .filter(attendee => attendee.id !== user.id);
-          console.log(`Attendees Mod: ${selectedEvent.attendees}`)
+          // if resulting array is not null/empty
           if (selectedEvent.attendees.length > 0) {
             selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
+          // if resulting array is null/empty
           } else if (selectedEvent.attendees.length === 0) {
             selectedEvent.attendees = '';
           } else {
-            console.log('attendees is not an array');
+            console.warn('attendees is not an array');
           }
         } else {
-          // if attendees is falsy, it is assumed to be an empty string
+          // if attendees is null/empty, it is assumed to be an empty string
           selectedEvent.attendees = '';
         }
       } else {
-        console.warn(`Attendess could not be set due to a ${rsvp} value of rsvp`);
+        console.warn(`Attendees could not be set due to a ${rsvp} value of rsvp`);
       }
     } catch (error) {
       console.error(error);
@@ -179,17 +183,14 @@ export const mutations = {
     }
     return null;
   },
+  // set rsvp to match attendees list
   setRsvpByUser (state, { selectedEvent, user }) {
-    console.log(`Selected Event: ${JSON.stringify(selectedEvent)}`);
-    console.log(`User: ${JSON.stringify(user)}`);
-    // check if user is in attendees
-    // set rsvp to match attendees
-    // convert to array
+    // convert to array, implied else set to empty array
     let attendeesArray = [];
     if (selectedEvent.attendees) {
       attendeesArray = JSON.parse(selectedEvent.attendees);
     }
-    console.log(`Mod Event: ${JSON.stringify(attendeesArray)}`);
+    // check if user is in attendees
     if (attendeesArray.find(attendee => attendee.id === user.id)) {
       console.log('user in attendees');
       state.rsvp = true;
