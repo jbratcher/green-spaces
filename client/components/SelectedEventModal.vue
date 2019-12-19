@@ -49,6 +49,11 @@
               v-text="selectedEvent.description"
               class="py-5"
             />
+            <v-card-text
+              class="py=5"
+            >
+              Attendees: {{ this.attendeesList }}
+            </v-card-text>
             <v-switch
               :value="rsvp"
               @change="toggleUserAttending"
@@ -201,6 +206,7 @@ export default {
   },
   data: function () {
     return {
+      attendeesList: [],
       date: new Date().toJSON(),
       endDateTime: new Date().toJSON(),
       editMode: false,
@@ -276,6 +282,7 @@ export default {
   },
   created () {
     this.fetchSpaceEvents();
+    this.setAttendeesList();
   },
   mounted() {
   },
@@ -304,6 +311,17 @@ export default {
       const z = n => ('0' + n).slice(-2);
       const zz = n => ('00' + n).slice(-3);
       return date.getFullYear() + '-' + z(date.getMonth() + 1) + '-' + z(date.getDate()) + 'T' + z(date.getHours()) + ':' + z(date.getMinutes()) + ':' + z(date.getSeconds()) + '.' + zz(date.getMilliseconds()) + 'Z';
+    },
+    setAttendeesList () {
+      if (this.selectedEvent.attendees) {
+        console.log(`Before List: ${this.attendeesList}`);
+        this.attendeesList = JSON.stringify(JSON.parse(this.selectedEvent.attendees).map(user => user.username));
+        console.log(`After List: ${this.attendeesList}`);
+      } else {
+        console.log('False');
+        this.attendeesList = [];
+        console.log(`List: ${this.attendeesList}`);
+      }
     },
     toggleUserAttending () {
       this.toggleRsvp();
