@@ -26,7 +26,7 @@
 
     <!-- Profile link -->
     <v-list-item
-      v-if="user"
+      v-if="user && isLoggedIn"
       :to="`/users/${user.id}`"
       :class="listItemClass"
       dark
