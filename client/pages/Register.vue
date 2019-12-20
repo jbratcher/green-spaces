@@ -8,6 +8,18 @@
         <h1>Register</h1>
 
         <v-text-field
+          :value="firstName"
+          @input="setFirstName"
+          label="First Name"
+          placeholder="First Name"
+        />
+        <v-text-field
+          :value="lastName"
+          @input="setLastName"
+          label="Last Name"
+          placeholder="Last Name"
+        />
+        <v-text-field
           :value="registerEmail"
           @input="setRegisterEmail"
           label="Email"
@@ -43,6 +55,8 @@ import { mapState, mapMutations, mapActions } from 'vuex';
 export default {
   computed: {
     ...mapState('auth', [
+      'firstName',
+      'lastName',
       'loggedIn',
       'registerEmail',
       'registerPassword',
@@ -52,6 +66,8 @@ export default {
   methods: {
     ...mapMutations('auth', [
       'setLoggedIn',
+      'setFirstName',
+      'setLastName',
       'setRegisterEmail',
       'setRegisterPassword',
     ]),

@@ -22,6 +22,7 @@ Factory.blueprint('App/Models/User', async (faker) => {
     full_name: faker.name(),
     email: faker.email(),
     password: faker.password(),
+    profile_image_source: `https://i.pravatar.cc/150?u=${faker.email()}`,
   }
 })
 

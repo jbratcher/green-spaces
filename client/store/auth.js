@@ -1,5 +1,7 @@
 export const state = () => ({
   isLoggedIn: null,
+  firstName: null,
+  lastName: null,
   loginEmail: null,
   loginPassword: null,
   loginError: null,
@@ -46,6 +48,8 @@ export const actions = {
     await this.$axios.$post('/auth/register', {
       email: state.registerEmail,
       password: state.registerPassword,
+      firstName: state.firstName,
+      lastName: state.lastName,
     })
       .then((data) => {
         commit('setToken', data.token);
@@ -72,6 +76,12 @@ export const getters = {
 };
 
 export const mutations = {
+  setFirstName(state, firstName) {
+    state.firstName = firstName;
+  },
+  setLastName(state, lastName) {
+    state.lastName = lastName;
+  },
   setLoggedIn(state, loggedIn) {
     state.isLoggedIn = loggedIn;
   },
