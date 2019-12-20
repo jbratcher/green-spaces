@@ -67,6 +67,16 @@ export const actions = {
         console.log(`Registration error: ${error}`);
       });
   },
+  async fetchUserById ({ commit, state, rootState }) {
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    await this.$axios.$get(`/users/${state.auth.user.id}`)
+      .then((response) => {
+        commit('setUser', response);
+      })
+      .catch((error) => {
+        console.log(`Fetch user error: ${error}`);
+      });
+  },
 };
 
 export const getters = {

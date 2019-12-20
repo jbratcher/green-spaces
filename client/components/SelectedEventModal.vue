@@ -52,13 +52,13 @@
             <v-card-text
               class="py-5"
             >
-              <span class="subtitle">Volunteers:</span> {{ JSON.parse(selectedEvent.attendees).length }}
+              <span class="subtitle">Volunteers:</span> {{ volunteersCount }}
             </v-card-text>
             <v-card-text
               class="py-5"
             >
               <ul>
-                <li v-for="user in JSON.parse(selectedEvent.attendees)" :key="user.id">
+                <li v-for="user in volunteers" :key="user.id">
                   {{ user.username }}
                 </li>
               </ul>
@@ -259,6 +259,22 @@ export default {
       'isLoggedIn',
       'user',
     ]),
+    // volunteer group by event (expects string)
+    volunteers () {
+      if (typeof this.selectedEvent.attendees === "string" && this.selectedEvent.attendees) {
+        return JSON.parse(this.selectedEvent.attendees);
+      } else {
+        return '';
+      }
+    },
+    // volunteer count by event (expects string)
+    volunteersCount () {
+      if (typeof this.selectedEvent.attendees === "string" && this.selectedEvent.attendees) {
+        return JSON.parse(this.selectedEvent.attendees).length;
+      } else {
+        return '0';
+      }
+    },
     eventDate () {
       return new Date(this.selectedEvent.start).toLocaleString();
     }

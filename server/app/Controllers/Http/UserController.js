@@ -8,7 +8,15 @@ class UserController {
     return await User.all();
   }
 
-  async currentUser({ auth }) {
+  async show ({ auth, params }) {
+    const { id } = params
+    if (auth.user.id !== Number(id)) {
+      return 'You cannot see someone else\'s profile'
+    }
+    await auth.user
+  }
+
+  async getCurrentUser({ auth }) {
     const user = await auth.getUser();
     return user;
   }
