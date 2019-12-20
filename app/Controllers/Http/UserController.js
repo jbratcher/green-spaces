@@ -20,11 +20,13 @@ class UserController {
   }
 
   async register({ request }) {
-    const { email, password } = request.all();
-    console.log(email, password);
+    const { email, firstName, lastName, password } = request.all();
+    console.log(email, firstName, lastName, password);
     const user = await User.create({
       email,
+      full_name: `${firstName} ${lastName}`,
       password,
+      profile_image_source: `https://ui-avatars.com/api/?name=${firstName}+${lastName}`,
       username: email
     });
     return this.login(...arguments);
