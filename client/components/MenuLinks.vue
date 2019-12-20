@@ -24,6 +24,27 @@
       </v-list-item-content>
     </v-list-item>
 
+    <!-- Profile link -->
+    <v-list-item
+      v-if="user"
+      :to="`/users/${user.id}`"
+      :class="listItemClass"
+      dark
+      router
+      exact
+    >
+      <v-list-item-action>
+        <v-icon>
+          mdi-account
+        </v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>
+          Profile
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+
     <!-- login/register links -->
     <template v-if="!isLoggedIn">
       <v-list-item
@@ -94,12 +115,14 @@ export default {
   computed: {
     ...mapState('auth', [
       'isLoggedIn',
+      'user',
     ]),
   },
   methods: {
     ...mapActions('auth', [
       'logout',
       'setLoggedIn',
+      'setUser',
     ]),
   },
 };

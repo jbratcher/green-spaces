@@ -256,7 +256,6 @@ export default {
       'spaceEvents',
     ]),
     ...mapState('auth', [
-      'isLoggedIn',
       'user',
     ]),
     // volunteer group by event (expects string)
