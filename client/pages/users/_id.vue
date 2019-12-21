@@ -2,36 +2,31 @@
   <v-layout>
     <v-col>
 
-      <v-card class="d-flex flex-column align-center mx-auto" width="80vw">
+      <v-container class="profile-card">
 
-        <v-img
-          :src="user.profile_image_source"
-          lazy-src="https://picsum.photos/id/977/1280/920"
-          width="1280"
-          max-height="300"
-        />
+        <v-avatar size="128">
+          <v-img
+            :src="user.profile_image_source"
+          />
+        </v-avatar>
 
-        <v-card-title class="display-1">
+        <p>
           {{ user.full_name }}
-        </v-card-title>
+        </p>
 
-        <v-card-subtitle class="subtitle-1">
-          {{ user.id }}
-        </v-card-subtitle>
-
-        <v-card-title class="display-1">
+        <p>
           {{ user.email }}
-        </v-card-title>
+        </p>
 
         <v-file-input
           :rules="profileImageRules"
           accept="image/png, image/jpeg, image/bmp"
-          placeholder="Pick an avatar"
+          placeholder="Update your profile picture"
           prepend-icon="mdi-camera"
-          label="Avatar"
+          label="Profile Picture"
         />
 
-      </v-card>
+      </v-container>
 
     </v-col>
   </v-layout>
@@ -63,6 +58,29 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+  .profile-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 auto;
+    width: 80vw;
 
+    p:first-of-type {
+      font-size: 1.5rem;
+      font-weight: 500;
+      margin: 1rem 0 0.75rem;
+    }
+
+    p{
+      font-size: 1.25rem;
+      font-weight: 300;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .profile-card {
+      width: 50vw;
+    }
+  }
 </style>

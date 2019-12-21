@@ -24,27 +24,6 @@
       </v-list-item-content>
     </v-list-item>
 
-    <!-- Profile link -->
-    <v-list-item
-      v-if="user && isLoggedIn"
-      :to="`/users/${user.id}`"
-      :class="listItemClass"
-      dark
-      router
-      exact
-    >
-      <v-list-item-action>
-        <v-icon>
-          mdi-account
-        </v-icon>
-      </v-list-item-action>
-      <v-list-item-content>
-        <v-list-item-title>
-          Profile
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
-
     <!-- login/register links -->
     <template v-if="!isLoggedIn">
       <v-list-item
@@ -81,6 +60,28 @@
         <v-list-item-title>Logout</v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+
+    <!-- Profile link -->
+    <v-list-item
+      v-if="isLoggedIn && user"
+      :to="`/users/${user.id}`"
+      :class="listItemClass"
+      dark
+      router
+      exact
+    >
+      <v-list-item-action>
+        <v-icon>
+          mdi-account
+        </v-icon>
+      </v-list-item-action>
+      <v-list-item-content>
+        <v-list-item-title>
+          Profile
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+
   </v-list>
 
 </template>

@@ -69,7 +69,7 @@ export const actions = {
   },
   async fetchUserById ({ commit, state, rootState }) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
-    await this.$axios.$get(`/users/${state.auth.user.id}`)
+    await this.$axios.$get(`/users/${rootState.auth.user.id}`)
       .then((response) => {
         commit('setUser', response);
       })
