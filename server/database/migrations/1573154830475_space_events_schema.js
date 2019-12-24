@@ -7,11 +7,7 @@ class SpaceEventsSchema extends Schema {
   up () {
     this.create('space_events', (table) => {
       table.increments()
-
-      // user id
-      table.integer('user_id').unsigned().index('user_id')
-      table.foreign('user_id').references('users.id').onDelete('cascade')
-
+      table.integer('creator_id').unsigned().references('id').inTable('users')
       table.string('name').notNullable()
       table.text('description').nullable()
       table.string('start').notNullable()

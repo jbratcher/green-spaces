@@ -39,16 +39,16 @@ class User extends Model {
     return this.hasOne('App/Models/Role')
   }
 
-  spaces () {
+  spaces_created () {
     return this.manyMany('App/Models/Space')
   }
 
-  spaceEvents () {
-    return this.hasMany('App/Models/SpaceEvent')
+  spaceEventsCreated () {
+    return this.hasMany('App/Models/SpaceEvent', 'creator_id', 'space_event_id')
   }
 
-  attending_events() {
-    return this.belongsToMany('App/Models/SpaceEvent', 'space_event_user')
+  spaceEventsAttending() {
+    return this.belongsToMany('App/Models/SpaceEvent', 'attendee_id', 'space_event_id')
   }
 
 }
