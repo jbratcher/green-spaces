@@ -63,6 +63,7 @@
           class="my-5"
         />
         <v-textarea
+          id="start"
           :value="newSpaceEventAddressName"
           :rules="addressNameRules"
           :counter="1000"
@@ -73,6 +74,7 @@
           required
         />
         <v-textarea
+          id="end"
           :value="newSpaceEventFullAddress"
           :rules="fullAddressRules"
           :counter="1000"

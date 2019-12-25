@@ -15,7 +15,7 @@ class SpaceEventController {
 
   async create({ auth, request }) {
     const user = await auth.getUser();
-    const { name, description, start, end, address_name, full_address, image_source, creator_id } = request.all();
+    const { name, description, start, end, address_name, full_address, image_source } = request.all();
     const spaceEvent = new SpaceEvent();
     spaceEvent.fill({
       name,
@@ -25,10 +25,9 @@ class SpaceEventController {
       address_name,
       full_address,
       image_source,
-      creator_id,
+      creator_id: user.id,
       attendees: '',
     });
-    spaceEvent.save();
     await user.spaceEventsCreated().save(spaceEvent);
     return spaceEvent;
   }
