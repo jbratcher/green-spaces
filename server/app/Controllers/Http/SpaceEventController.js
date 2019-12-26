@@ -46,9 +46,20 @@ class SpaceEventController {
   async updateAttending({ auth, request, params }) {
     const user = await auth.getUser();
     const { id } = params;
+    const { rsvp } = request.all();
+    console.log(`RSVP: ${rsvp}`);
     const spaceEvent = await SpaceEvent.find(id);
-    await spaceEvent.attendees().save(user);
-    return spaceEvent;
+    if (rsvp) {
+      await spaceEvent.attendees().save(user);
+    } else {
+      await spaceEvent.attendees().delete(user);
+    }
+  }
+
+  async getAttendees({ request, params}) {
+    const { id } = params;
+    const spaceEvent = await SpaceEvent.find(id);
+    return await spaceEvent.attendees().fetch();
   }
 
   async destroy({ auth, params }) {

@@ -20,12 +20,13 @@ Route.group(() => {
 
   Route.post('auth/register', 'UserController.register');
   Route.post('auth/login', 'UserController.login');
-  Route.get('current-user', 'UserController.getCurrentUser')
-  Route.get('users/:id', 'UserController.show')
+  Route.get('current-user', 'UserController.getCurrentUser');
+  Route.get('users/:id', 'UserController.show');
 
   Route.get('space-events', 'SpaceEventController.index');
-  Route.post('space-events', 'SpaceEventController.create');
   Route.get('space-events/:id', 'SpaceEventController.show');
+  Route.get('space-events/:id/attendees', 'SpaceEventController.getAttendees');
+  Route.post('space-events', 'SpaceEventController.create');
   Route.patch('space-events/:id', 'SpaceEventController.update');
   Route.patch('space-events/:id/attending', 'SpaceEventController.updateAttending');
   Route.delete('space-events/:id', 'SpaceEventController.destroy');

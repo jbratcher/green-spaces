@@ -35,11 +35,10 @@ export const actions = {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$patch(`/space-events/${spaceEvent.id}`, spaceEvent);
   },
-  updateSpaceEventAttendees({ commit, state, rootState }, payload) {
-    const { selectedEvent, user, rsvp } = payload;
-    commit('setUpdatedSpaceEventAttendees', { selectedEvent, user, rsvp })
+  updateSpaceEventAttendees({ commit, state, rootState }, selectedEvent) {
+    commit('setSpaceEventAttendees', { selectedEvent, attendees: selectedEvent.attendees, rootState })
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
-    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, selectedEvent);
+    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, { selectedEvent, rsvp: state.rsvp });
   },
   deleteSpaceEvent({ commit, rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
@@ -50,6 +49,15 @@ export const actions = {
       .catch((error) => {
         console.log(`Remove event error: ${error}`);
       })
+  },
+  fetchSpaceEventAttendees ({ commit, state }) {
+    return this.$axios.$get(`/space-events/${state.spaceEvent.id}/attendees`)
+      .then((data) => {
+        commit('setSpaceEventAttendees', data);
+      })
+      .catch((error) => {
+        console.log(`Fetch event attendees error: ${error}`);
+      });
   },
   fetchSpaceEventById ({ commit, state }) {
     return this.$axios.$get(`/space-events/${state.spaceEvent.id}`)
@@ -114,74 +122,49 @@ export const mutations = {
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
     selectedEvent.image_source = imageSource;
   },
-  // set attendees list by adding or removing users
-  setUpdatedSpaceEventAttendees (state, { selectedEvent, user, rsvp }) {
-    try {
-      // add user
-      if (rsvp) {
-        // expects stringified array from db
-        // if attendees type is non-null string, parse string to array for transformations
-        if (typeof selectedEvent.attendees === 'string') {
-          // if string is not null/empty
-          if (selectedEvent.attendees) {
-            // convert string back to array
-            selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
-            // prevent adding a duplicate user to the array
-            // if user id is not found in array
-            if (!selectedEvent.attendees.find(attendee => attendee.id === user.id)) {
-              // add user to end of attendees list
-              selectedEvent.attendees = [ ...selectedEvent.attendees, user ];
-            // if user is already in the attendees list, set rsvp back to false
-            } else {
-              console.warn('user already in attendees, duplicate entry blocked');
-            }
-          // if string is null/empty, replace with array containing the current user
-          } else {
-            selectedEvent.attendees = [ user ];
-          }
-          // removes falsy values from attendees array
-          selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
-        } else if (selectedEvent.attendees === null) {
-          selectedEvent.attendees = [ user ];
-          // removes falsy values from attendees array
-          selectedEvent.attendees = Array.from(selectedEvent.attendees).filter(Boolean);
+  setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {
+    // add user to attendees
+    const { user } = rootState.auth;
+    if (state.rsvp) {
+      console.log('true');
+      // add user to attendees
+      if (typeof attendees === 'string' && attendees) {
+        console.log('string');
+        selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
+        console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
+      } else if (Array.isArray(selectedEvent.attendees)) {
+        console.log('array');
+        if (attendees.length > 0 && !attendees.find(attendee => attendee.id === user.id)) {
+          selectedEvent.attendees.push(user)
+          console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
+        } else if (attendees.length === 0) {
+          selectedEvent.attendees = [user];
         } else {
-          console.warn(`selecteEvent.attendees add exception`);
-          selectedEvent.attendees = '';
-        }
-        // if attendees type is a non-empty array and value is not exactly [""], transform value into a string for db storage
-        if (selectedEvent.attendees.length !== 0 && selectedEvent.attendees !== [""]) {
-          selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
-        }
-      // remove user
-      } else if (!rsvp) {
-        // if attendees value is not null/empty
-        if (selectedEvent.attendees) {
-          // remove user from attendees
-          // Note: must parse to json before db storage, otherwise stores '[object Object]'
-          selectedEvent.attendees = JSON.parse(selectedEvent.attendees)
-            .filter(attendee => attendee.id !== user.id);
-          // if resulting array is not null/empty
-          if (selectedEvent.attendees.length > 0) {
-            selectedEvent.attendees = JSON.stringify(selectedEvent.attendees);
-          // if resulting array is null/empty
-          } else if (selectedEvent.attendees.length === 0) {
-            selectedEvent.attendees = '';
-          } else {
-            console.warn('attendees is not an array');
-          }
-        } else {
-          // if attendees is null/empty, it is assumed to be an empty string
-          selectedEvent.attendees = '';
+          console.log('Duplicate entry blocked');
+          return null;
         }
       } else {
-        console.warn(`Attendees could not be set due to a ${rsvp} value of rsvp`);
+        console.log('null');
+        selectedEvent.attendees = [user];
       }
-    } catch (error) {
-      console.error(error);
-      console.error(`\n Attendees was not able to be set due to an error: \n ${error}`);
+    } else if (!state.rsvp) {
+      console.log('false');
+      // remove user from attendees
+      if (typeof attendees === 'string' && attendees) {
+        console.log('string');
+        selectedEvent.attendees = JSON.parse(JSON.stringify(selectedEvent.attendees));
+        selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
+      } else if (Array.isArray(attendees)) {
+        console.log('array');
+        console.log(`user id: ${user.id}`);
+        selectedEvent.attendees.map(attendee => console.log(`attendee id: ${attendee.id}`));
+        selectedEvent.attendees = selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
+        console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
+      } else {
+        console.log('null');
+        selectedEvent.attendees = [];
+      }
     }
-    return null;
   },
   // set rsvp to match attendees list
   setRsvpByUser (state, { selectedEvent, user }) {

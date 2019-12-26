@@ -58,8 +58,8 @@
               class="py-5"
             >
               <ul>
-                <li v-for="user in volunteers" :key="user.id">
-                  {{ user.username }}
+                <li v-for="user in selectedEvent.attendees" :key="user.id">
+                  {{ user.full_name }}
                 </li>
               </ul>
             </v-card-text>
@@ -268,8 +268,8 @@ export default {
     },
     // volunteer count by event (expects string)
     volunteersCount () {
-      if (typeof this.selectedEvent.attendees === "string" && this.selectedEvent.attendees) {
-        return JSON.parse(this.selectedEvent.attendees).length;
+      if (this.selectedEvent.attendees) {
+        return this.selectedEvent.attendees.length;
       } else {
         return '0';
       }
@@ -305,17 +305,23 @@ export default {
   },
   created () {
     this.fetchSpaceEvents();
+    if (this.spaceEvent) {
+      this.fetchSpaceEventAttendees();
+    }
   },
   mounted() {
   },
   methods: {
     ...mapActions('spaceEvents', [
+      'deleteSpaceEvent',
       'fetchSpaceEvents',
+      'fetchSpaceEventAttendees',
       'updateSpaceEvent',
       'updateSpaceEventAttendees',
-      'deleteSpaceEvent',
     ]),
     ...mapMutations('spaceEvents', [
+      'setRsvpByUser',
+      'setSpaceEvent',
       'setUpdatedSpaceEventName',
       'setUpdatedSpaceEventDescription',
       'setUpdatedSpaceEventStart',
@@ -323,10 +329,7 @@ export default {
       'setUpdatedSpaceEventAddressName',
       'setUpdatedSpaceEventFullAddress',
       'setUpdatedSpaceEventImageSource',
-      'setUpdatedSpaceEventAttendees',
       'toggleRsvp',
-      'setRsvpByUser',
-      'setSpaceEvent',
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
     toISOLocal (date) {
@@ -336,11 +339,7 @@ export default {
     },
     toggleUserAttending () {
       this.toggleRsvp();
-      this.updateSpaceEventAttendees({
-        selectedEvent: this.selectedEvent,
-        user: this.user,
-        rsvp: this.rsvp
-      });
+      this.updateSpaceEventAttendees(this.selectedEvent);
     },
     cancelEventEdit () {
       this.fetchSpaceEvents();
