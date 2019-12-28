@@ -44,8 +44,11 @@
                     <p class="event-name">
                       {{ event.name }}
                     </p>
+                    <p v-if="event.creator_name" class="host">
+                      Hosted by {{ event.creator_name }}
+                    </p>
                     <p class="attendees">
-                      5 Volunteers Going
+                      {{ event.attendees.length }} Volunteers Going
                     </p>
                   </v-sheet>
                 </v-card>

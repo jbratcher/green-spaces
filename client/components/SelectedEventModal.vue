@@ -342,7 +342,7 @@ export default {
       this.updateSpaceEventAttendees(this.selectedEvent);
     },
     cancelEventEdit () {
-      this.fetchSpaceEvents();
+      // this.fetchSpaceEvents();
       this.resetEventForm();
     },
     deleteEvent () {

@@ -125,44 +125,53 @@ export const mutations = {
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {
     // add user to attendees
     const { user } = rootState.auth;
-    if (state.rsvp) {
-      console.log('true');
-      // add user to attendees
-      if (typeof attendees === 'string' && attendees) {
-        console.log('string');
-        selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
-        console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
-      } else if (Array.isArray(selectedEvent.attendees)) {
-        console.log('array');
-        if (attendees.length > 0 && !attendees.find(attendee => attendee.id === user.id)) {
-          selectedEvent.attendees.push(user)
+    if (state.spaceEvents[selectedEvent.id - 1]) {
+      if (state.rsvp) {
+        console.log('true');
+        // add user to attendees
+        if (typeof attendees === 'string' && attendees) {
+          console.log('string');
+          selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
+          state.spaceEvents[selectedEvent.id - 1].attendees = JSON.parse(state.spaceEvents[selectedEvent.id - 1].attendees);
           console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
-        } else if (attendees.length === 0) {
-          selectedEvent.attendees = [user];
+        } else if (Array.isArray(selectedEvent.attendees)) {
+          console.log('array');
+          if (attendees.length > 0 && !attendees.find(attendee => attendee.id === user.id)) {
+            selectedEvent.attendees.push(user);
+            state.spaceEvents[selectedEvent.id - 1].attendees.push(user);
+            console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
+          } else if (attendees.length === 0) {
+            selectedEvent.attendees = [user];
+            state.spaceEvents[selectedEvent.id - 1].attendees = [user];
+          } else {
+            console.log('Duplicate entry blocked');
+            return null;
+          }
         } else {
-          console.log('Duplicate entry blocked');
-          return null;
+          console.log('null');
+          selectedEvent.attendees = [user];
         }
-      } else {
-        console.log('null');
-        selectedEvent.attendees = [user];
-      }
-    } else if (!state.rsvp) {
-      console.log('false');
-      // remove user from attendees
-      if (typeof attendees === 'string' && attendees) {
-        console.log('string');
-        selectedEvent.attendees = JSON.parse(JSON.stringify(selectedEvent.attendees));
-        selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
-      } else if (Array.isArray(attendees)) {
-        console.log('array');
-        console.log(`user id: ${user.id}`);
-        selectedEvent.attendees.map(attendee => console.log(`attendee id: ${attendee.id}`));
-        selectedEvent.attendees = selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
-        console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
-      } else {
-        console.log('null');
-        selectedEvent.attendees = [];
+      } else if (!state.rsvp) {
+        console.log('false');
+        // remove user from attendees
+        if (typeof attendees === 'string' && attendees) {
+          console.log('string');
+          selectedEvent.attendees = JSON.parse(JSON.stringify(selectedEvent.attendees));
+          state.spaceEvents[selectedEvent.id - 1].attendees = JSON.parse(JSON.stringify(state.spaceEvents[selectedEvent.id - 1].attendees));
+          selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
+          state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
+        } else if (Array.isArray(attendees)) {
+          console.log('array');
+          console.log(`user id: ${user.id}`);
+          selectedEvent.attendees.map(attendee => console.log(`attendee id: ${attendee.id}`));
+          selectedEvent.attendees = selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
+          state.spaceEvents[selectedEvent.id - 1].attendees = state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
+          console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
+        } else {
+          console.log('null');
+          selectedEvent.attendees = [];
+          state.spaceEvents[selectedEvent.id - 1].attendees = [];
+        }
       }
     }
   },
@@ -171,7 +180,7 @@ export const mutations = {
     // convert to array, implied else set to empty array
     let attendeesArray = [];
     if (selectedEvent.attendees) {
-      attendeesArray = JSON.parse(selectedEvent.attendees);
+      attendeesArray = JSON.parse(JSON.stringify(selectedEvent.attendees));
     }
     // check if user is in attendees
     if (attendeesArray.find(attendee => attendee.id === user.id)) {
