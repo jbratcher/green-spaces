@@ -16,6 +16,7 @@ const providers = [
   '@adonisjs/bodyparser/providers/BodyParserProvider',
   '@adonisjs/cors/providers/CorsProvider',
   '@adonisjs/lucid/providers/LucidProvider',
+  '@radmen/adonis-lucid-soft-deletes/providers/SoftDeletesProvider',
 ]
 
 /*
