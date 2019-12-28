@@ -12,6 +12,8 @@ export const state = () => ({
 });
 
 export const actions = {
+
+  // create a new event
   createSpaceEvent({ commit, state, rootState }) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$post('/space-events', {
@@ -31,15 +33,14 @@ export const actions = {
         console.log(`Create event error: ${error}`);
       });
   },
+
+  // update an event
   updateSpaceEvent({ commit, state, rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$patch(`/space-events/${spaceEvent.id}`, spaceEvent);
   },
-  updateSpaceEventAttendees({ commit, state, rootState }, selectedEvent) {
-    commit('setSpaceEventAttendees', { selectedEvent, attendees: selectedEvent.attendees, rootState })
-    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
-    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, { selectedEvent, rsvp: state.rsvp });
-  },
+
+  // delete event
   deleteSpaceEvent({ commit, rootState }, spaceEvent) {
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
     return this.$axios.$delete(`/space-events/${spaceEvent.id}`, spaceEvent)
@@ -50,24 +51,8 @@ export const actions = {
         console.log(`Remove event error: ${error}`);
       })
   },
-  fetchSpaceEventAttendees ({ commit, state }) {
-    return this.$axios.$get(`/space-events/${state.spaceEvent.id}/attendees`)
-      .then((data) => {
-        commit('setSpaceEventAttendees', data);
-      })
-      .catch((error) => {
-        console.log(`Fetch event attendees error: ${error}`);
-      });
-  },
-  fetchSpaceEventById ({ commit, state }) {
-    return this.$axios.$get(`/space-events/${state.spaceEvent.id}`)
-      .then((data) => {
-        commit('setSpaceEvent', data);
-      })
-      .catch((error) => {
-        console.log(`Fetch event error: ${error}`);
-      });
-  },
+
+  // fetch all events
   fetchSpaceEvents ({ commit }) {
     return this.$axios.$get('/space-events')
       .then((data) => {
@@ -77,6 +62,36 @@ export const actions = {
         console.log(`Fetch events error: ${error}`);
       });
   },
+
+  // fetch event by id
+  fetchSpaceEventById ({ commit, state }, id) {
+    return this.$axios.$get(`/space-events/${id}`)
+      .then((data) => {
+        commit('setSpaceEvent', data);
+      })
+      .catch((error) => {
+        console.log(`Fetch event error: ${error}`);
+      });
+  },
+
+  // fetch event attendees by event id
+  fetchSpaceEventAttendees ({ commit, state }) {
+    return this.$axios.$get(`/space-events/${state.spaceEvent.id}/attendees`)
+      .then((data) => {
+        commit('setSpaceEventAttendees', data);
+      })
+      .catch((error) => {
+        console.log(`Fetch event attendees error: ${error}`);
+      });
+  },
+
+  // add/remove event attendees by event
+  updateSpaceEventAttendees({ commit, state, rootState }, selectedEvent) {
+    commit('setSpaceEventAttendees', { selectedEvent, attendees: selectedEvent.attendees, rootState })
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, { selectedEvent, rsvp: state.rsvp });
+  },
+
 };
 
 export const mutations = {
@@ -125,21 +140,17 @@ export const mutations = {
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {
     // add user to attendees
     const { user } = rootState.auth;
+    // if event in state that matches selectedEvent.id exists
     if (state.spaceEvents[selectedEvent.id - 1]) {
       if (state.rsvp) {
-        console.log('true');
         // add user to attendees
         if (typeof attendees === 'string' && attendees) {
-          console.log('string');
           selectedEvent.attendees = JSON.parse(selectedEvent.attendees);
           state.spaceEvents[selectedEvent.id - 1].attendees = JSON.parse(state.spaceEvents[selectedEvent.id - 1].attendees);
-          console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
         } else if (Array.isArray(selectedEvent.attendees)) {
-          console.log('array');
           if (attendees.length > 0 && !attendees.find(attendee => attendee.id === user.id)) {
             selectedEvent.attendees.push(user);
             state.spaceEvents[selectedEvent.id - 1].attendees.push(user);
-            console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
           } else if (attendees.length === 0) {
             selectedEvent.attendees = [user];
             state.spaceEvents[selectedEvent.id - 1].attendees = [user];
@@ -148,27 +159,20 @@ export const mutations = {
             return null;
           }
         } else {
-          console.log('null');
           selectedEvent.attendees = [user];
         }
       } else if (!state.rsvp) {
-        console.log('false');
         // remove user from attendees
         if (typeof attendees === 'string' && attendees) {
-          console.log('string');
           selectedEvent.attendees = JSON.parse(JSON.stringify(selectedEvent.attendees));
           state.spaceEvents[selectedEvent.id - 1].attendees = JSON.parse(JSON.stringify(state.spaceEvents[selectedEvent.id - 1].attendees));
           selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
           state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
         } else if (Array.isArray(attendees)) {
-          console.log('array');
-          console.log(`user id: ${user.id}`);
           selectedEvent.attendees.map(attendee => console.log(`attendee id: ${attendee.id}`));
           selectedEvent.attendees = selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
           state.spaceEvents[selectedEvent.id - 1].attendees = state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
-          console.log(`after mod: ${JSON.stringify(selectedEvent.attendees)}`);
         } else {
-          console.log('null');
           selectedEvent.attendees = [];
           state.spaceEvents[selectedEvent.id - 1].attendees = [];
         }
@@ -184,16 +188,13 @@ export const mutations = {
     }
     // check if user is in attendees
     if (attendeesArray.find(attendee => attendee.id === user.id)) {
-      console.log('user in attendees');
       state.rsvp = true;
     } else {
-      console.log('user not in attendees');
       state.rsvp = false;
     }
   },
   toggleRsvp (state) {
     state.rsvp = !state.rsvp;
-    console.log(`Rsvp value: ${state.rsvp}`)
   },
   setSpaceEvent (state, spaceEvent) {
     state.spaceEvent = spaceEvent;

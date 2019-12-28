@@ -54,7 +54,7 @@ export default {
     ]),
   },
   created() {
-    this.fetchSpaceEventById();
+    this.fetchSpaceEventById(this.$route.params.id);
   },
   methods: {
     ...mapActions('spaceEvents', [

@@ -51,6 +51,14 @@
                       {{ event.attendees.length }} Volunteers Going
                     </p>
                   </v-sheet>
+                  <v-btn
+                    :to="'/events/' + event.id"
+                    class="more-button"
+                    color="primary"
+                    nuxt
+                  >
+                    More...
+                  </v-btn>
                 </v-card>
               </li>
             </ul>
@@ -255,6 +263,12 @@ export default {
             font-weight: 900;
           }
 
+        }
+
+        .more-button {
+          align-self: center;
+          margin-left: auto;
+          margin-right: 1rem;
         }
 
       }
