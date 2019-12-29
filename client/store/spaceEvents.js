@@ -75,10 +75,12 @@ export const actions = {
   },
 
   // fetch event attendees by event id
-  fetchSpaceEventAttendees ({ commit, state }) {
-    return this.$axios.$get(`/space-events/${state.spaceEvent.id}/attendees`)
-      .then((data) => {
-        commit('setSpaceEventAttendees', data);
+  fetchSpaceEventAttendees ({ commit, state }, selectedEvent) {
+    return this.$axios.$get(`/space-events/${selectedEvent.id}/attendees`)
+      .then((attendees) => {
+        console.log(attendees);
+        console.log(JSON.stringify(attendees));
+        commit('setSpaceEventAttendeesFromDB', { selectedEvent, attendees });
       })
       .catch((error) => {
         console.log(`Fetch event attendees error: ${error}`);
@@ -136,6 +138,10 @@ export const mutations = {
   },
   setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
     selectedEvent.image_source = imageSource;
+  },
+  setSpaceEventAttendeesFromDB (state, { selectedEvent, attendees }) {
+    selectedEvent.attendees = attendees;
+    state.spaceEvents[selectedEvent.id - 1].attendees = attendees;
   },
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {
     // add user to attendees

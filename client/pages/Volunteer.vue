@@ -37,10 +37,7 @@
                   <p class="event-time mt-3 mx-3">
                     {{ listTime(event.start) }}
                   </p>
-                  <v-sheet class="event-details mt-3">
-                    <p class="group-name">
-                      Group Name
-                    </p>
+                  <v-sheet class="event-details mt-2">
                     <p class="event-name">
                       {{ event.name }}
                     </p>
@@ -126,7 +123,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapActions, mapState } from 'vuex';
 import EventCalendar from '../components/EventCalendar.vue';
 import NewEventDialog from '../components/NewEventDialog.vue';
 
@@ -173,8 +170,16 @@ export default {
   },
   mounted () {
     this.$refs.miniCal.checkChange();
+    this.fetchSpaceEvents();
+    if (this.spaceEvents) {
+      this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
+    }
   },
   methods: {
+    ...mapActions('spaceEvents', [
+      'fetchSpaceEvents',
+      'fetchSpaceEventAttendees',
+    ]),
     getDayName (date) {
       const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       return days[date.getDay()];

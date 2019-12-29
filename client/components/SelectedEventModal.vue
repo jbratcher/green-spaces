@@ -303,13 +303,11 @@ export default {
       }
     },
   },
-  created () {
-    this.fetchSpaceEvents();
-    if (this.spaceEvent) {
-      this.fetchSpaceEventAttendees();
-    }
-  },
   mounted() {
+    this.fetchSpaceEvents();
+    if (this.spaceEvents) {
+      this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
+    }
   },
   methods: {
     ...mapActions('spaceEvents', [
