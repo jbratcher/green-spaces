@@ -14,10 +14,7 @@
         <v-card class="d-flex flex-column">
 
           <!-- Header -->
-          <v-card-title
-            class="headline primary white--text justify-space-between"
-            primary-title
-          >
+          <v-card-title class="headline primary white--text justify-space-between">
             <h2
               v-if="!editMode"
             >
@@ -31,7 +28,7 @@
 
             <v-btn
               @click="cancelEventEdit"
-              color="primary lighten-1"
+              color="primary darken-2"
               fab
             >
               <v-icon>
@@ -44,21 +41,17 @@
           <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
             <v-card-text
               v-text="eventDate"
-              class="py-0 event-date"
+              class="py-0"
             />
             <v-card-text
               v-text="selectedEvent.description"
-              class="py-5"
+              class="event-description"
             />
-            <v-card-text
-              class="py-5"
-            >
-              <span class="subtitle">Volunteers:</span> {{ volunteersCount }}
+            <v-card-text class="subtitle">
+              Volunteers: {{ volunteersCount }}
             </v-card-text>
-            <v-card-text
-              class="py-5"
-            >
-              <ul>
+            <v-card-text>
+              <ul class="attendee-list">
                 <li v-for="user in selectedEvent.attendees" :key="user.id">
                   {{ user.full_name }}
                 </li>
@@ -186,7 +179,7 @@
             </v-btn>
             <v-btn
               @click="toggleUserAttending"
-              color="primary"
+              :color="rsvp ? 'warning' : 'primary'"
               dark
               fab
               absolute
@@ -378,7 +371,19 @@ export default {
 </script>
 
 <style lang="scss">
+
+  .event-description {
+    font-size: 1.25rem;
+  }
+
+  .attendee-list {
+    color: #000;
+    font-size: 1.25rem;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+
   .subtitle {
-    font-weight: 700;
+    font-size: 1.125rem;
   }
 </style>

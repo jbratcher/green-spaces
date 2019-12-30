@@ -91,7 +91,7 @@ export const actions = {
   updateSpaceEventAttendees({ commit, state, rootState }, selectedEvent) {
     commit('setSpaceEventAttendees', { selectedEvent, attendees: selectedEvent.attendees, rootState })
     this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
-    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, { selectedEvent, rsvp: state.rsvp });
+    this.$axios.$patch(`/space-events/${selectedEvent.id}/attending`, { selectedEvent, rsvp: state.rsvp, user: rootState.auth.user });
   },
 
 };
