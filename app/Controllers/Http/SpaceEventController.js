@@ -1,6 +1,7 @@
 'use strict'
 
 const SpaceEvent = use('App/Models/SpaceEvent');
+const User = use('App/Models/User');
 
 class SpaceEventController {
 
@@ -42,15 +43,14 @@ class SpaceEventController {
     return spaceEvent;
   }
 
-  async updateAttending({ auth, request, params }) {
-    const user = await auth.getUser();
+  async updateAttending({ request, params }) {
     const { id } = params;
-    const { rsvp } = request.all();
+    const { rsvp, user } = request.all();
     const spaceEvent = await SpaceEvent.find(id);
     if (rsvp) {
-      await spaceEvent.attendees().save(user);
+      await spaceEvent.attendees().attach(user.id);
     } else {
-      await spaceEvent.attendees().delete(user);
+      await spaceEvent.attendees().detach(user.id);
     }
   }
 
