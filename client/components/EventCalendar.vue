@@ -322,14 +322,12 @@ export default {
   }
 
   .v-menu__content {
+    contain: none;
+    overflow: visible;
 
     .v-card {
       width: 80vw;
-
-      .container {
-        min-height: 250px;
-      }
-
+      height: 100%;
     }
 
     .v-card__text:first-of-type {
@@ -341,12 +339,8 @@ export default {
       font-size: 1.5rem;
     }
 
-    .close-icon {
-      font-size: 2rem;
-    }
-
-    .more-button {
-      width: 30%;
+    .v-card__actions {
+      padding: 0;
     }
 
   }
@@ -356,7 +350,7 @@ export default {
     .v-menu__content {
 
       .v-card {
-        width: 35vw;
+        width: 33vw;
       }
 
       .v-card__text:first-of-type {
@@ -365,14 +359,6 @@ export default {
 
       h2 {
         font-size: 2.25rem;
-      }
-
-      .close-icon {
-        font-size: 2.5rem;
-      }
-
-      .more-button {
-        width: 25%;
       }
 
     }

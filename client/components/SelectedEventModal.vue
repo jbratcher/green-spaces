@@ -8,7 +8,6 @@
         :close-on-content-click="false"
         :activator="selectedElement"
         :color="selectedEvent.color"
-        center
       >
 
         <!-- Event/Form Display  -->
@@ -30,13 +29,15 @@
               Edit {{ selectedEvent.name }}
             </h2>
 
-            <v-icon
+            <v-btn
               @click="cancelEventEdit"
-              class="close-icon"
-              dark
+              color="primary lighten-1"
+              fab
             >
-              mdi-close-circle-outline
-            </v-icon>
+              <v-icon>
+                mdi-close
+              </v-icon>
+            </v-btn>
           </v-card-title>
 
           <!-- Body -->
@@ -63,19 +64,6 @@
                 </li>
               </ul>
             </v-card-text>
-            <v-switch
-              :value="rsvp"
-              @change="toggleUserAttending"
-              label="RSVP"
-            />
-            <v-btn
-              :to="'/events/' + selectedEvent.id"
-              class="more-button ml-4"
-              color="primary"
-              nuxt
-            >
-              More...
-            </v-btn>
           </v-container>
 
           <!-- Edit Mode -->
@@ -181,6 +169,33 @@
               color="error"
             >
               Delete
+            </v-btn>
+            <v-btn
+              :to="'/events/' + selectedEvent.id"
+              color="primary lighten-1"
+              dark
+              fab
+              absolute
+              bottom
+              left
+              nuxt
+            >
+              <v-icon>
+                mdi-dots-horizontal
+              </v-icon>
+            </v-btn>
+            <v-btn
+              @click="toggleUserAttending"
+              color="primary"
+              dark
+              fab
+              absolute
+              bottom
+              right
+            >
+              <v-icon>
+                {{ rsvp ? 'mdi-close' : 'mdi-plus' }}
+              </v-icon>
             </v-btn>
           </v-card-actions>
         </v-card>
