@@ -141,6 +141,7 @@ export const mutations = {
   },
   setSpaceEventAttendeesFromDB (state, { selectedEvent, attendees }) {
     selectedEvent.attendees = attendees;
+    state.spaceEvent.attendees = attendees;
     state.spaceEvents[selectedEvent.id - 1].attendees = attendees;
   },
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {

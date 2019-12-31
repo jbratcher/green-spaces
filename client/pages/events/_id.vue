@@ -31,6 +31,20 @@
           {{ spaceEvent.description }}
         </v-card-text>
 
+        <v-card-text class="volunteer-list">
+          <h3>Volunteers RSVP'd</h3>
+          <ul class="attendee-list">
+            <li v-for="user in spaceEvent.attendees" :key="user.id">
+              <v-avatar size="48">
+                <v-img
+                  :src="user.profile_image_source"
+                />
+              </v-avatar>
+              <p>{{ user.full_name }}</p>
+            </li>
+          </ul>
+        </v-card-text>
+
       </v-card>
 
     </v-col>
@@ -55,15 +69,36 @@ export default {
   },
   created() {
     this.fetchSpaceEventById(this.$route.params.id);
+    if (this.spaceEvent) {
+      this.fetchSpaceEventAttendees(this.spaceEvent);
+    }
   },
   methods: {
     ...mapActions('spaceEvents', [
       'fetchSpaceEventById',
+      'fetchSpaceEventAttendees',
     ]),
   },
 }
 </script>
 
-<style>
+<style lang="scss">
+
+  .volunteer-list {
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    ul li {
+      display: flex;
+      align-items: center;
+      .v-image {
+        margin-right: 1rem;
+      }
+      p {
+        margin-bottom: 0;
+      }
+    }
+  }
 
 </style>

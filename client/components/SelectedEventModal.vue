@@ -53,7 +53,12 @@
             <v-card-text>
               <ul class="attendee-list">
                 <li v-for="user in selectedEvent.attendees" :key="user.id">
-                  {{ user.full_name }}
+                  <v-avatar size="32">
+                    <v-img
+                      :src="user.profile_image_source"
+                    />
+                  </v-avatar>
+                  <p>{{ user.full_name }}</p>
                 </li>
               </ul>
             </v-card-text>
@@ -266,14 +271,6 @@ export default {
     ...mapState('auth', [
       'user',
     ]),
-    // volunteer group by event (expects string)
-    volunteers () {
-      if (typeof this.selectedEvent.attendees === "string" && this.selectedEvent.attendees) {
-        return JSON.parse(this.selectedEvent.attendees);
-      } else {
-        return '';
-      }
-    },
     // volunteer count by event (expects string)
     volunteersCount () {
       if (this.selectedEvent.attendees) {
@@ -381,6 +378,19 @@ export default {
     font-size: 1.25rem;
     font-weight: 300;
     margin-bottom: 1.5rem;
+
+    li {
+      display: flex;
+      align-items: center;
+
+      .v-image {
+        margin-right: 1rem;
+      }
+      p {
+        margin-bottom: 0;
+      }
+
+    }
   }
 
   .subtitle {
