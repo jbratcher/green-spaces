@@ -70,14 +70,14 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'http://localhost:3333/api',
+    baseURL: 'https://greenspacesapi.herokuapp.com/api',
   },
   /*
   ** Proxy module configuration
   ** See https://github.com/nuxt-community/proxy-module
   */
   proxy: {
-    // '/api': 'http://localhost:3333'
+    // '/api': 'https://greenspacesapi.herokuapp.com/'
   },
   /*
   ** vuetify module configuration

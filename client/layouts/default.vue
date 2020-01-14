@@ -29,9 +29,10 @@
     </v-app-bar>
     <!-- side/mobile navigation -->
     <v-navigation-drawer
+      class="teal"
       v-model="drawer"
       :mini-variant="miniVariant"
-      class="teal"
+      disable-resize-watcher
       fixed
       dark
       app
