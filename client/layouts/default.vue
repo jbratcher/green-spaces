@@ -32,9 +32,10 @@
       v-model="drawer"
       :mini-variant="miniVariant"
       class="teal"
-      fixed
-      dark
       app
+      dark
+      disable-resize-watcher
+      fixed
       right
     >
       <MenuLinks
@@ -58,7 +59,7 @@
         no-gutters
       >
         <v-btn
-          v-for="(link, i) in footerLinks"
+          v-for="(link, i) in generalLinks"
           :key="i + link.title"
           color="white"
           text
@@ -89,32 +90,6 @@ export default {
     return {
       drawer: false,
       fixed: false,
-      footerLinks: [
-        {
-          title: 'Home',
-          to: '/'
-        },
-        {
-          title: 'About Us',
-          to: '/'
-        },
-        {
-          title: 'Team',
-          to: '/'
-        },
-        {
-          title: 'Services',
-          to: '/'
-        },
-        {
-          title: 'Blog',
-          to: '/'
-        },
-        {
-          title: 'Contact Us',
-          to: '/'
-        },
-      ],
       generalLinks: [
         {
           icon: 'mdi-apps',

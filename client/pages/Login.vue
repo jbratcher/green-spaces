@@ -1,8 +1,8 @@
 <template>
 
   <v-container>
-    <v-layout row wrap>
-      <v-col xs6 offset-xs3>
+    <v-row row wrap>
+      <v-col class="mx-auto col-9 col-md-6">
 
         <!-- User Login Form -->
         <h1>Login</h1>
@@ -32,7 +32,7 @@
         </v-btn>
 
       </v-col>
-    </v-layout>
+    </v-row>
   </v-container>
 
 </template>

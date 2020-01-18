@@ -1,8 +1,8 @@
 <template>
 
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs6 offset-xs3>
+    <v-row>
+      <v-col class="mx-auto col-9 col-md-6">
 
         <!-- User Sign Up Form -->
         <h1>Register</h1>
@@ -43,8 +43,8 @@
           Register
         </v-btn>
 
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
 
 </template>

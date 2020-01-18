@@ -78,8 +78,6 @@ export const actions = {
   fetchSpaceEventAttendees ({ commit, state }, selectedEvent) {
     return this.$axios.$get(`/space-events/${selectedEvent.id}/attendees`)
       .then((attendees) => {
-        console.log(attendees);
-        console.log(JSON.stringify(attendees));
         commit('setSpaceEventAttendeesFromDB', { selectedEvent, attendees });
       })
       .catch((error) => {
@@ -147,7 +145,7 @@ export const mutations = {
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {
     // add user to attendees
     const { user } = rootState.auth;
-    // if event in state that matches selectedEvent.id exists
+    // if spaceEvent that matches selectedEvent.id exists
     if (state.spaceEvents[selectedEvent.id - 1]) {
       if (state.rsvp) {
         // add user to attendees
@@ -158,11 +156,12 @@ export const mutations = {
           if (attendees.length > 0 && !attendees.find(attendee => attendee.id === user.id)) {
             selectedEvent.attendees.push(user);
             state.spaceEvents[selectedEvent.id - 1].attendees.push(user);
+            selectedEvent.attendees = [...new Set(selectedEvent.attendees)];
+            state.spaceEvents[selectedEvent.id - 1].attendees = [...new Set(state.spaceEvents[selectedEvent.id - 1].attendees)]
           } else if (attendees.length === 0) {
             selectedEvent.attendees = [user];
             state.spaceEvents[selectedEvent.id - 1].attendees = [user];
           } else {
-            console.log('Duplicate entry blocked');
             return null;
           }
         } else {
@@ -176,7 +175,6 @@ export const mutations = {
           selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
           state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
         } else if (Array.isArray(attendees)) {
-          selectedEvent.attendees.map(attendee => console.log(`attendee id: ${attendee.id}`));
           selectedEvent.attendees = selectedEvent.attendees.filter(attendee => attendee.id !== user.id);
           state.spaceEvents[selectedEvent.id - 1].attendees = state.spaceEvents[selectedEvent.id - 1].attendees.filter(attendee => attendee.id !== user.id);
         } else {

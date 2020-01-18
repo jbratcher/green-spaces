@@ -297,8 +297,8 @@ export default {
     selectedEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
+      // check if not empty object
       if (!(Object.entries(this.selectedEvent).length === 0 && this.selectedEvent.constructor === Object)) {
-        console.log('set rsvp by user');
         this.setRsvpByUser({
           selectedEvent: this.selectedEvent,
           user: this.user,

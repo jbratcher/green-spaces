@@ -168,12 +168,20 @@ export default {
       return `${startMonth} ${startYear}`;
     },
   },
+  watch: {
+    // return temporary array of events from newest to oldest
+    eventsByDateNew () {
+      return this.spaceEvents.slice().sort((a, b) => new Date(b.start) - new Date(a.start))
+    },
+    // return temporary array of events from oldest to newest
+    eventsByDateOld () {
+      return this.spaceEvents.slice().sort((a, b) => new Date(a.start) - new Date(b.start))
+    },
+  },
   mounted () {
     this.$refs.miniCal.checkChange();
     this.fetchSpaceEvents();
-    if (this.spaceEvents) {
-      this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
-    }
+    this.getSpaceEventAttendeesByEvent(this.spaceEvents);
   },
   methods: {
     ...mapActions('spaceEvents', [
@@ -225,6 +233,11 @@ export default {
       this.start = start
       this.end = end
     },
+    getSpaceEventAttendeesByEvent (spaceEvents) {
+      this.spaceEvents.forEach((spaceEvent) => {
+        this.fetchSpaceEventAttendees(spaceEvent);
+      });
+    }
   },
 }
 </script>
