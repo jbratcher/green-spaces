@@ -9,6 +9,7 @@ export const state = () => ({
   newSpaceEventFullAddress: '',
   newSpaceEventImageSource: '',
   rsvp: false,
+  attendees: [],
 });
 
 export const actions = {
@@ -138,8 +139,8 @@ export const mutations = {
     selectedEvent.image_source = imageSource;
   },
   setSpaceEventAttendeesFromDB (state, { selectedEvent, attendees }) {
+    console.log(`DB attendees: ${JSON.stringify(attendees)}`);
     selectedEvent.attendees = attendees;
-    state.spaceEvent.attendees = attendees;
     state.spaceEvents[selectedEvent.id - 1].attendees = attendees;
   },
   setSpaceEventAttendees(state, { selectedEvent, attendees, rootState }) {

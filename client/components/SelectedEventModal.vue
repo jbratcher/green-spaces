@@ -135,39 +135,12 @@
             />
           </v-container>
 
-          <v-divider v-if="user.id === selectedEvent.user_id" />
+          <v-divider v-if="user.id === selectedEvent.creator_id" />
 
           <!-- Actions -->
           <v-card-actions>
             <v-spacer />
-            <v-btn
-              v-if="!editMode && user.id === selectedEvent.user_id"
-              @click="enterEditMode"
-              color="primary"
-            >
-              Edit
-            </v-btn>
-            <v-btn
-              v-if="editMode && user.id === selectedEvent.user_id"
-              @click="cancelEventEdit"
-              color="info"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              v-if="editMode"
-              @click="updateEvent"
-              color="primary darken-2"
-            >
-              Save
-            </v-btn>
-            <v-btn
-              v-if="editMode"
-              @click="deleteEvent"
-              color="error"
-            >
-              Delete
-            </v-btn>
+            <!-- More info button -->
             <v-btn
               :to="'/events/' + selectedEvent.id"
               color="primary lighten-1"
@@ -182,7 +155,57 @@
                 mdi-dots-horizontal
               </v-icon>
             </v-btn>
+            <!-- Edit/Cancel Edit Event Button -->
             <v-btn
+              v-if="user.id === selectedEvent.creator_id"
+              @click="toggleEditMode"
+              :color="editMode ? 'warning' : 'secondary'"
+              class="edit-btn"
+              dark
+              fab
+              absolute
+              bottom
+              right
+            >
+              <v-icon>
+                {{ editMode ? 'mdi-pencil-off' : 'mdi-pencil' }}
+              </v-icon>
+            </v-btn>
+            <!-- Update Event -->
+            <v-btn
+              v-if="editMode"
+              @click="updateEvent"
+              color="primary darken-2"
+              class="update-btn"
+              dark
+              fab
+              absolute
+              bottom
+              right
+            >
+              <v-icon>
+                mdi-content-save
+              </v-icon>
+            </v-btn>
+            <!-- Update Event -->
+            <v-btn
+              v-if="editMode"
+              @click="deleteEvent"
+              color="error"
+              class="delete-btn"
+              dark
+              fab
+              absolute
+              bottom
+              right
+            >
+              <v-icon>
+                mdi-trash-can
+              </v-icon>
+            </v-btn>
+            <!-- RSVP Button -->
+            <v-btn
+              v-if="!editMode"
               @click="toggleUserAttending"
               :color="rsvp ? 'warning' : 'primary'"
               dark
@@ -192,7 +215,7 @@
               right
             >
               <v-icon>
-                {{ rsvp ? 'mdi-close' : 'mdi-plus' }}
+                {{ rsvp ? 'mdi-account-minus' : 'mdi-account-plus' }}
               </v-icon>
             </v-btn>
           </v-card-actions>
@@ -355,13 +378,16 @@ export default {
     enterEditMode () {
       this.editMode = true;
     },
+    toggleEditMode () {
+      this.editMode = !this.editMode;
+    },
     resetEventForm () {
       this.editMode = false;
       this.$emit('toggleOpen', false);
     },
     updateEvent () {
       this.updateSpaceEvent(this.selectedEvent);
-      this.resetEventForm();
+      this.editMode = false;
     }
   }
 }
@@ -396,4 +422,13 @@ export default {
   .subtitle {
     font-size: 1.125rem;
   }
+
+  .update-btn {
+    margin-right: 15%;
+  }
+
+  .edit-btn{
+    margin-right: 30%;
+  }
+
 </style>
