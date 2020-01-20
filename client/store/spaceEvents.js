@@ -193,7 +193,7 @@ export const mutations = {
       attendeesArray = JSON.parse(JSON.stringify(selectedEvent.attendees));
     }
     // check if user is in attendees
-    if (attendeesArray.find(attendee => attendee.id === user.id)) {
+    if (Array.isArray(attendeesArray) && attendeesArray.find(attendee => attendee.id === user.id)) {
       state.rsvp = true;
     } else {
       state.rsvp = false;

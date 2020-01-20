@@ -41,6 +41,12 @@ class UserController {
     return this.login(...arguments);
   }
 
+  async getSpaceEvents({ auth }) {
+    const user = await auth.getUser();
+    const spaceEvents = await user.spaceEventsAttending().fetch();
+    return spaceEvents;
+  }
+
 }
 
 module.exports = UserController

@@ -333,9 +333,7 @@ export default {
   },
   mounted() {
     this.fetchSpaceEvents();
-    if (this.spaceEvents) {
-      this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
-    }
+    this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
   },
   methods: {
     ...mapActions('spaceEvents', [

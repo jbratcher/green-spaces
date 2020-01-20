@@ -1,35 +1,48 @@
 <template>
-  <v-layout>
+  <v-row>
     <v-col>
 
-      <v-container class="profile-card">
+      <v-container>
+        <v-container class="profile-card">
 
-        <v-avatar size="128">
-          <v-img
-            :src="user.profile_image_source"
+          <v-avatar size="128">
+            <v-img
+              :src="user.profile_image_source"
+            />
+          </v-avatar>
+
+          <p>
+            {{ user.full_name }}
+          </p>
+
+          <p>
+            {{ user.email }}
+          </p>
+
+          <v-file-input
+            :rules="profileImageRules"
+            accept="image/png, image/jpeg, image/bmp"
+            placeholder="Update your profile picture"
+            prepend-icon="mdi-camera"
+            label="Profile Picture"
           />
-        </v-avatar>
 
-        <p>
-          {{ user.full_name }}
-        </p>
+        </v-container>
+      </v-container>
 
-        <p>
-          {{ user.email }}
-        </p>
-
-        <v-file-input
-          :rules="profileImageRules"
-          accept="image/png, image/jpeg, image/bmp"
-          placeholder="Update your profile picture"
-          prepend-icon="mdi-camera"
-          label="Profile Picture"
-        />
-
+      <v-container>
+        <h3 class="mb-6">
+          Events Attending
+        </h3>
+        <ul v-if="user.attending">
+          <li v-for="event in user.attending" :key="event.id">
+            {{ event.address_name }}
+          </li>
+        </ul>
       </v-container>
 
     </v-col>
-  </v-layout>
+  </v-row>
 </template>
 
 <script>
@@ -47,12 +60,14 @@ export default {
       'user',
     ]),
   },
-  created() {
+  mounted() {
     this.fetchUserById();
+    this.fetchSpaceEventsAttending();
   },
   methods: {
     ...mapActions('auth', [
       'fetchUserById',
+      'fetchSpaceEventsAttending',
     ]),
   },
 }

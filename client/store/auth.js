@@ -77,6 +77,16 @@ export const actions = {
         console.log(`Fetch user error: ${error}`);
       });
   },
+  async fetchSpaceEventsAttending ({ commit, state, rootState }) {
+    this.$axios.setHeader('Authorization', `Bearer ${rootState.auth.token}`)
+    await this.$axios.$get(`/users/${rootState.auth.user.id}/space-events/`)
+      .then((response) => {
+        commit('setSpaceEventsAttending', response);
+      })
+      .catch((error) => {
+        console.log(`Fetch user error: ${error}`);
+      });
+  },
 };
 
 export const getters = {
@@ -118,5 +128,8 @@ export const mutations = {
   },
   setUser(state, user) {
     state.user = user;
+  },
+  setSpaceEventsAttending(state, spaceEvents) {
+    state.user.attending = spaceEvents;
   }
 };

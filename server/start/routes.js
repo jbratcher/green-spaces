@@ -22,6 +22,7 @@ Route.group(() => {
   Route.post('auth/login', 'UserController.login');
   Route.get('current-user', 'UserController.getCurrentUser');
   Route.get('users/:id', 'UserController.show');
+  Route.get('users/:id/space-events', 'UserController.getSpaceEvents');
 
   Route.get('space-events', 'SpaceEventController.index');
   Route.get('space-events/:id', 'SpaceEventController.show');
