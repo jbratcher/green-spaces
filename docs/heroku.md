@@ -80,6 +80,14 @@ Note:  I replaced the migration command with `adonis migration:refresh --seed --
 
 Now I can deploy the app from the console by using `git subtree push --prefix server heroku master`
 
+I simplified this event more by registering a npm script for the command
+
+```
+"scripts": {
+  "deploy": "cd .. && git subtree push --prefix server heroku master"
+},
+```  
+
 ## Conclusion
 
 After completing the above steps, the app should be deployed successfully to Heroku

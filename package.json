@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "adonis serve --dev",
     "start": "adonis serve",
-    "test": "node ace test"
+    "test": "node ace test",
+    "deploy": "cd .. && git subtree push --prefix server heroku master"
   },
   "keywords": [
     "adonisjs",
