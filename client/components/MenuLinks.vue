@@ -14,7 +14,7 @@
       router
       exact
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           {{ item.icon }}
         </v-icon>
@@ -34,7 +34,7 @@
         router
         exact
       >
-        <v-list-item-action>
+        <v-list-item-action class="mr-2">
           <v-icon>
             {{ item.icon }}
           </v-icon>
@@ -51,7 +51,7 @@
       :class="listItemClass"
       @click="logout"
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           mdi-logout
         </v-icon>
@@ -70,7 +70,7 @@
       router
       exact
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           mdi-account
         </v-icon>

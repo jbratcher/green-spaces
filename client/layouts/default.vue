@@ -3,35 +3,32 @@
     <!-- Header Area -->
     <v-app-bar
       app
-      color="rgba(0, 121, 107, 0.8)"
+      color="primary"
       dark
       elevate-on-scroll
-      fixed
       hide-on-scroll
-      scroll-threshold="100"
-      prominent
-      height="70px"
+      scroll-threshold="200"
     >
-      <v-toolbar-title class="align-self-center d-flex align-center">
+      <v-toolbar-title class="d-flex align-self-center align-center">
         <v-img class="invertColor" src="logo.svg" />
         <p class="toolbar-title-text">
           GreenSpaces
         </p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up display-1" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up" />
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
-        list-class="row hidden-md-and-down"
-        list-item-class="row-menu"
+        list-class="hidden-sm-and-down d-md-flex"
+        list-item-class=""
       />
     </v-app-bar>
     <!-- side/mobile navigation -->
     <v-navigation-drawer
       v-model="drawer"
       :mini-variant="miniVariant"
-      class="teal"
+      class="primary"
       app
       dark
       disable-resize-watcher
@@ -51,7 +48,7 @@
     </v-content>
     <!-- Footer Area -->
     <v-footer
-      color="primary"
+      color="primary lighten-2 "
       class="pa-0"
     >
       <v-row
@@ -61,6 +58,7 @@
         <v-btn
           v-for="(link, i) in generalLinks"
           :key="i + link.title"
+          :href="link.to"
           color="white"
           text
           rounded
@@ -69,7 +67,7 @@
           {{ link.title }}
         </v-btn>
         <v-col
-          class="primary lighten-2 py-4 text-center white--text"
+          class="primary py-4 text-center white--text"
           cols="12"
         >
           {{ new Date().getFullYear() }} — <strong>Green Spaces</strong>
@@ -123,8 +121,33 @@ export default {
 
 <style lang="scss">
 
-  html, body {
+  *,
+  *:before,
+  *:after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-family: 'Poppins', sans-serif;
+    font-size: 16px;
+    word-spacing: 1px;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+  }
+
+  html,
+  body {
+    min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  .v-card__title {
+    word-break: break-word;
   }
 
   .v-application ul {
@@ -134,14 +157,6 @@ export default {
 
   .v-application a {
     color: #fff !important;
-  }
-
-  .v-list-item.row-menu {
-    flex: 1 1 0;
-  }
-
-  .v-card__title {
-    word-break: break-word;
   }
 
   .text-shadow {
@@ -174,21 +189,19 @@ export default {
   }
 
   .v-icon.notranslate.mdi.mdi-menu.theme--dark {
-    font-size: 3rem;
+    font-size: 2rem;
     margin-top: 0.33rem;
-    width: 3rem;
-    height: 3rem;
   }
 
   .v-toolbar__title {
 
     .v-image {
-      width: 35px;
-      height: 35px;
+      width: 1.5rem;
+      height: 1.5rem;
     }
 
     .toolbar-title-text {
-      font-size: 2.33rem;
+      font-size: 1.67rem;
       margin: auto 0 auto 0.5rem;
     }
 
@@ -211,10 +224,20 @@ export default {
     filter: invert(1);
   }
 
-  @media screen and (min-width: 768px) {
+  @media screen and (min-width: 960px) {
 
-    .toolbar-title-text {
-      font-size: 2.33rem;
+    .v-toolbar__title {
+
+      .v-image {
+        width: 2rem;
+        height: 2rem;
+      }
+
+      .toolbar-title-text {
+        font-size: 2.33rem;
+        margin: auto 0 auto 0.5rem;
+      }
+
     }
 
   }
