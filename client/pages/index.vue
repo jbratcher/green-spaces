@@ -10,7 +10,7 @@
           <v-img alt="pine forest" src="hero.jpg" :aspect-ratio="16/9" gradient="rgba(0,150,136,0.5), rgba(0,105,92,0.5)" height="300px">
             <v-container>
               <v-row>
-                <v-col class="text-center white--text my-6">
+                <v-col class="mt-12 mb-6 text-center white--text">
                   <h1 :class="{'display-3 font-weight-bold text-shadow my-5': $breakpoint.mdAndUp, 'display-1 font-weight-bold text-shadow my-5': $breakpoint.smAndDown}">
                     Green Spaces
                   </h1>

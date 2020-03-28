@@ -1,16 +1,13 @@
 /* eslint-disable */
 <template>
-
   <!-- Links Wrapper -->
-  <v-list :class="listClass">
-
+  <v-list :class="listClass" color="primary">
     <!-- General links -->
     <v-list-item
       v-for="(item, i) in generalLinks"
       :key="i + `-${item.title}`"
       :to="item.to"
       :class="listItemClass"
-      dark
       router
       exact
     >
@@ -81,9 +78,7 @@
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-
   </v-list>
-
 </template>
 
 <script>

@@ -10,8 +10,8 @@
       scroll-threshold="200"
     >
       <v-toolbar-title class="d-flex align-self-center align-center">
-        <v-img class="invertColor" src="logo.svg" />
-        <p class="toolbar-title-text">
+        <v-img class="invertColor" alt="tree logo" src="logo.svg" width="2rem" height="2rem" />
+        <p class="headline my-auto ml-3">
           GreenSpaces
         </p>
       </v-toolbar-title>
@@ -121,125 +121,128 @@ export default {
 
 <style lang="scss">
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-size: 1rem; // fallback for older browsers
+  font-size: calc(1vw + 1vh + 0.5vmin); // fluid typography
+}
+
+html,
+body,
+.v-application {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  word-break: keep-all;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #eee;
+  min-width: 100vw;
+  overflow-x: hidden;
+}
+
+.v-application {
+  a {
+    text-decoration: none;
   }
 
-  html {
-    font-family: 'Poppins', sans-serif;
-    font-size: 16px;
-    word-spacing: 1px;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-  }
-
-  html,
-  body {
-    min-height: 100vh;
-    overflow-x: hidden;
-  }
-
-  .v-card__title {
-    word-break: break-word;
-  }
-
-  .v-application ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-
-  .v-application a {
-    color: #fff !important;
-  }
-
-  .text-shadow {
-    text-shadow: 2px 2px 4px #000;
-  }
-
-  .theme--dark.v-sheet {
-    background-color: transparent;
-  }
-
-  .btn-box-shadow-primary {
-    box-shadow: 0 0 8px rgba(0, 121, 107, 0.8);
-
-    &:hover {
-      box-shadow: none;
-      transition: all 0.5s ease;
+  .v-card__title,
+  .v-card__subtitle,
+  .v-card__text {
+    line-height: 1.5;
+    word-break: keep-all;
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 1rem;
+    }
+    p > a {
+      color: #0d47a1;
     }
 
-  }
-
-  .btn-box-shadow-secondary {
-
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-
-    &:hover {
-      box-shadow: none;
-      transition: all 0.5s ease;
+    p,
+    p + p,
+    ul {
+      font-size: 1rem;
+      margin-bottom: 2rem;
     }
-
   }
 
-  .v-icon.notranslate.mdi.mdi-menu.theme--dark {
-    font-size: 2rem;
-    margin-top: 0.33rem;
-  }
-
-  .v-toolbar__title {
-
-    .v-image {
-      width: 1.5rem;
-      height: 1.5rem;
-    }
-
-    .toolbar-title-text {
-      font-size: 1.67rem;
-      margin: auto 0 auto 0.5rem;
-    }
-
-  }
-
-  .justify-space-evenly {
-    justify-content: space-around;
-    justify-content: space-evenly;
-  }
-
-  .gradient-overlay {
-    background-image:
-      linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
-      linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
-      url("../static/how-it-works.jpg");
-      background-position: center center;
-  }
-
-  .invertColor {
-    filter: invert(1);
-  }
-
-  @media screen and (min-width: 960px) {
-
-    .v-toolbar__title {
-
-      .v-image {
-        width: 2rem;
-        height: 2rem;
+  .v-card__text {
+    pre {
+      margin-bottom: 2rem;
+      min-width: 100%;
+      code {
+        font-size: 0.75rem;
+        max-width: 100%;
+        min-width: 100%;
+        padding: 1rem;
       }
-
-      .toolbar-title-text {
-        font-size: 2.33rem;
-        margin: auto 0 auto 0.5rem;
+      code:before {
+        content: '';
       }
-
     }
-
   }
+}
+
+.v-application a {
+  color: #fff !important;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px #000;
+}
+
+.btn-box-shadow-primary {
+  box-shadow: 0 0 8px rgba(0, 121, 107, 0.8);
+
+  &:hover {
+    box-shadow: none;
+    transition: all 0.5s ease;
+  }
+
+}
+
+.btn-box-shadow-secondary {
+
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+
+  &:hover {
+    box-shadow: none;
+    transition: all 0.5s ease;
+  }
+
+}
+
+.justify-space-evenly {
+  justify-content: space-around;
+  justify-content: space-evenly;
+}
+
+.gradient-overlay {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
+    linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
+    url("../static/how-it-works.jpg");
+    background-position: center center;
+}
+
+.invertColor {
+  filter: invert(1);
+}
 
 </style>
