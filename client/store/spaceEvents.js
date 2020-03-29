@@ -139,7 +139,7 @@ export const mutations = {
     selectedEvent.image_source = imageSource;
   },
   setSpaceEventAttendeesFromDB (state, { selectedEvent, attendees }) {
-    console.log(`DB attendees: ${JSON.stringify(attendees)}`);
+    // console.log(`DB attendees: ${JSON.stringify(attendees)}`);
     selectedEvent.attendees = attendees;
     state.spaceEvents[selectedEvent.id - 1].attendees = attendees;
   },

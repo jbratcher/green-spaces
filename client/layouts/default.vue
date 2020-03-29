@@ -2,10 +2,10 @@
   <v-app>
     <!-- Header Area -->
     <v-app-bar
-      app
       color="primary"
       dark
       elevate-on-scroll
+      height="fit-content"
       hide-on-scroll
       scroll-threshold="200"
     >
@@ -155,6 +155,10 @@ body {
   overflow-x: hidden;
 }
 
+ul, ol {
+  list-style-type: none;
+}
+
 .v-application {
   a {
     text-decoration: none;
@@ -165,11 +169,13 @@ body {
   .v-card__text {
     line-height: 1.5;
     word-break: keep-all;
+
     h1,
     h2,
     h3 {
       margin-bottom: 1rem;
     }
+
     p > a {
       color: #0d47a1;
     }
@@ -180,6 +186,7 @@ body {
       font-size: 1rem;
       margin-bottom: 2rem;
     }
+
   }
 
   .v-card__text {
@@ -207,26 +214,6 @@ body {
   text-shadow: 2px 2px 4px #000;
 }
 
-.btn-box-shadow-primary {
-  box-shadow: 0 0 8px rgba(0, 121, 107, 0.8);
-
-  &:hover {
-    box-shadow: none;
-    transition: all 0.5s ease;
-  }
-
-}
-
-.btn-box-shadow-secondary {
-
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-
-  &:hover {
-    box-shadow: none;
-    transition: all 0.5s ease;
-  }
-
-}
 
 .justify-space-evenly {
   justify-content: space-around;

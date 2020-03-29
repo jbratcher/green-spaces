@@ -99,7 +99,7 @@
         <v-sheet class="d-flex justify-space-evenly">
           <v-btn
             @click="resetCreateEventForm"
-            color="info btn-box-shadow-secondary"
+            color="info elevation-10"
             class="my-5"
           >
             Reset
@@ -107,7 +107,7 @@
           <v-btn
             @click="createEvent"
             color="primary"
-            class="my-5 btn-box-shadow-primary"
+            class="my-5 elevation-10"
           >
             Submit
           </v-btn>

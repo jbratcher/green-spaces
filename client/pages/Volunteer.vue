@@ -1,125 +1,159 @@
 <template>
-  <v-layout>
-    <v-col class="pa-0 text-center">
+  <v-container class="pa-0" fluid>
+    <v-row>
+      <v-col class="pa-0">
 
-      <!-- Page Header -->
-      <v-sheet color="primary lighten-2" class="white--text">
+        <!-- Page Header -->
+        <v-sheet class="text-center text-shadow white--text" color="primary lighten-2">
 
-        <h1 class="display-3 pt-6 pb-3">
-          Give your time
-        </h1>
-        <p class="headline pt-3 pb-6">
-          Your time helps fight climate change
-        </p>
+          <h1 :class="{'display-2 font-weight-bold pt-6 pb-3': $breakpoint.mdAndUp, 'display-1 font-weight-bold pt-6 pb-3': $breakpoint.smAndDown}">
+            Give your time
+          </h1>
+          <p :class="{'headline pt-3 pb-6': $breakpoint.mdAndUp, 'title pt-3 pb-6': $breakpoint.smAndDown}">
+            Your time helps fight climate change
+          </p>
 
-      </v-sheet>
+        </v-sheet>
 
-      <!-- Main Content -->
-      <v-sheet class="py-5 d-flex flex-column">
+        <!-- Main Content -->
+        <v-container>
+          <v-row>
+            <v-col class="text-center">
+              <!-- Content Header -->
+              <h2 :class="{'headline font-weight-bold py-5': $breakpoint.mdAndUp, 'title  font-weight-bold py-5': $breakpoint.smAndDown}">
+                Upcoming Events
+              </h2>
+              <p :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}">
+                Find volunteer events near you
+              </p>
+            </v-col>
+          </v-row>
 
-        <!-- Content Header -->
-        <h2 class="display-1 py-5">
-          Upcoming Events
-        </h2>
-        <p class="title">
-          Find volunteer events near you
-        </p>
+          <v-row>
 
-        <!-- Event List -->
-        <v-container class="events">
-          <v-container class="events-list">
-            <ul>
-              <li v-for="event in eventsByDateOld" :key="event.id">
-                <h3 class="mb-3">
-                  {{ listDate(event.start) }}
-                </h3>
-                <v-card class="mb-6">
-                  <p class="event-time mt-3 mx-3">
-                    {{ listTime(event.start) }}
-                  </p>
-                  <v-sheet class="event-details mt-2">
-                    <p class="event-name">
-                      {{ event.name }}
-                    </p>
-                    <p v-if="event.creator_name" class="host">
-                      Hosted by {{ event.creator_name }}
-                    </p>
-                    <p class="attendees">
-                      {{ event.attendees.length }} Volunteers Going
-                    </p>
-                  </v-sheet>
-                  <v-btn
-                    :to="'/events/' + event.id"
-                    class="more-button"
-                    color="primary"
-                    nuxt
-                  >
-                    More...
-                  </v-btn>
-                </v-card>
-              </li>
-            </ul>
-          </v-container>
-          <v-sheet class="mini-calendar-container" elevation="5">
-            <!-- Calendar Header -->
-            <v-sheet class="calendar-header mx-auto" height="64">
-              <v-toolbar flat color="white">
+            <v-col>
+              <!-- Event List -->
+              <v-container>
+                <v-row>
+                  <v-col sm="7">
+                    <v-container class="py-0">
+                      <v-row>
+                        <v-col class="py-0">
+                          <ul>
+                            <li v-for="event in eventsByDateOld" :key="event.id">
+                              <h3 class="mb-3 pl-6">
+                                {{ listDate(event.start) }}
+                              </h3>
+                              <v-card class="d-flex mb-6" hover>
+                                <v-container class="pa-0" fluid>
+                                <v-img
+                                  alt="event image"
+                                  src="https://picsum.photos/300/300"
+                                  height="200px"
+                                />
+                                </v-container>
+                               <v-container>
+                                <v-card-title class="pt-0">
+                                  {{ event.name }}
+                                </v-card-title>
+                                <v-card-subtitle class="subtitle-1 py-0">
+                                  {{ listTime(event.start) }}
+                                </v-card-subtitle>
+                                <v-card-text v-if="event.creator_name" class="subtitle-1">
+                                  Hosted by {{ event.creator_name }}
+                                </v-card-text>
+                                <v-card-text class="body-1">
+                                  {{ event.attendees.length }} Volunteers Going
+                                </v-card-text>
+                                <v-btn
+                                  :to="'/events/' + event.id"
+                                  class="ml-3 mb-3"
+                                  color="primary"
+                                  nuxt
+                                >
+                                  More...
+                                </v-btn>
+                               </v-container>
+                              </v-card>
+                            </li>
+                          </ul>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-col>
 
-                <!-- Focus Current Date -->
-                <v-btn @click="setToday" outlined class="mr-4">
-                  Today
-                </v-btn>
+                  <v-col sm="5">
+                    <v-sheet class="elevation-3">
+                      <!-- Calendar Header -->
+                      <v-sheet height="64">
+                        <v-toolbar flat color="white">
 
-                <!-- Prev/Next Month Buttons -->
-                <v-btn @click="prev" fab text small>
-                  <v-icon small>
-                    mdi-chevron-left
+                          <!-- Focus Current Date -->
+                          <v-btn @click="setToday" class="mr-4" outlined >
+                            Today
+                          </v-btn>
+
+                          <!-- Prev/Next Month Buttons -->
+                          <v-btn @click="prev" fab text small>
+                            <v-icon small>
+                              mdi-chevron-left
+                            </v-icon>
+                          </v-btn>
+                          <v-btn @click="next" fab text small>
+                            <v-icon small>
+                              mdi-chevron-right
+                            </v-icon>
+                          </v-btn>
+
+                          <!-- Month Display -->
+                          <v-toolbar-title>{{ title }}</v-toolbar-title>
+
+                        </v-toolbar>
+                      </v-sheet>
+                      <v-calendar
+                        ref="miniCal"
+                        v-model="focus"
+                        :now="today"
+                        @change="updateRange"
+                        color="primary"
+                        event-color="primary"
+                        type="month"
+                      />
+                    </v-sheet>
+                  </v-col>
+                </v-row>
+              </v-container>
+            </v-col>
+
+          </v-row>
+          <v-row>
+
+            <v-col>
+              <!-- Add Event Button -->
+              <v-card class="ml-12" color="transparent" flat>
+                <p class="d-flex align-center">
+                  <v-icon class="mr-2">
+                    mdi-calendar-plus
                   </v-icon>
-                </v-btn>
-                <v-btn @click="next" fab text small>
-                  <v-icon small>
-                    mdi-chevron-right
-                  </v-icon>
-                </v-btn>
+                  <span class="headline">
+                    New Event
+                  </span>
+                </p>
+              </v-card>
 
-                <!-- Month Display -->
-                <v-toolbar-title>{{ title }}</v-toolbar-title>
+              <!-- Event Calendar -->
+              <EventCalendar />
+            </v-col>
 
-              </v-toolbar>
-            </v-sheet>
-            <v-calendar
-              ref="miniCal"
-              v-model="focus"
-              :now="today"
-              @change="updateRange"
-              class="mini-calendar"
-              color="primary"
-              event-color="primary"
-              type="month"
-            />
-          </v-sheet>
+          </v-row>
         </v-container>
-
-        <!-- Add Event Button -->
-        <p class="add-new-event d-flex align-center">
-          <v-icon class="mr-2">
-            mdi-calendar-plus
-          </v-icon>
-          <span class="headline">
-            New Event
-          </span>
-        </p>
 
         <!-- Add New Event Dialog -->
         <NewEventDialog />
 
-        <!-- Event Calendar -->
-        <EventCalendar />
-
-      </v-sheet>
-
-    </v-col>
-  </v-layout>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -243,94 +277,4 @@ export default {
 </script>
 
 <style lang="scss">
-
-  .events {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 2rem 0;
-
-    .events-list {
-      grid-area: eList;
-      text-align: left;
-
-      .v-card {
-        display: flex;
-
-        .event-details {
-          display: flex;
-          flex-direction: column;
-          width: fit-content;
-
-          p {
-            margin-bottom: 0.25rem;
-          }
-
-          .event-time, .attendees {
-            color: #666;
-          }
-
-          .group-name {
-            color: #333;
-            font-size: 1rem;
-            font-weight: 700;
-          }
-
-          .event-name {
-            font-size:1.25rem;
-            font-weight: 900;
-          }
-
-        }
-
-        .more-button {
-          align-self: center;
-          margin-left: auto;
-          margin-right: 1rem;
-        }
-
-      }
-
-    }
-
-  }
-
-  .add-new-event {
-    width: 80vw;
-    margin: 0 auto;
-
-    v-icon {
-      cursor: pointer;
-    }
-
-  }
-
-  @media screen and (min-width: 768px) {
-    .events {
-      display: grid;
-      grid-template-areas:
-        "eList eList eList eList eList miniCal"
-        "eList eList eList eList eList ."
-        "eList eList eList eList eList .";
-      grid-template-columns: repeat(5, 1fr) 30vw;
-      gap: 1rem;
-      margin: 3rem;
-      padding: 3rem;
-    }
-
-    .mini-calendar-container {
-      grid-area: miniCal;
-
-      .calendar-header {
-        width: auto;
-      }
-
-      .v-calendar-weekly__week, .v-calendar-weekly__day {
-        min-height: 50px;
-      }
-
-    }
-
-  }
-
 </style>

@@ -1,92 +1,96 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
+  <v-container class="px-12">
+    <v-row>
+      <v-col>
 
-      <!-- Calendar Header -->
-      <v-sheet class="calendar-header mx-auto" height="64">
-        <v-toolbar flat color="white">
+        <!-- Calendar Header -->
+        <v-sheet class="elevation-3" height="64">
+          <v-toolbar flat color="white">
 
-          <!-- Focus Current Date -->
-          <v-btn @click="setToday" outlined class="mr-4">
-            Today
-          </v-btn>
+            <!-- Focus Current Date -->
+            <v-btn @click="setToday" outlined class="mr-4">
+              Today
+            </v-btn>
 
-          <!-- Prev/Next Month Buttons -->
-          <v-btn @click="prev" fab text medium>
-            <v-icon large>
-              mdi-chevron-left
-            </v-icon>
-          </v-btn>
-          <v-btn @click="next" fab text medium>
-            <v-icon large>
-              mdi-chevron-right
-            </v-icon>
-          </v-btn>
+            <!-- Prev/Next Month Buttons -->
+            <v-btn @click="prev" fab text medium>
+              <v-icon large>
+                mdi-chevron-left
+              </v-icon>
+            </v-btn>
+            <v-btn @click="next" fab text medium>
+              <v-icon large>
+                mdi-chevron-right
+              </v-icon>
+            </v-btn>
 
-          <!-- Month Display -->
-          <v-toolbar-title>{{ title }}</v-toolbar-title>
+            <!-- Month Display -->
+            <v-toolbar-title>{{ title }}</v-toolbar-title>
 
-          <v-spacer />
+            <v-spacer />
 
-          <!-- Change Calendar Type -->
-          <v-menu bottom right>
-            <template v-slot:activator="{ on }">
-              <v-btn
-                v-on="on"
-                outlined
-              >
-                <span>{{ typeToLabel[type] }}</span>
-                <v-icon right>
-                  mdi-menu-down
-                </v-icon>
-              </v-btn>
-            </template>
-            <v-list>
-              <v-list-item @click="type = 'day'">
-                <v-list-item-title>Day</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'week'">
-                <v-list-item-title>Week</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = 'month'">
-                <v-list-item-title>Month</v-list-item-title>
-              </v-list-item>
-              <v-list-item @click="type = '4day'">
-                <v-list-item-title>4 days</v-list-item-title>
-              </v-list-item>
-            </v-list>
-          </v-menu>
-        </v-toolbar>
-      </v-sheet>
+            <!-- Change Calendar Type -->
+            <v-menu bottom right>
+              <template v-slot:activator="{ on }">
+                <v-btn
+                  v-on="on"
+                  outlined
+                >
+                  <span>{{ typeToLabel[type] }}</span>
+                  <v-icon right>
+                    mdi-menu-down
+                  </v-icon>
+                </v-btn>
+              </template>
+              <v-list>
+                <v-list-item @click="type = 'day'">
+                  <v-list-item-title>Day</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'week'">
+                  <v-list-item-title>Week</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = 'month'">
+                  <v-list-item-title>Month</v-list-item-title>
+                </v-list-item>
+                <v-list-item @click="type = '4day'">
+                  <v-list-item-title>4 days</v-list-item-title>
+                </v-list-item>
+              </v-list>
+            </v-menu>
+          </v-toolbar>
+        </v-sheet>
 
-      <!-- Calendar Content -->
-      <v-sheet class="mx-auto calendar-content" elevation="5">
-        <v-calendar
-          ref="calendar"
-          v-model="focus"
-          :events="spaceEvents"
-          :event-margin-bottom="3"
-          :now="today"
-          :type="type"
-          @click:event="showEvent"
-          @click:more="viewDay"
-          @click:date="viewDay"
-          @change="updateRange"
-          color="primary"
-          event-color="primary"
-        />
+        <!-- Calendar Content -->
+        <v-sheet class="elevation-3" height="600">
+          <v-calendar
+            ref="calendar"
+            v-model="focus"
+            :events="spaceEvents"
+            :event-margin-bottom="3"
+            :now="today"
+            :type="type"
+            @click:event="showEvent"
+            @click:more="viewDay"
+            @click:date="viewDay"
+            @change="updateRange"
+            color="primary"
+            event-color="primary"
+          />
 
-        <!-- Selected Event Modal -->
-        <SelectedEventModal
-          :selected-open="selectedOpen"
-          :selected-element="selectedElement"
-          :selected-event="selectedEvent"
-          @toggleOpen="toggleOpen"
-        />
+        </v-sheet>
 
-      </v-sheet>
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+
+    <!-- Selected Event Modal -->
+    <SelectedEventModal
+      :selected-open="selectedOpen"
+      :selected-element="selectedElement"
+      :selected-event="selectedEvent"
+      @toggleOpen="toggleOpen"
+    />
+
+  </v-container>
 </template>
 
 <script>
@@ -300,69 +304,4 @@ export default {
 </script>
 
 <style lang="scss">
-
-  .calendar-header, .calendar-content {
-    width: 80vw;
-  }
-
-  .v-calendar-weekly__week {
-    min-height: 100px;
-  }
-
-  .v-card {
-
-    &>.v-input {
-      margin: 0.5rem 1rem;
-    }
-
-    &>.vdatetime {
-      margin: 1.5rem 1rem;
-    }
-
-  }
-
-  .v-menu__content {
-    contain: none;
-    overflow: visible;
-
-    .v-card {
-      width: 80vw;
-      height: 100%;
-    }
-
-    .v-card__text:first-of-type {
-      font-size: 1.25rem;
-      font-weight: 900;
-    }
-
-    h2 {
-      font-size: 1.5rem;
-    }
-
-    .v-card__actions {
-      padding: 0;
-    }
-
-  }
-
-  @media screen and (min-width: 768px) {
-
-    .v-menu__content {
-
-      .v-card {
-        width: 33vw;
-      }
-
-      .v-card__text:first-of-type {
-        font-weight: 900;
-      }
-
-      h2 {
-        font-size: 2.25rem;
-      }
-
-    }
-
-  }
-
 </style>

@@ -58,7 +58,7 @@ class SpaceEventController {
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
     const spaceEvents = await spaceEvent.attendees().fetch()
-    console.log(`DB Attendees: ${JSON.stringify(spaceEvents)}`);
+    // console.log(`DB Attendees: ${JSON.stringify(spaceEvents)}`);
     return spaceEvents;
   }
 
