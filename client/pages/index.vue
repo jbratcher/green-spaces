@@ -124,7 +124,7 @@
                 to="/volunteer"
                 x-large
               >
-                Become a volunteer
+                Become a volunteer today
               </v-btn>
             </v-col>
           </v-row>
