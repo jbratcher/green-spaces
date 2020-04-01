@@ -44,7 +44,7 @@ export default async function ({
     }
 
     //add a mixin that does the client prop setting
-    app.mixins.push({
+    await app.mixins.push({
         //here is the magic, if we set the state with the correct value on client init it works
         mounted() {
             //for all props that we are processing

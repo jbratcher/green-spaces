@@ -4,7 +4,7 @@
       <v-col class="pa-0">
 
         <!-- Page Header -->
-        <v-sheet class="text-center text-shadow white--text" color="primary lighten-2">
+        <v-sheet class="text-center text-shadow-light white--text" color="primary lighten-2">
 
           <h1 :class="{'display-2 font-weight-bold pt-6 pb-3': $breakpoint.mdAndUp, 'display-1 font-weight-bold pt-6 pb-3': $breakpoint.smAndDown}">
             Give your time
@@ -39,41 +39,44 @@
                     <v-container class="py-0">
                       <v-row>
                         <v-col class="py-0">
-                          <ul>
+                          <ul class="pl-0">
                             <li v-for="event in eventsByDateOld" :key="event.id">
                               <h3 class="mb-3 pl-6">
                                 {{ listDate(event.start) }}
                               </h3>
-                              <v-card class="d-flex mb-6" hover>
+                              <v-card class="d-flex flex-column flex-sm-row mb-6" :height="$breakpoint.mdAndUp ? '12.5rem' : '100%'" hover>
                                 <v-container class="pa-0" fluid>
-                                <v-img
-                                  alt="event image"
-                                  src="https://picsum.photos/300/300"
-                                  height="200px"
-                                />
+                                  <v-img
+                                    alt="event image"
+                                    src="https://picsum.photos/300/300"
+                                    :height="$breakpoint.mdAndUp ? '100%' : '200px'"
+                                  />
                                 </v-container>
-                               <v-container>
-                                <v-card-title class="pt-0">
-                                  {{ event.name }}
-                                </v-card-title>
-                                <v-card-subtitle class="subtitle-1 py-0">
-                                  {{ listTime(event.start) }}
-                                </v-card-subtitle>
-                                <v-card-text v-if="event.creator_name" class="subtitle-1">
-                                  Hosted by {{ event.creator_name }}
-                                </v-card-text>
-                                <v-card-text class="body-1">
-                                  {{ event.attendees.length }} Volunteers Going
-                                </v-card-text>
-                                <v-btn
-                                  :to="'/events/' + event.id"
-                                  class="ml-3 mb-3"
-                                  color="primary"
-                                  nuxt
-                                >
-                                  More...
-                                </v-btn>
-                               </v-container>
+                                <v-container>
+                                  <v-card-title class="py-0 mb-4">
+                                    {{ event.name }}
+                                  </v-card-title>
+                                  <v-card-subtitle class="subtitle-1 py-0">
+                                    {{ listTime(event.start) }}
+                                  </v-card-subtitle>
+                                  <v-card-text v-if="event.creator_name" class="subtitle-1 py-0">
+                                    Hosted by {{ event.creator_name }}
+                                  </v-card-text>
+                                  <v-card-text v-if="event.attendees" class="body-1">
+                                    {{ event.attendees.length }} Volunteers Going
+                                  </v-card-text>
+                                  <v-card-text v-if="!event.attendees" class="body-1">
+                                    No Volunteers
+                                  </v-card-text>
+                                  <v-btn
+                                    :to="'/events/' + event.id"
+                                    class="ml-3 mb-3"
+                                    color="primary"
+                                    nuxt
+                                  >
+                                    More...
+                                  </v-btn>
+                                </v-container>
                               </v-card>
                             </li>
                           </ul>
@@ -83,66 +86,23 @@
                   </v-col>
 
                   <v-col sm="5">
-                    <v-sheet class="elevation-3">
-                      <!-- Calendar Header -->
-                      <v-sheet height="64">
-                        <v-toolbar flat color="white">
+                    <!-- Add Event Button -->
+                    <v-card class="add-new-event" color="transparent" flat>
+                      <p class="d-flex align-center justify-center">
+                        <v-icon class="mr-3" size="32" color="black">
+                          mdi-calendar-plus
+                        </v-icon>
+                        <span class="headline">
+                          Create New Event
+                        </span>
+                      </p>
+                    </v-card>
 
-                          <!-- Focus Current Date -->
-                          <v-btn @click="setToday" class="mr-4" outlined >
-                            Today
-                          </v-btn>
-
-                          <!-- Prev/Next Month Buttons -->
-                          <v-btn @click="prev" fab text small>
-                            <v-icon small>
-                              mdi-chevron-left
-                            </v-icon>
-                          </v-btn>
-                          <v-btn @click="next" fab text small>
-                            <v-icon small>
-                              mdi-chevron-right
-                            </v-icon>
-                          </v-btn>
-
-                          <!-- Month Display -->
-                          <v-toolbar-title>{{ title }}</v-toolbar-title>
-
-                        </v-toolbar>
-                      </v-sheet>
-                      <v-calendar
-                        ref="miniCal"
-                        v-model="focus"
-                        :now="today"
-                        @change="updateRange"
-                        color="primary"
-                        event-color="primary"
-                        type="month"
-                      />
-                    </v-sheet>
+                    <!-- Event Calendar -->
+                    <EventCalendar />
                   </v-col>
                 </v-row>
               </v-container>
-            </v-col>
-
-          </v-row>
-          <v-row>
-
-            <v-col>
-              <!-- Add Event Button -->
-              <v-card class="ml-12" color="transparent" flat>
-                <p class="d-flex align-center">
-                  <v-icon class="mr-2">
-                    mdi-calendar-plus
-                  </v-icon>
-                  <span class="headline">
-                    New Event
-                  </span>
-                </p>
-              </v-card>
-
-              <!-- Event Calendar -->
-              <EventCalendar />
             </v-col>
 
           </v-row>
@@ -202,18 +162,7 @@ export default {
       return `${startMonth} ${startYear}`;
     },
   },
-  watch: {
-    // return temporary array of events from newest to oldest
-    eventsByDateNew () {
-      return this.spaceEvents.slice().sort((a, b) => new Date(b.start) - new Date(a.start))
-    },
-    // return temporary array of events from oldest to newest
-    eventsByDateOld () {
-      return this.spaceEvents.slice().sort((a, b) => new Date(a.start) - new Date(b.start))
-    },
-  },
   mounted () {
-    this.$refs.miniCal.checkChange();
     this.fetchSpaceEvents();
     this.getSpaceEventAttendeesByEvent(this.spaceEvents);
   },

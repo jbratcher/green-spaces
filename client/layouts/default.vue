@@ -157,9 +157,15 @@ body {
 
 ul, ol {
   list-style-type: none;
+  padding-left: 0;
 }
 
 .v-application {
+
+  ul, ol {
+      padding-left: 0;
+    }
+
   a {
     text-decoration: none;
   }
@@ -212,6 +218,9 @@ ul, ol {
 
 .text-shadow {
   text-shadow: 2px 2px 4px #000;
+  &-light {
+    text-shadow: 1px 1px 2px #000;
+  }
 }
 
 

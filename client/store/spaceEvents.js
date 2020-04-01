@@ -117,26 +117,33 @@ export const mutations = {
   setNewSpaceEventImageSource (state, imageSource) {
     state.newSpaceEventImageSource = imageSource;
   },
-  setUpdatedSpaceEventName (state, { selectedEvent, name }) {
-    selectedEvent.name = name;
+  setUpdatedSpaceEventName (state, { spaceEvent, name }) {
+    spaceEvent.name = name;
+    state.spaceEvent.name = name;
   },
-  setUpdatedSpaceEventDescription (state, { selectedEvent, description }) {
-    selectedEvent.description = description;
+  setUpdatedSpaceEventDescription (state, { spaceEvent, description }) {
+    spaceEvent.description = description;
+    state.spaceEvent.description = description;
   },
-  setUpdatedSpaceEventStart (state, { selectedEvent, start }) {
-    selectedEvent.start = start;
+  setUpdatedSpaceEventStart (state, { spaceEvent, start }) {
+    spaceEvent.start = start;
+    state.spaceEvent.start = start;
   },
-  setUpdatedSpaceEventEnd (state, { selectedEvent, end }) {
-    selectedEvent.end = end;
+  setUpdatedSpaceEventEnd (state, { spaceEvent, end }) {
+    spaceEvent.end = end;
+    state.spaceEvent.end = end;
   },
-  setUpdatedSpaceEventAddressName (state, { selectedEvent, addressName }) {
-    selectedEvent.address_name = addressName;
+  setUpdatedSpaceEventAddressName (state, { spaceEvent, addressName }) {
+    spaceEvent.address_name = addressName;
+    state.spaceEvent.address_name = addressName;
   },
-  setUpdatedSpaceEventFullAddress (state, { selectedEvent, fullAddress }) {
-    selectedEvent.full_address = fullAddress;
+  setUpdatedSpaceEventFullAddress (state, { spaceEvent, fullAddress }) {
+    spaceEvent.full_address = fullAddress;
+    state.spaceEvent.full_address = fullAddress;
   },
-  setUpdatedSpaceEventAddressImageSource (state, { selectedEvent, imageSource }) {
-    selectedEvent.image_source = imageSource;
+  setUpdatedSpaceEventImageSource (state, { spaceEvent, imageSource }) {
+    spaceEvent.image_source = imageSource;
+    state.spaceEvent.image_source = imageSource;
   },
   setSpaceEventAttendeesFromDB (state, { selectedEvent, attendees }) {
     // console.log(`DB attendees: ${JSON.stringify(attendees)}`);

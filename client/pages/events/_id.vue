@@ -1,63 +1,193 @@
 <template>
-  <v-layout>
-    <v-col>
+  <v-container class="pa-0" fluid>
+    <v-row>
+      <v-col class="pa-0">
 
-      <v-card class="d-flex flex-column align-center mx-auto" width="80vw">
+        <v-card class="d-flex flex-column align-center mx-auto" flat :width="$breakpoint.mdAndUp ? '80vw' : '90vw'">
+          <v-img
+            :src="spaceEvent.image_source"
+            lazy-src="https://picsum.photos/id/977/1280/920"
+            width="1280"
+            max-height="300"
+            cover
+          />
 
-        <v-img
-          :src="spaceEvent.image_source"
-          lazy-src="https://picsum.photos/id/977/1280/920"
-          width="1280"
-          max-height="300"
-        />
+          <!-- Edit Mode -->
+          <v-container v-if="user.id === spaceEvent.creator_id" class="d-flex justify-end">
+            <!-- Edit/Cancel Edit Event Button -->
+              <v-btn
+                @click="toggleEditMode"
+                :color="editMode ? 'warning' : 'secondary'"
+              >
+                <v-icon>
+                  {{ editMode ? 'mdi-pencil-off' : 'mdi-pencil' }}
+                </v-icon>
+              </v-btn>
+              <!-- Update Event -->
+              <v-btn
+                v-if="editMode"
+                @click="updateEvent"
+                color="primary darken-2"
+              >
+                <v-icon>
+                  mdi-content-save
+                </v-icon>
+              </v-btn>
+          </v-container>
 
-        <v-card-title class="display-1">
-          {{ spaceEvent.name }}
-        </v-card-title>
+          <!-- Edit Event Info -->
 
-        <v-card-subtitle class="subtitle-1">
-          {{ spaceEvent.start }}
-        </v-card-subtitle>
+          <!-- Edit Mode -->
+          <v-container v-if="editMode">
+            <v-text-field
+              :value="spaceEvent.name"
+              :counter="50"
+              :rules="nameRules"
+              @input="setUpdatedSpaceEventName({ spaceEvent, name: $event })"
+              label="Name"
+              required
+            />
+            <v-textarea
+              :value="spaceEvent.description"
+              :rules="descriptionRules"
+              :counter="1000"
+              @input="setUpdatedSpaceEventDescription({ spaceEvent, description: $event })"
+              label="Description"
+              name="Description"
+              auto-grow
+              required
+            />
+            <datetime
+              v-model="startDateTime"
+              type="datetime"
+              value-zone="local"
+              zone="local"
+              use12-hour
+              minute-step="15"
+              color="primary"
+              required
+            />
+            <datetime
+              v-model="endDateTime"
+              type="datetime"
+              value-zone="local"
+              zone="local"
+              use12-hour
+              minute-step="15"
+              color="primary"
+            />
+            <v-textarea
+              :value="spaceEvent.address_name"
+              :rules="addressNameRules"
+              :counter="1000"
+              @input="setUpdatedSpaceEventAddressName({ spaceEvent, addressName: $event })"
+              label="Address Name"
+              name="AddressName"
+              auto-grow
+              required
+            />
+            <v-textarea
+              :value="spaceEvent.full_address"
+              :rules="fullAddressRules"
+              :counter="1000"
+              @input="setUpdatedSpaceEventFullAddress({ spaceEvent, fullAddress: $event })"
+              label="Full Address"
+              name="FullAddress"
+              auto-grow
+              required
+            />
+            <v-textarea
+              :value="spaceEvent.image_source"
+              :rules="imageSourceRules"
+              :counter="1000"
+              @input="setUpdatedSpaceEventImageSource({ spaceEvent, imageSource: $event })"
+              label="Image Source"
+              name="ImageSource"
+              auto-grow
+              required
+            />
+          </v-container>
 
-        <v-card-title class="display-1">
-          {{ spaceEvent.address_name }}
-        </v-card-title>
+          <!-- Event Info -->
+          <v-container v-if="!editMode">
+            <!-- Event Name -->
+            <v-card-title :class="{'display-1 font-weight-bold': $breakpoint.mdAndUp, 'headline font-weight-bold': $breakpoint.smAndDown}">
+              {{ spaceEvent.name }}
+            </v-card-title>
+            <!-- Event Date & Time -->
+            <v-card-subtitle class="subtitle-1">
+              {{ spaceEvent.start }}
+            </v-card-subtitle>
+            <!-- Event Location Name -->
+            <v-card-text :class="{'headline': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+              {{ spaceEvent.address_name }}
+            </v-card-text>
+            <!-- Event Location Address -->
+            <v-card-text :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}">
+              {{ spaceEvent.full_address }}
+            </v-card-text>
+            <!-- Event Description -->
+            <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+              {{ spaceEvent.description }}
+            </v-card-text>
+            <!-- Volunteer List -->
+            <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">Volunteers RSVP'd</v-card-text>
+            <ul>
+              <li v-for="user in spaceEvent.attendees" :key="user.id">
+                <v-avatar size="48">
+                  <v-img
+                    :src="user.profile_image_source"
+                  />
+                </v-avatar>
+                <p>{{ user.full_name }}</p>
+              </li>
+            </ul>
+          </v-container>
+        </v-card>
 
-        <v-card-title class="display-1">
-          {{ spaceEvent.full_address }}
-        </v-card-title>
-
-        <v-card-text class="headline">
-          {{ spaceEvent.description }}
-        </v-card-text>
-
-        <v-card-text class="volunteer-list">
-          <h3>Volunteers RSVP'd</h3>
-          <ul class="attendee-list">
-            <li v-for="user in spaceEvent.attendees" :key="user.id">
-              <v-avatar size="48">
-                <v-img
-                  :src="user.profile_image_source"
-                />
-              </v-avatar>
-              <p>{{ user.full_name }}</p>
-            </li>
-          </ul>
-        </v-card-text>
-
-      </v-card>
-
-    </v-col>
-  </v-layout>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
+import { mapActions, mapMutations, mapState } from 'vuex';
+import { Datetime } from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
 
 export default {
-  data: () => ({
-
-  }),
+  components: {
+    datetime: Datetime,
+  },
+  data: function () {
+    return {
+      date: new Date().toJSON(),
+      endDateTime: new Date().toJSON(),
+      editMode: false,
+      startDateTime: new Date().toJSON(),
+      valid: true,
+      nameRules: [
+        v => !!v || 'Name is required',
+        v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+      ],
+      descriptionRules: [
+        v => !!v || 'Description is required',
+        v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
+      ],
+      addressNameRules: [
+        v => !!v || 'Address Name is required',
+        v => (v && v.length <= 1000) || 'Address Name must be less than 1000 characters',
+      ],
+      fullAddressRules: [
+        v => !!v || 'Full Address is required',
+        v => (v && v.length <= 1000) || 'Full Address must be less than 1000 characters',
+      ],
+      imageSourceRules: [
+        v => !!v || 'Image Source is required',
+        v => (v && v.length <= 1000) || 'Image Source must be less than 1000 characters',
+      ],
+    }
+  },
   computed: {
     ...mapState('spaceEvents', [
       'spaceEvent',
@@ -77,28 +207,27 @@ export default {
     ...mapActions('spaceEvents', [
       'fetchSpaceEventById',
       'fetchSpaceEventAttendees',
+      'updateSpaceEvent'
     ]),
+    ...mapMutations('spaceEvents', [
+      'setUpdatedSpaceEventName',
+      'setUpdatedSpaceEventDescription',
+      'setUpdatedSpaceEventStart',
+      'setUpdatedSpaceEventEnd',
+      'setUpdatedSpaceEventAddressName',
+      'setUpdatedSpaceEventFullAddress',
+      'setUpdatedSpaceEventImageSource',
+    ]),
+    toggleEditMode () {
+      this.editMode = !this.editMode;
+    },
+    updateEvent () {
+      this.updateSpaceEvent(this.spaceEvent);
+      this.editMode = false;
+    }
   },
 }
 </script>
 
 <style lang="scss">
-
-  .volunteer-list {
-    h3 {
-      font-size: 1.5rem;
-      margin-bottom: 2rem;
-    }
-    ul li {
-      display: flex;
-      align-items: center;
-      .v-image {
-        margin-right: 1rem;
-      }
-      p {
-        margin-bottom: 0;
-      }
-    }
-  }
-
 </style>

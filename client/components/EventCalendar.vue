@@ -1,5 +1,5 @@
 <template>
-  <v-container class="px-12">
+  <v-container>
     <v-row>
       <v-col>
 
@@ -27,99 +27,40 @@
             <!-- Month Display -->
             <v-toolbar-title>{{ title }}</v-toolbar-title>
 
-            <v-spacer />
-
-            <!-- Change Calendar Type -->
-            <v-menu bottom right>
-              <template v-slot:activator="{ on }">
-                <v-btn
-                  v-on="on"
-                  outlined
-                >
-                  <span>{{ typeToLabel[type] }}</span>
-                  <v-icon right>
-                    mdi-menu-down
-                  </v-icon>
-                </v-btn>
-              </template>
-              <v-list>
-                <v-list-item @click="type = 'day'">
-                  <v-list-item-title>Day</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="type = 'week'">
-                  <v-list-item-title>Week</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="type = 'month'">
-                  <v-list-item-title>Month</v-list-item-title>
-                </v-list-item>
-                <v-list-item @click="type = '4day'">
-                  <v-list-item-title>4 days</v-list-item-title>
-                </v-list-item>
-              </v-list>
-            </v-menu>
           </v-toolbar>
         </v-sheet>
 
         <!-- Calendar Content -->
-        <v-sheet class="elevation-3" height="600">
-          <v-calendar
-            ref="calendar"
-            v-model="focus"
-            :events="spaceEvents"
-            :event-margin-bottom="3"
-            :now="today"
-            :type="type"
-            @click:event="showEvent"
-            @click:more="viewDay"
-            @click:date="viewDay"
-            @change="updateRange"
-            color="primary"
-            event-color="primary"
-          />
-
-        </v-sheet>
+        <v-calendar
+          ref="calendar"
+          v-model="focus"
+          :events="spaceEvents"
+          :event-margin-bottom="3"
+          :now="today"
+          @click:event="showEvent"
+          @change="updateRange"
+          color="primary"
+          event-color="primary"
+        />
 
       </v-col>
     </v-row>
-
-    <!-- Selected Event Modal -->
-    <SelectedEventModal
-      :selected-open="selectedOpen"
-      :selected-element="selectedElement"
-      :selected-event="selectedEvent"
-      @toggleOpen="toggleOpen"
-    />
 
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapMutations, mapState } from 'vuex';
-import SelectedEventModal from '../components/SelectedEventModal.vue';
 
 export default {
-  components: {
-    SelectedEventModal,
-  },
   data: () => ({
     date: new Date().toJSON(),
     startDateTime: new Date().toJSON(),
     endDateTime: new Date().toJSON(),
-    editMode: false,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
     start: null,
-    selectedElement: null,
-    selectedEvent: {},
-    selectedOpen: false,
     today: new Date().toISOString().substr(0, 10),
-    type: 'month',
-    typeToLabel: {
-      month: 'Month',
-      week: 'Week',
-      day: 'Day',
-      '4day': '4 Days',
-    },
     valid: true,
     nameRules: [
       v => !!v || 'Name is required',
@@ -163,23 +104,8 @@ export default {
         return ''
       }
       const startMonth = this.monthFormatter(start)
-      const endMonth = this.monthFormatter(end)
-      const suffixMonth = startMonth === endMonth ? '' : endMonth
       const startYear = start.year
-      const endYear = end.year
-      const suffixYear = startYear === endYear ? '' : endYear
-      const startDay = start.day + this.nth(start.day)
-      const endDay = end.day + this.nth(end.day)
-      switch (this.type) {
-        case 'month':
-          return `${startMonth} ${startYear}`
-        case 'week':
-        case '4day':
-          return `${startMonth} ${startDay} ${startYear} - ${suffixMonth} ${endDay} ${suffixYear}`
-        case 'day':
-          return `${startMonth} ${startDay} ${startYear}`
-      }
-      return ''
+      return `${startMonth} ${startYear}`
     },
     monthFormatter () {
       return this.$refs.calendar.getFormatter({
@@ -201,7 +127,6 @@ export default {
     selectedEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
-      // this.selectedOpen = this.selectedEvent.attendees.filter(attee)
     }
   },
   created () {
@@ -249,23 +174,8 @@ export default {
     next () {
       this.$refs.calendar.next()
     },
-    // have to click twice to open modal?
     showEvent ({ nativeEvent, event }) {
-      const open = () => {
-        this.selectedEvent = event;
-        this.selectedElement = nativeEvent.target;
-        this.selectedOpen = true;
-        setTimeout(() => this.selectedOpen = true, 10)
-        this.setSpaceEvent(this.selectedEvent);
-      }
-      console.log(`Before Condition: ${this.selectedOpen}`);
-      if (this.selectedOpen) {
-        this.selectedOpen = false
-        setTimeout(open, 10)
-      } else {
-        open()
-      }
-      console.log(`After Condition: ${this.selectedOpen}`);
+      this.$router.push(`/events/${event.id}`)
       nativeEvent.stopPropagation()
     },
     toggleOpen (openBoolean) {
@@ -280,25 +190,6 @@ export default {
         ? 'th'
         : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
     },
-    cancelEventEdit () {
-      this.fetchSpaceEvents();
-      this.resetEventForm();
-    },
-    deleteEvent () {
-      this.deleteSpaceEvent(this.selectedEvent);
-      this.resetEventForm();
-    },
-    enterEditMode () {
-      this.editMode = true;
-    },
-    resetEventForm () {
-      this.selectedOpen = false;
-      this.editMode = false;
-    },
-    updateEvent () {
-      this.updateSpaceEvent(this.selectedEvent);
-      this.resetEventForm();
-    }
   }
 }
 </script>

@@ -87,7 +87,7 @@
           <v-row>
             <v-col class="col-12 col-md-6 d-flex align-center justify-center">
               <v-btn
-                :class="{'display-1 py-6 px-6': $breakpoint.mdAndUp, 'headline py-3 px-6': $breakpoint.smAndDown}"
+                :class="{'headline py-6 px-6': $breakpoint.mdAndUp, 'title py-3 px-6': $breakpoint.smAndDown}"
                 color="primary"
                 nuxt
                 to="/donate"
@@ -118,13 +118,13 @@
             </v-col>
             <v-col class="col-12 col-md-6 d-flex align-center justify-center order-xs-first order-sm-last">
               <v-btn
-                :class="{'display-1 py-6 px-6': $breakpoint.mdAndUp, 'headline py-3 px-6': $breakpoint.smAndDown}"
+                :class="{'headline py-6 px-6': $breakpoint.mdAndUp, 'title py-3 px-6': $breakpoint.smAndDown}"
                 color="primary"
                 nuxt
                 to="/volunteer"
                 x-large
               >
-                Become a volunteer today
+                Become a volunteer
               </v-btn>
             </v-col>
           </v-row>
