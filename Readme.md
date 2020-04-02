@@ -1,54 +1,28 @@
-# GreenSpaces
+# Adonis API application
 
-### Crowd-sourced tree planting for climate control
+This is the boilerplate for creating an API server in AdonisJs, it comes pre-configured with.
 
-GreenSpaces is an event management system for planting trees in public and private
-spaces that connects event, spaces, and volunteers.
+1. Bodyparser
+2. Authentication
+3. CORS
+4. Lucid ORM
+5. Migrations and seeds
 
-Help create more green space in your community by donating spaces and volunteering for planting events to combat climate change by reducing carbon dioxide from the air.
+## Setup
 
-Built with AdonisJS, NuxtJS, and Vuetify.
+Use the adonis command to install the blueprint
 
-Features:
-* User authentication
-* Calendar of volunteer events
-* Create/modify/delete events
-* RSVP to events
-* List event attendees by avatar and name
-* List number of attendees for event
-* User profile pages
-* Event information pages
-
-Getting Started
-```
-git clone https://github.com/jbratcher/green-spaces
-cd server and npm install
-cp .env.example .env and add db info to .env
-cd ../client and npm install
+```bash
+adonis new yardstick --api-only
 ```
 
-The repo seperates the client and server explicitly and each is contained within its own folder.
+or manually clone the repo and then run `npm install`.
 
-To start the API dev server
+
+### Migrations
+
+Run the following command to run startup migrations.
+
+```js
+adonis migration:run
 ```
-cd /serve
-adonis serve --dev from server folder
-
-
-To start the client server
-```
-cd /client
-npm dev from client folder
-```
-
-Future Features:
-* More details for events
-* list of available spaces to create and manage events
-* Entire donate section
-* Make monetary donations
-* list donor spaces for tree planting
-* benefits to donors (free trees by volunteering space to plant)
-* earmark monetary donations for spaces or tree types
-
-Known bugs:
-* Page refresh redirects to homepage (vuex router)
