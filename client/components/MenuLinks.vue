@@ -1,20 +1,17 @@
 /* eslint-disable */
 <template>
-
   <!-- Links Wrapper -->
-  <v-list :class="listClass">
-
+  <v-list :class="listClass" color="primary">
     <!-- General links -->
     <v-list-item
       v-for="(item, i) in generalLinks"
       :key="i + `-${item.title}`"
       :to="item.to"
       :class="listItemClass"
-      dark
       router
       exact
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           {{ item.icon }}
         </v-icon>
@@ -34,7 +31,7 @@
         router
         exact
       >
-        <v-list-item-action>
+        <v-list-item-action class="mr-2">
           <v-icon>
             {{ item.icon }}
           </v-icon>
@@ -51,7 +48,7 @@
       :class="listItemClass"
       @click="logout"
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           mdi-logout
         </v-icon>
@@ -70,7 +67,7 @@
       router
       exact
     >
-      <v-list-item-action>
+      <v-list-item-action class="mr-2">
         <v-icon>
           mdi-account
         </v-icon>
@@ -81,9 +78,7 @@
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
-
   </v-list>
-
 </template>
 
 <script>

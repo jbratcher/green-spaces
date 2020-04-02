@@ -1,206 +1,241 @@
 <template>
-  <v-row class="fill-height">
-    <v-col>
+  <v-container>
+    <v-row>
+      <v-col>
 
-      <!-- Selected Event Modal -->
-      <v-menu
-        v-model="selectedOpen"
-        :close-on-content-click="false"
-        :activator="selectedElement"
-        :color="selectedEvent.color"
-      >
+        <!-- Selected Event Modal -->
+        <v-menu
+          v-model="selectedOpen"
+          :activator="selectedElement"
+          :close-on-content-click="false"
+          :color="selectedEvent.color"
+          top
+          transition="slide-y-transition"
+        >
 
-        <!-- Event/Form Display  -->
-        <v-card class="d-flex flex-column">
+          <!-- Event/Form Display  -->
+          <v-card class="d-flex flex-column">
 
-          <!-- Header -->
-          <v-card-title class="headline primary white--text justify-space-between">
-            <h2
+            <!-- Header -->
+            <v-card-title
               v-if="!editMode"
+              :class="{'headline primary white--text justify-space-between': $breakpoint.mdAndUp, 'display-1 primary white--text justify-space-between': $breakpoint.smAndDown }"
             >
               {{ selectedEvent.name }}
-            </h2>
-            <h2
+              <v-btn
+                @click="cancelEventEdit"
+                color="primary darken-2"
+                fab
+              >
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-btn>
+            </v-card-title>
+            <v-card-title
               v-if="editMode"
+              :class="{'headline font-weight-regular primary white--text justify-space-between': $breakpoint.mdAndUp, 'display-1 primary white--text justify-space-between': $breakpoint.smAndDown }"
             >
               Edit {{ selectedEvent.name }}
-            </h2>
+              <v-btn
+                @click="cancelEventEdit"
+                color="primary darken-2"
+                fab
+              >
+                <v-icon>
+                  mdi-close
+                </v-icon>
+              </v-btn>
+            </v-card-title>
 
-            <v-btn
-              @click="cancelEventEdit"
-              color="primary darken-2"
-              fab
-            >
-              <v-icon>
-                mdi-close
-              </v-icon>
-            </v-btn>
-          </v-card-title>
+            <!-- Body -->
+            <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
+              <v-card-subtitle
+                v-text="eventDate"
+                :class="{'body-1 font-weight-regular pt-0': $breakpoint.mdAndUp, 'title font-weight-regular pt-0': $breakpoint.smAndDown}"
+              />
+              <v-card-text
+                v-text="selectedEvent.description"
+                :class="{'body-1 font-weight-regular': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}"
+              />
+              <v-card-text :class="{'body-1 font-weight-regular': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+                Volunteers: {{ volunteersCount }}
+              </v-card-text>
+              <v-card-text>
+                <ul>
+                  <li v-for="user in selectedEvent.attendees" :key="user.id" class="d-flex align-center mb-3">
+                    <v-avatar class="mr-3" size="32">
+                      <v-img
+                        :src="user.profile_image_source"
+                      />
+                    </v-avatar>
+                    <p class="subtitle-1 mb-0">{{ user.full_name }}</p>
+                  </li>
+                </ul>
+              </v-card-text>
+            </v-container>
 
-          <!-- Body -->
-          <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
-            <v-card-text
-              v-text="eventDate"
-              class="py-0"
-            />
-            <v-card-text
-              v-text="selectedEvent.description"
-              class="event-description"
-            />
-            <v-card-text class="subtitle">
-              Volunteers: {{ volunteersCount }}
-            </v-card-text>
-            <v-card-text>
-              <ul class="attendee-list">
-                <li v-for="user in selectedEvent.attendees" :key="user.id">
-                  <v-avatar size="32">
-                    <v-img
-                      :src="user.profile_image_source"
-                    />
-                  </v-avatar>
-                  <p>{{ user.full_name }}</p>
-                </li>
-              </ul>
-            </v-card-text>
-          </v-container>
+            <!-- Edit Mode -->
+            <v-container v-if="editMode">
+              <v-text-field
+                :value="selectedEvent.name"
+                :counter="50"
+                :rules="nameRules"
+                @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
+                label="Name"
+                required
+              />
+              <v-textarea
+                :value="selectedEvent.description"
+                :rules="descriptionRules"
+                :counter="1000"
+                @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
+                label="Description"
+                name="Description"
+                auto-grow
+                required
+              />
+              <datetime
+                v-model="startDateTime"
+                type="datetime"
+                value-zone="local"
+                zone="local"
+                use12-hour
+                minute-step="15"
+                color="primary"
+                required
+              />
+              <datetime
+                v-model="endDateTime"
+                type="datetime"
+                value-zone="local"
+                zone="local"
+                use12-hour
+                minute-step="15"
+                color="primary"
+              />
+              <v-textarea
+                :value="selectedEvent.address_name"
+                :rules="addressNameRules"
+                :counter="1000"
+                @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
+                label="Address Name"
+                name="AddressName"
+                auto-grow
+                required
+              />
+              <v-textarea
+                :value="selectedEvent.full_address"
+                :rules="fullAddressRules"
+                :counter="1000"
+                @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
+                label="Full Address"
+                name="FullAddress"
+                auto-grow
+                required
+              />
+              <v-textarea
+                :value="selectedEvent.image_source"
+                :rules="imageSourceRules"
+                :counter="1000"
+                @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
+                label="Image Source"
+                name="ImageSource"
+                auto-grow
+                required
+              />
+            </v-container>
 
-          <!-- Edit Mode -->
-          <v-container v-if="editMode">
-            <v-text-field
-              :value="selectedEvent.name"
-              :counter="50"
-              :rules="nameRules"
-              @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
-              label="Name"
-              required
-            />
-            <v-textarea
-              :value="selectedEvent.description"
-              :rules="descriptionRules"
-              :counter="1000"
-              @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
-              label="Description"
-              name="Description"
-              auto-grow
-              required
-            />
-            <datetime
-              v-model="startDateTime"
-              type="datetime"
-              value-zone="local"
-              zone="local"
-              use12-hour
-              minute-step="15"
-              color="primary"
-              required
-            />
-            <datetime
-              v-model="endDateTime"
-              type="datetime"
-              value-zone="local"
-              zone="local"
-              use12-hour
-              minute-step="15"
-              color="primary"
-            />
-            <v-textarea
-              :value="selectedEvent.address_name"
-              :rules="addressNameRules"
-              :counter="1000"
-              @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
-              label="Address Name"
-              name="AddressName"
-              auto-grow
-              required
-            />
-            <v-textarea
-              :value="selectedEvent.full_address"
-              :rules="fullAddressRules"
-              :counter="1000"
-              @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
-              label="Full Address"
-              name="FullAddress"
-              auto-grow
-              required
-            />
-            <v-textarea
-              :value="selectedEvent.image_source"
-              :rules="imageSourceRules"
-              :counter="1000"
-              @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
-              label="Image Source"
-              name="ImageSource"
-              auto-grow
-              required
-            />
-          </v-container>
+            <v-divider v-if="user.id === selectedEvent.creator_id" />
 
-          <v-divider v-if="user.id === selectedEvent.user_id" />
+            <!-- Actions -->
+            <v-card-actions>
+              <v-spacer />
+              <!-- More info button -->
+              <v-btn
+                :to="'/events/' + selectedEvent.id"
+                color="primary lighten-1"
+                dark
+                fab
+                absolute
+                bottom
+                left
+                nuxt
+              >
+                <v-icon>
+                  mdi-dots-horizontal
+                </v-icon>
+              </v-btn>
+              <!-- Edit/Cancel Edit Event Button -->
+              <v-btn
+                v-if="user.id === selectedEvent.creator_id"
+                @click="toggleEditMode"
+                :color="editMode ? 'warning' : 'secondary'"
+                class="edit-btn"
+                dark
+                fab
+                absolute
+                bottom
+                right
+              >
+                <v-icon>
+                  {{ editMode ? 'mdi-pencil-off' : 'mdi-pencil' }}
+                </v-icon>
+              </v-btn>
+              <!-- Update Event -->
+              <v-btn
+                v-if="editMode"
+                @click="updateEvent"
+                color="primary darken-2"
+                class="update-btn"
+                dark
+                fab
+                absolute
+                bottom
+                right
+              >
+                <v-icon>
+                  mdi-content-save
+                </v-icon>
+              </v-btn>
+              <!-- Update Event -->
+              <v-btn
+                v-if="editMode"
+                @click="deleteEvent"
+                color="error"
+                class="delete-btn"
+                dark
+                fab
+                absolute
+                bottom
+                right
+              >
+                <v-icon>
+                  mdi-trash-can
+                </v-icon>
+              </v-btn>
+              <!-- RSVP Button -->
+              <v-btn
+                v-if="!editMode"
+                @click="toggleUserAttending"
+                :color="rsvp ? 'warning' : 'primary'"
+                dark
+                fab
+                absolute
+                bottom
+                right
+              >
+                <v-icon>
+                  {{ rsvp ? 'mdi-account-minus' : 'mdi-account-plus' }}
+                </v-icon>
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
 
-          <!-- Actions -->
-          <v-card-actions>
-            <v-spacer />
-            <v-btn
-              v-if="!editMode && user.id === selectedEvent.user_id"
-              @click="enterEditMode"
-              color="primary"
-            >
-              Edit
-            </v-btn>
-            <v-btn
-              v-if="editMode && user.id === selectedEvent.user_id"
-              @click="cancelEventEdit"
-              color="info"
-            >
-              Cancel
-            </v-btn>
-            <v-btn
-              v-if="editMode"
-              @click="updateEvent"
-              color="primary darken-2"
-            >
-              Save
-            </v-btn>
-            <v-btn
-              v-if="editMode"
-              @click="deleteEvent"
-              color="error"
-            >
-              Delete
-            </v-btn>
-            <v-btn
-              :to="'/events/' + selectedEvent.id"
-              color="primary lighten-1"
-              dark
-              fab
-              absolute
-              bottom
-              left
-              nuxt
-            >
-              <v-icon>
-                mdi-dots-horizontal
-              </v-icon>
-            </v-btn>
-            <v-btn
-              @click="toggleUserAttending"
-              :color="rsvp ? 'warning' : 'primary'"
-              dark
-              fab
-              absolute
-              bottom
-              right
-            >
-              <v-icon>
-                {{ rsvp ? 'mdi-close' : 'mdi-plus' }}
-              </v-icon>
-            </v-btn>
-          </v-card-actions>
-        </v-card>
-      </v-menu>
-
-    </v-col>
-  </v-row>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
@@ -232,7 +267,6 @@ export default {
       endDateTime: new Date().toJSON(),
       editMode: false,
       startDateTime: new Date().toJSON(),
-      switch1: false,
       valid: true,
       nameRules: [
         v => !!v || 'Name is required',
@@ -297,8 +331,8 @@ export default {
     selectedEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
+      // check if not empty object
       if (!(Object.entries(this.selectedEvent).length === 0 && this.selectedEvent.constructor === Object)) {
-        console.log('set rsvp by user');
         this.setRsvpByUser({
           selectedEvent: this.selectedEvent,
           user: this.user,
@@ -310,9 +344,7 @@ export default {
   },
   mounted() {
     this.fetchSpaceEvents();
-    if (this.spaceEvents) {
-      this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
-    }
+    this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
   },
   methods: {
     ...mapActions('spaceEvents', [
@@ -345,7 +377,6 @@ export default {
       this.updateSpaceEventAttendees(this.selectedEvent);
     },
     cancelEventEdit () {
-      // this.fetchSpaceEvents();
       this.resetEventForm();
     },
     deleteEvent () {
@@ -355,13 +386,16 @@ export default {
     enterEditMode () {
       this.editMode = true;
     },
+    toggleEditMode () {
+      this.editMode = !this.editMode;
+    },
     resetEventForm () {
       this.editMode = false;
       this.$emit('toggleOpen', false);
     },
     updateEvent () {
       this.updateSpaceEvent(this.selectedEvent);
-      this.resetEventForm();
+      this.editMode = false;
     }
   }
 }
@@ -369,31 +403,12 @@ export default {
 
 <style lang="scss">
 
-  .event-description {
-    font-size: 1.25rem;
-  }
+.update-btn {
+  margin-right: 15%;
+}
 
-  .attendee-list {
-    color: #000;
-    font-size: 1.25rem;
-    font-weight: 300;
-    margin-bottom: 1.5rem;
+.edit-btn{
+  margin-right: 30%;
+}
 
-    li {
-      display: flex;
-      align-items: center;
-
-      .v-image {
-        margin-right: 1rem;
-      }
-      p {
-        margin-bottom: 0;
-      }
-
-    }
-  }
-
-  .subtitle {
-    font-size: 1.125rem;
-  }
 </style>

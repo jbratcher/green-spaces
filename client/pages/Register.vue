@@ -1,11 +1,10 @@
 <template>
-
   <v-container>
-    <v-layout row wrap>
-      <v-flex xs6 offset-xs3>
+    <v-row>
+      <v-col class="mx-auto col-9 col-md-6 py-12">
 
         <!-- User Sign Up Form -->
-        <h1>Register</h1>
+        <h1 :class="{'display-1 mb-12': $breakpoint.mdAndUp, 'headline mb-9': $breakpoint.smAndDown}">Register</h1>
 
         <v-text-field
           :value="firstName"
@@ -37,16 +36,15 @@
           {{ registerError }}
         </v-alert>
         <v-btn @click="register" dark>
-          <v-icon class="mr-5">
+          <v-icon class="mr-3">
             mdi-account-plus
           </v-icon>
           Register
         </v-btn>
 
-      </v-flex>
-    </v-layout>
+      </v-col>
+    </v-row>
   </v-container>
-
 </template>
 
 <script>

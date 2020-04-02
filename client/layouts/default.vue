@@ -2,40 +2,37 @@
   <v-app>
     <!-- Header Area -->
     <v-app-bar
-      app
-      color="rgba(0, 121, 107, 0.8)"
+      color="primary"
       dark
       elevate-on-scroll
-      fixed
+      height="fit-content"
       hide-on-scroll
-      scroll-threshold="100"
-      prominent
-      height="70px"
+      scroll-threshold="200"
     >
-      <v-toolbar-title class="align-self-center d-flex align-center">
-        <v-img class="invertColor" src="logo.svg" />
-        <p class="toolbar-title-text">
+      <v-toolbar-title class="d-flex align-self-center align-center">
+        <v-img class="invertColor" alt="tree logo" src="logo.svg" width="2rem" height="2rem" />
+        <p class="headline my-auto ml-3">
           GreenSpaces
         </p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up display-1" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up" />
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
-        list-class="row hidden-md-and-down"
-        list-item-class="row-menu"
+        list-class="hidden-sm-and-down d-md-flex"
+        list-item-class=""
       />
     </v-app-bar>
     <!-- side/mobile navigation -->
     <v-navigation-drawer
-      class="teal"
       v-model="drawer"
       :mini-variant="miniVariant"
+      class="primary"
+      app
+      dark
       disable-resize-watcher
       fixed
-      dark
-      app
       right
     >
       <MenuLinks
@@ -51,7 +48,7 @@
     </v-content>
     <!-- Footer Area -->
     <v-footer
-      color="primary"
+      color="primary lighten-2 "
       class="pa-0"
     >
       <v-row
@@ -59,8 +56,9 @@
         no-gutters
       >
         <v-btn
-          v-for="(link, i) in footerLinks"
+          v-for="(link, i) in generalLinks"
           :key="i + link.title"
+          :href="link.to"
           color="white"
           text
           rounded
@@ -69,7 +67,7 @@
           {{ link.title }}
         </v-btn>
         <v-col
-          class="primary lighten-2 py-4 text-center white--text"
+          class="primary py-4 text-center white--text"
           cols="12"
         >
           {{ new Date().getFullYear() }} — <strong>Green Spaces</strong>
@@ -90,32 +88,6 @@ export default {
     return {
       drawer: false,
       fixed: false,
-      footerLinks: [
-        {
-          title: 'Home',
-          to: '/'
-        },
-        {
-          title: 'About Us',
-          to: '/'
-        },
-        {
-          title: 'Team',
-          to: '/'
-        },
-        {
-          title: 'Services',
-          to: '/'
-        },
-        {
-          title: 'Blog',
-          to: '/'
-        },
-        {
-          title: 'Contact Us',
-          to: '/'
-        },
-      ],
       generalLinks: [
         {
           icon: 'mdi-apps',
@@ -149,100 +121,124 @@ export default {
 
 <style lang="scss">
 
-  html, body {
-    overflow-x: hidden;
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  font-size: 1rem; // fallback for older browsers
+  font-size: calc(1vw + 1vh + 0.5vmin); // fluid typography
+}
+
+html,
+body,
+.v-application {
+  font-family: 'Poppins', sans-serif;
+  line-height: 1.5;
+  word-break: keep-all;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: #eee;
+  min-width: 100vw;
+  overflow-x: hidden;
+}
+
+ul, ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.v-application {
+
+  ul, ol {
+      padding-left: 0;
+    }
+
+  a {
+    text-decoration: none;
   }
 
-  .v-application ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
+  .v-card__title,
+  .v-card__subtitle,
+  .v-card__text {
+    line-height: 1.5;
+    word-break: keep-all;
 
-  .v-application a {
-    color: #fff !important;
-  }
+    h1,
+    h2,
+    h3 {
+      margin-bottom: 1rem;
+    }
 
-  .v-list-item.row-menu {
-    flex: 1 1 0;
-  }
+    p > a {
+      color: #0d47a1;
+    }
 
-  .v-card__title {
-    word-break: break-word;
-  }
-
-  .text-shadow {
-    text-shadow: 2px 2px 4px #000;
-  }
-
-  .theme--dark.v-sheet {
-    background-color: transparent;
-  }
-
-  .btn-box-shadow-primary {
-    box-shadow: 0 0 8px rgba(0, 121, 107, 0.8);
-
-    &:hover {
-      box-shadow: none;
-      transition: all 0.5s ease;
+    p,
+    p + p,
+    ul {
+      font-size: 1rem;
+      margin-bottom: 2rem;
     }
 
   }
 
-  .btn-box-shadow-secondary {
-
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
-
-    &:hover {
-      box-shadow: none;
-      transition: all 0.5s ease;
+  .v-card__text {
+    pre {
+      margin-bottom: 2rem;
+      min-width: 100%;
+      code {
+        font-size: 0.75rem;
+        max-width: 100%;
+        min-width: 100%;
+        padding: 1rem;
+      }
+      code:before {
+        content: '';
+      }
     }
-
   }
+}
 
-  .v-icon.notranslate.mdi.mdi-menu.theme--dark {
-    font-size: 3rem;
-    margin-top: 0.33rem;
-    width: 3rem;
-    height: 3rem;
+.v-application a {
+  color: #fff !important;
+}
+
+.text-shadow {
+  text-shadow: 2px 2px 4px #000;
+  &-light {
+    text-shadow: 1px 1px 2px #000;
   }
+}
 
-  .v-toolbar__title {
 
-    .v-image {
-      width: 35px;
-      height: 35px;
-    }
+.justify-space-evenly {
+  justify-content: space-around;
+  justify-content: space-evenly;
+}
 
-    .toolbar-title-text {
-      font-size: 2.33rem;
-      margin: auto 0 auto 0.5rem;
-    }
+.gradient-overlay {
+  background-image:
+    linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
+    linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
+    url("../static/how-it-works.jpg");
+    background-position: center center;
+}
 
-  }
-
-  .justify-space-evenly {
-    justify-content: space-around;
-    justify-content: space-evenly;
-  }
-
-  .gradient-overlay {
-    background-image:
-      linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
-      linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
-      url("../static/how-it-works.jpg");
-      background-position: center center;
-  }
-
-  .invertColor {
-    filter: invert(1);
-  }
-
-  @media screen and (min-width: 768px) {
-
-    .toolbar-title-text {
-      font-size: 2.33rem;
-    }
-
-  }
+.invertColor {
+  filter: invert(1);
+}
 
 </style>

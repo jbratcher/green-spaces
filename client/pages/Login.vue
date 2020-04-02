@@ -1,11 +1,10 @@
 <template>
-
   <v-container>
-    <v-layout row wrap>
-      <v-col xs6 offset-xs3>
+    <v-row>
+      <v-col class="mx-auto col-9 col-md-6 py-12">
 
         <!-- User Login Form -->
-        <h1>Login</h1>
+        <h1 :class="{'display-1 mb-12': $breakpoint.mdAndUp, 'headline mb-9': $breakpoint.smAndDown}">Login</h1>
 
         <v-text-field
           :value="loginEmail"
@@ -25,16 +24,15 @@
           {{ loginError }}
         </v-alert>
         <v-btn @click="login" dark>
-          <v-icon class="mr-5">
+          <v-icon class="mr-3">
             mdi-login
           </v-icon>
           Login
         </v-btn>
 
       </v-col>
-    </v-layout>
+    </v-row>
   </v-container>
-
 </template>
 
 <script>
