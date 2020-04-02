@@ -6,12 +6,14 @@ const User = use('App/Models/User');
 class SpaceEventController {
 
   async index() {
-    return await SpaceEvent.all();
+    const spaceEvents = await SpaceEvent.all();
+    return spaceEvents;
   }
 
   async show({ params }) {
     const { id } = params;
-    return await SpaceEvent.find(id);
+    const spaceEvent = await SpaceEvent.find(id);
+    return spaceEvent;
   }
 
   async create({ auth, request }) {
@@ -38,7 +40,7 @@ class SpaceEventController {
     const user = await auth.getUser();
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    spaceEvent.merge(request.all('name', 'description', 'start', 'end', 'address_name', 'full_address', 'image_source', 'attendees'));
+    spaceEvent.merge(request.all());
     await spaceEvent.save();
     return spaceEvent;
   }
@@ -57,9 +59,8 @@ class SpaceEventController {
   async getAttendees({ request, params}) {
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
-    const spaceEvents = await spaceEvent.attendees().fetch()
-    // console.log(`DB Attendees: ${JSON.stringify(spaceEvents)}`);
-    return spaceEvents;
+    const attendees = await spaceEvent.attendees().fetch();
+    return attendees;
   }
 
   async destroy({ auth, params }) {

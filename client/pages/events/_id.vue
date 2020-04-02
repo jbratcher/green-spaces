@@ -117,38 +117,55 @@
 
           <!-- Event Info -->
           <v-container v-if="!editMode">
-            <!-- Event Name -->
-            <v-card-title :class="{'display-1 font-weight-bold': $breakpoint.mdAndUp, 'headline font-weight-bold': $breakpoint.smAndDown}">
-              {{ spaceEvent.name }}
-            </v-card-title>
-            <!-- Event Date & Time -->
-            <v-card-subtitle class="subtitle-1">
-              {{ spaceEvent.start }}
-            </v-card-subtitle>
-            <!-- Event Location Name -->
-            <v-card-text :class="{'headline': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
-              {{ spaceEvent.address_name }}
-            </v-card-text>
-            <!-- Event Location Address -->
-            <v-card-text :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}">
-              {{ spaceEvent.full_address }}
-            </v-card-text>
-            <!-- Event Description -->
-            <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
-              {{ spaceEvent.description }}
-            </v-card-text>
-            <!-- Volunteer List -->
-            <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">Volunteers RSVP'd</v-card-text>
-            <ul>
-              <li v-for="user in spaceEvent.attendees" :key="user.id">
-                <v-avatar size="48">
-                  <v-img
-                    :src="user.profile_image_source"
-                  />
-                </v-avatar>
-                <p>{{ user.full_name }}</p>
-              </li>
-            </ul>
+            <v-row>
+              <v-col class="d-flex align-center justify-space-between">
+                <!-- Event Name -->
+                <v-card-title :class="{'display-1 font-weight-bold': $breakpoint.mdAndUp, 'headline font-weight-bold': $breakpoint.smAndDown}">
+                  {{ spaceEvent.name }}
+                </v-card-title>
+                <!-- RSVP Button -->
+                <v-btn
+                  @click="toggleUserAttending"
+                  :color="rsvp ? 'warning' : 'primary'"
+                >
+                  <v-icon>
+                    {{ rsvp ? 'mdi-account-minus' : 'mdi-account-plus' }}
+                  </v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <!-- Event Date & Time -->
+                <v-card-subtitle class="subtitle-1">
+                  {{ spaceEvent.start }}
+                </v-card-subtitle>
+                <!-- Event Location Name -->
+                <v-card-text :class="{'headline': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+                  {{ spaceEvent.address_name }}
+                </v-card-text>
+                <!-- Event Location Address -->
+                <v-card-text :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}">
+                  {{ spaceEvent.full_address }}
+                </v-card-text>
+                <!-- Event Description -->
+                <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+                  {{ spaceEvent.description }}
+                </v-card-text>
+                <!-- Volunteer List -->
+                <v-card-text :class="{'body-1': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">Volunteers RSVP'd</v-card-text>
+                <ul v-if="spaceEvent.attendees">
+                  <li v-for="user in spaceEvent.attendees" :key="user.id">
+                    <v-avatar size="48">
+                      <v-img
+                        :src="user.profile_image_source"
+                      />
+                    </v-avatar>
+                    <p>{{ user.full_name }}</p>
+                  </li>
+                </ul>
+              </v-col>
+            </v-row>
           </v-container>
         </v-card>
 
@@ -206,17 +223,21 @@ export default {
     ]),
   },
   created() {
-    if (this.spaceEvent) {
-      this.fetchSpaceEventAttendees(this.spaceEvent);
-    }
+    this.fetchSpaceEventById(this.$route.params.id);
+    this.setRsvpByUser({
+      spaceEvent: this.spaceEvent,
+      user: this.user,
+    });
   },
   methods: {
     ...mapActions('spaceEvents', [
       'fetchSpaceEventById',
       'fetchSpaceEventAttendees',
-      'updateSpaceEvent'
+      'updateSpaceEvent',
+      'updateSpaceEventAttendees',
     ]),
     ...mapMutations('spaceEvents', [
+      'setRsvpByUser',
       'setUpdatedSpaceEventName',
       'setUpdatedSpaceEventDescription',
       'setUpdatedSpaceEventStart',
@@ -224,14 +245,25 @@ export default {
       'setUpdatedSpaceEventAddressName',
       'setUpdatedSpaceEventFullAddress',
       'setUpdatedSpaceEventImageSource',
+      'toggleRsvp',
     ]),
+    // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
+    toISOLocal (date) {
+      const z = n => ('0' + n).slice(-2);
+      const zz = n => ('00' + n).slice(-3);
+      return date.getFullYear() + '-' + z(date.getMonth() + 1) + '-' + z(date.getDate()) + 'T' + z(date.getHours()) + ':' + z(date.getMinutes()) + ':' + z(date.getSeconds()) + '.' + zz(date.getMilliseconds()) + 'Z';
+    },
+    toggleUserAttending () {
+      this.toggleRsvp();
+      this.updateSpaceEventAttendees(this.spaceEvent);
+    },
     toggleEditMode () {
       this.editMode = !this.editMode;
     },
     updateEvent () {
       this.updateSpaceEvent(this.spaceEvent);
       this.editMode = false;
-    }
+    },
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
@@ -244,18 +276,10 @@ export default {
       this.setUpdatedSpaceEventEnd({ spaceEvent: this.spaceEvent, end: formatted });
     },
     // convert stored datetime format to tz datetime to match picker format
-    selectedEvent () {
+    spaceEvent () {
       this.startDateTime = this.toISOLocal(new Date(this.spaceEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.spaceEvent.end));
-      // check if not empty object
-      if (!(Object.entries(this.spaceEvent).length === 0 && this.spaceEvent.constructor === Object)) {
-        this.setRsvpByUser({
-          spaceEvent: this.spaceEvent,
-          user: this.user,
-        });
-      } else {
-        console.log('user rsvp not set');
-      }
+      this.fetchSpaceEventAttendees(this.spaceEvent);
     },
   },
 }
