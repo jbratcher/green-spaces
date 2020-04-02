@@ -48,6 +48,7 @@
               required
             />
             <v-textarea
+              class="mb-12"
               :value="spaceEvent.description"
               :rules="descriptionRules"
               :counter="1000"
@@ -58,25 +59,31 @@
               required
             />
             <datetime
-              v-model="startDateTime"
+            v-model="startDateTime"
+              class="my-6"
+              color="primary"
+              input-id="startTime"
+              :minute-step="15"
+              required
               type="datetime"
+              use12-hour
               value-zone="local"
               zone="local"
-              use12-hour
-              minute-step="15"
-              color="primary"
-              required
             />
             <datetime
               v-model="endDateTime"
+              class="my-6"
+              color="primary"
+              input-id="endTime"
+              :minute-step="15"
+              required
               type="datetime"
+              use12-hour
               value-zone="local"
               zone="local"
-              use12-hour
-              minute-step="15"
-              color="primary"
             />
             <v-textarea
+              class="mt-12"
               :value="spaceEvent.address_name"
               :rules="addressNameRules"
               :counter="1000"
@@ -159,7 +166,7 @@ export default {
   components: {
     datetime: Datetime,
   },
-  data: function () {
+  data() {
     return {
       date: new Date().toJSON(),
       endDateTime: new Date().toJSON(),
@@ -191,6 +198,7 @@ export default {
   computed: {
     ...mapState('spaceEvents', [
       'spaceEvent',
+      'rsvp',
     ]),
     ...mapState('auth', [
       'isLoggedIn',
@@ -198,7 +206,6 @@ export default {
     ]),
   },
   created() {
-    this.fetchSpaceEventById(this.$route.params.id);
     if (this.spaceEvent) {
       this.fetchSpaceEventAttendees(this.spaceEvent);
     }
@@ -225,6 +232,31 @@ export default {
       this.updateSpaceEvent(this.spaceEvent);
       this.editMode = false;
     }
+  },
+  watch: {
+    // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
+    startDateTime () {
+      const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
+      this.setUpdatedSpaceEventStart({ spaceEvent: this.spaceEvent, start: formatted });
+    },
+    endDateTime () {
+      const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
+      this.setUpdatedSpaceEventEnd({ spaceEvent: this.spaceEvent, end: formatted });
+    },
+    // convert stored datetime format to tz datetime to match picker format
+    selectedEvent () {
+      this.startDateTime = this.toISOLocal(new Date(this.spaceEvent.start));
+      this.endDateTime = this.toISOLocal(new Date(this.spaceEvent.end));
+      // check if not empty object
+      if (!(Object.entries(this.spaceEvent).length === 0 && this.spaceEvent.constructor === Object)) {
+        this.setRsvpByUser({
+          spaceEvent: this.spaceEvent,
+          user: this.user,
+        });
+      } else {
+        console.log('user rsvp not set');
+      }
+    },
   },
 }
 </script>
