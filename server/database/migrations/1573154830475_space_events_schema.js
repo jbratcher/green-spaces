@@ -16,9 +16,9 @@ class SpaceEventsSchema extends Schema {
       table.string('address_name').notNullable()
       table.string('full_address').notNullable()
       table.string('image_source').nullable()
-      table.text('attendees').nullable()
+      table.json('attendees').nullable()
       table.timestamps()
-      table.timestamp('deleted_at')
+      table.timestamp('deleted_at').nullable();
     })
   }
 
