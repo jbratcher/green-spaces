@@ -22,7 +22,7 @@
     </v-list-item>
 
     <!-- login/register links -->
-    <template v-if="!isLoggedIn">
+    <template v-if="!isAuthenticated">
       <v-list-item
         v-for="(item, j) in loggedOutLinks"
         :key="j + `-${item.title}`"
@@ -43,14 +43,10 @@
     </template>
 
     <!-- logout link -->
-    <v-list-item
-      v-if="isLoggedIn"
-      :class="listItemClass"
-      @click="logout"
-    >
+    <v-list-item v-if="isAuthenticated" :class="listItemClass" @click="logout">
       <v-list-item-action class="mr-2">
         <v-icon>
-          mdi-logout
+          {{ logoutIcon }}
         </v-icon>
       </v-list-item-action>
       <v-list-item-content>
@@ -60,8 +56,8 @@
 
     <!-- Profile link -->
     <v-list-item
-      v-if="isLoggedIn && user"
-      :to="`/users/${user.id}`"
+      v-if="isAuthenticated && loggedInUser"
+      :to="`/users/${loggedInUser.id}`"
       :class="listItemClass"
       dark
       router
@@ -69,7 +65,7 @@
     >
       <v-list-item-action class="mr-2">
         <v-icon>
-          mdi-account
+          {{ accountIcon }}
         </v-icon>
       </v-list-item-action>
       <v-list-item-content>
@@ -82,48 +78,48 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-
+import { mapGetters } from "vuex";
+import { mdiAccount, mdiLogout } from "@mdi/js";
 export default {
-  name: 'MenuLinks',
+  name: "MenuLinks",
   props: {
-    'generalLinks': {
+    generalLinks: {
       type: Array,
       default() {
-        return []
+        return [];
       },
     },
-    'loggedOutLinks': {
+    loggedOutLinks: {
       type: Array,
       default() {
-        return []
+        return [];
       },
     },
-    'listClass': {
+    listClass: {
       type: String,
-      default: '',
+      default: "",
     },
-    'listItemClass': {
+    listItemClass: {
       type: String,
-      default: '',
-    }
+      default: "",
+    },
   },
   computed: {
-    ...mapState('auth', [
-      'isLoggedIn',
-      'user',
-    ]),
+    ...mapGetters(["isAuthenticated", "loggedInUser"]),
+  },
+  data() {
+    return {
+      accountIcon: mdiAccount,
+      logoutIcon: mdiLogout,
+    };
   },
   methods: {
-    ...mapActions('auth', [
-      'logout',
-      'setLoggedIn',
-      'setUser',
-    ]),
+    async logout() {
+      await this.$auth.logout();
+      this.$router.replace("/");
+    },
   },
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

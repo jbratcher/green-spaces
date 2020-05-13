@@ -4,13 +4,13 @@
 const Model = use('Model')
 
 class SpaceEvent extends Model {
-  static boot () {
+  static boot() {
     super.boot()
 
     this.addTrait('@provider:Lucid/SoftDeletes')
   }
 
-  space () {
+  space() {
     return this.hasOne('App/Models/Space')
   }
 

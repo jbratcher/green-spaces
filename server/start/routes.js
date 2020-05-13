@@ -1,4 +1,4 @@
-'use strict'
+"use strict";
 
 /*
 |--------------------------------------------------------------------------
@@ -14,23 +14,24 @@
 */
 
 /** @type {typeof import('@adonisjs/framework/src/Route/Manager')} */
-const Route = use('Route')
+const Route = use("Route");
 
 Route.group(() => {
+  Route.post("auth/register", "UserController.register");
+  Route.post("auth/login", "UserController.login");
+  Route.post("auth/logout", "UserController.logout");
+  Route.get("auth/user", "UserController.getCurrentUser");
+  Route.get("users/:id", "UserController.show");
+  Route.get("user/space-events", "UserController.getSpaceEvents");
 
-  Route.post('auth/register', 'UserController.register');
-  Route.post('auth/login', 'UserController.login');
-  Route.get('current-user', 'UserController.getCurrentUser');
-  Route.get('users/:id', 'UserController.show');
-  Route.get('users/:id/space-events', 'UserController.getSpaceEvents');
-
-  Route.get('space-events', 'SpaceEventController.index');
-  Route.get('space-events/:id', 'SpaceEventController.show');
-  Route.get('space-events/:id/attendees', 'SpaceEventController.getAttendees');
-  Route.post('space-events', 'SpaceEventController.create');
-  Route.patch('space-events/:id', 'SpaceEventController.update');
-  Route.patch('space-events/:id/attending', 'SpaceEventController.updateAttending');
-  Route.delete('space-events/:id', 'SpaceEventController.destroy');
-
-})
-  .prefix('api');
+  Route.get("space-events", "SpaceEventController.index");
+  Route.get("space-events/:id", "SpaceEventController.show");
+  Route.get("space-events/:id/attendees", "SpaceEventController.getAttendees");
+  Route.post("space-events", "SpaceEventController.create");
+  Route.patch("space-events/:id", "SpaceEventController.update");
+  Route.patch(
+    "space-events/:id/attending",
+    "SpaceEventController.updateAttending"
+  );
+  Route.delete("space-events/:id", "SpaceEventController.destroy");
+}).prefix("api");
