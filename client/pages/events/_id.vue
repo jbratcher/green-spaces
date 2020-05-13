@@ -262,7 +262,7 @@ export default {
     this.fetchSpaceEventsAttending();
   },
   mounted() {
-    if (this.spaceEvent && this.userSpaceEvents.length > 0) {
+    if (this.spaceEvent && this.userSpaceEvents) {
       this.setRsvpByUser({
         spaceEvent: this.spaceEvent,
         userSpaceEvents: this.userSpaceEvents

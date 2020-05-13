@@ -9,7 +9,6 @@ export const state = () => ({
   newSpaceEventFullAddress: '',
   newSpaceEventImageSource: '',
   rsvp: null,
-  attendees: [],
 });
 
 export const actions = {
@@ -146,20 +145,21 @@ export const mutations = {
     state.spaceEvent.image_source = imageSource;
   },
   setSpaceEventAttendeesFromDB(state, { spaceEvent, attendees }) {
-    console.log(JSON.parse(JSON.stringify(attendees)))
     spaceEvent.attendees = attendees;
-    if (state.spaceEvents[spaceEvent.id]) {
+    state.spaceEvent.attendees = attendees;
+    if (state.spaceEvents[spaceEvent.id - 1]) {
       state.spaceEvents[spaceEvent.id - 1].attendees = attendees;
     }
-    if (attendees.some(attendee => attendee.id === spaceEvent.id)) {
+    if (spaceEvent.attendees && spaceEvent.attendees.some(attendee => attendee.id === this.$auth.user.id)) {
+      console.log('user in attendees')
       state.rsvp = true;
     } else {
+      console.log('not attending')
       state.rsvp = false;
     }
   },
   setSpaceEventAttendees(state, { spaceEvent, attendees, rootState }) {
     // add user to attendees
-    console.log(JSON.parse(JSON.stringify(attendees)));
     const { user } = rootState.auth;
     // if spaceEvent that matches spaceEvent.id exists
     if (state.spaceEvents[spaceEvent.id - 1]) {
@@ -195,16 +195,10 @@ export const mutations = {
   // set rsvp to match attendees list
   setRsvpByUser(state, { spaceEvent, userSpaceEvents }) {
     // check if user is in attendees
-    console.log(JSON.parse(JSON.stringify(spaceEvent)))
-    console.log(JSON.parse(JSON.stringify(userSpaceEvents)))
     if (userSpaceEvents && userSpaceEvents.some(userSpaceEvent => userSpaceEvent.id === spaceEvent.id)) {
-      console.log('RSVP: true')
-      state.rsvp = true;
-      console.log(state.rsvp)
+      state.rsvp = !state.rsvp;
     } else {
-      console.log('RSVP: false')
-      state.rsvp = false;
-      console.log(state.rsvp)
+      state.rsvp = !state.rsvp;
     }
   },
   toggleRsvp(state) {

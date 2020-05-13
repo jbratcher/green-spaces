@@ -8,7 +8,6 @@ export const actions = {
     await this.$axios
       .$get(`/user/space-events/`)
       .then(response => {
-        console.log(response)
         commit("setSpaceEventsAttending", response);
       })
       .catch((error) => {
