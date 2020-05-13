@@ -1,77 +1,84 @@
 <template>
   <v-container>
     <v-row>
-      <v-col class="mx-auto col-9 col-md-6 py-12">
-
+      <v-col class="mx-auto col-9 col-sm-4 py-12">
         <!-- User Sign Up Form -->
-        <h1 :class="{'display-1 mb-12': $breakpoint.mdAndUp, 'headline mb-9': $breakpoint.smAndDown}">Register</h1>
+        <h1
+          :class="{
+            'display-1 mb-12': $breakpoint.mdAndUp,
+            'headline mb-9': $breakpoint.smAndDown,
+          }"
+        >Register</h1>
 
+        <v-text-field v-model="firstName" label="First Name" placeholder="First Name" />
+        <v-text-field v-model="lastName" label="Last Name" placeholder="Last Name" />
+        <v-text-field v-model="email" label="Email" placeholder="Email" />
         <v-text-field
-          :value="firstName"
-          @input="setFirstName"
-          label="First Name"
-          placeholder="First Name"
-        />
-        <v-text-field
-          :value="lastName"
-          @input="setLastName"
-          label="Last Name"
-          placeholder="Last Name"
-        />
-        <v-text-field
-          :value="registerEmail"
-          @input="setRegisterEmail"
-          label="Email"
-          placeholder="Email"
-        />
-        <v-text-field
-          :value="registerPassword"
-          @input="setRegisterPassword"
+          v-model="password"
           label="Password"
           placeholder="Password"
           type="password"
           autocomplete="new-password"
         />
-        <v-alert :value="registerError" type="error">
-          {{ registerError }}
-        </v-alert>
+        <v-alert v-model="error" type="error">{{ errorMessage }}</v-alert>
         <v-btn @click="register" dark>
-          <v-icon class="mr-3">
-            mdi-account-plus
-          </v-icon>
-          Register
+          <v-icon class="mr-3">{{ accountPlusIcon }}</v-icon>Register
         </v-btn>
-
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapState, mapMutations, mapActions } from 'vuex';
-
+import { mdiAccountPlus } from "@mdi/js";
 export default {
-  computed: {
-    ...mapState('auth', [
-      'firstName',
-      'lastName',
-      'loggedIn',
-      'registerEmail',
-      'registerPassword',
-      'registerError',
-    ]),
+  data() {
+    return {
+      accountPlusIcon: mdiAccountPlus,
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      error: false,
+      errorMessage: ""
+    };
   },
   methods: {
-    ...mapMutations('auth', [
-      'setLoggedIn',
-      'setFirstName',
-      'setLastName',
-      'setRegisterEmail',
-      'setRegisterPassword',
-    ]),
-    ...mapActions('auth', [
-      'register',
-    ]),
-  },
+    register() {
+      try {
+        const newUser = {
+          email: this.email,
+          password: this.password,
+          firstName: this.firstName,
+          lastName: this.lastName
+        };
+
+        this.$axios
+          .post("/auth/register", newUser)
+          .then(response => {
+            this.login();
+          })
+          .catch(error => console.log(`Register/login error: ${error}`));
+      } catch (e) {
+        this.error = true;
+        this.errorMessage = e.response.data[0].message;
+      }
+    },
+    login() {
+      this.$auth
+        .loginWith("local", {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(response => {
+          this.$auth.setToken("local", "Bearer " + response.data.token);
+          console.log(response.data.token);
+          this.$router.replace("/reports");
+        })
+        .catch(error => console.log(`Login Error: ${error}`));
+    }
+  }
 };
 </script>

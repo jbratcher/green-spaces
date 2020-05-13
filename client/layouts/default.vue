@@ -10,18 +10,20 @@
       scroll-threshold="200"
     >
       <v-toolbar-title class="d-flex align-self-center align-center">
-        <v-img class="invertColor" alt="tree logo" src="logo.svg" width="2rem" height="2rem" />
-        <p class="headline my-auto ml-3">
-          GreenSpaces
-        </p>
+        <v-img class="invertColor" alt="tree logo" src="/logo.svg" width="2rem" height="2rem" />
+        <p class="headline my-auto ml-3">GreenSpaces</p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up" />
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up">
+        <i aria-hidden="true" class="v-icon notranslate theme--dark">
+          <v-icon>{{ menuIcon }}</v-icon>
+        </i>
+      </v-app-bar-nav-icon>
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
         list-class="hidden-sm-and-down d-md-flex"
-        list-item-class=""
+        list-item-class
       />
     </v-app-bar>
     <!-- side/mobile navigation -->
@@ -47,14 +49,8 @@
       <nuxt />
     </v-content>
     <!-- Footer Area -->
-    <v-footer
-      color="primary lighten-2 "
-      class="pa-0"
-    >
-      <v-row
-        justify="center"
-        no-gutters
-      >
+    <v-footer color="primary lighten-2 " class="pa-0">
+      <v-row justify="center" no-gutters>
         <v-btn
           v-for="(link, i) in generalLinks"
           :key="i + link.title"
@@ -63,14 +59,10 @@
           text
           rounded
           class="my-2"
-        >
-          {{ link.title }}
-        </v-btn>
-        <v-col
-          class="primary py-4 text-center white--text"
-          cols="12"
-        >
-          {{ new Date().getFullYear() }} — <strong>Green Spaces</strong>
+        >{{ link.title }}</v-btn>
+        <v-col class="primary py-4 text-center white--text" cols="12">
+          {{ new Date().getFullYear() }} —
+          <strong>Green Spaces</strong>
         </v-col>
       </v-row>
     </v-footer>
@@ -78,49 +70,56 @@
 </template>
 
 <script>
-import MenuLinks from '../components/MenuLinks.vue';
-
+import MenuLinks from "../components/MenuLinks.vue";
+import {
+  mdiAccountPlus,
+  mdiApps,
+  mdiLogin,
+  mdiMenu,
+  mdiPlayCircleOutline,
+  mdiPlay
+} from "@mdi/js";
 export default {
   components: {
-    MenuLinks,
+    MenuLinks
   },
-  data () {
+  data() {
     return {
+      menuIcon: mdiMenu,
       drawer: false,
       fixed: false,
       generalLinks: [
         {
-          icon: 'mdi-apps',
-          title: 'Welcome',
-          to: '/'
+          icon: mdiApps,
+          title: "Welcome",
+          to: "/"
         },
         {
-          icon: 'mdi-play-circle-outline',
-          title: 'Start',
-          to: '/start'
-        },
+          icon: mdiPlayCircleOutline,
+          title: "Start",
+          to: "/start"
+        }
       ],
       loggedOutLinks: [
         {
-          icon: 'mdi-login',
-          title: 'Login',
-          to: '/login'
+          icon: mdiLogin,
+          title: "Login",
+          to: "/login"
         },
         {
-          icon: 'mdi-account-plus',
-          title: 'Register',
-          to: '/register'
+          icon: mdiAccountPlus,
+          title: "Register",
+          to: "/register"
         }
       ],
       miniVariant: false,
-      title: 'Green Spaces'
-    }
-  },
-}
+      title: "Green Spaces"
+    };
+  }
+};
 </script>
 
 <style lang="scss">
-
 *,
 *:before,
 *:after {
@@ -137,7 +136,7 @@ export default {
 html,
 body,
 .v-application {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   line-height: 1.5;
   word-break: keep-all;
   word-spacing: 1px;
@@ -155,16 +154,17 @@ body {
   overflow-x: hidden;
 }
 
-ul, ol {
+ul,
+ol {
   list-style-type: none;
   padding-left: 0;
 }
 
 .v-application {
-
-  ul, ol {
-      padding-left: 0;
-    }
+  ul,
+  ol {
+    padding-left: 0;
+  }
 
   a {
     text-decoration: none;
@@ -192,7 +192,6 @@ ul, ol {
       font-size: 1rem;
       margin-bottom: 2rem;
     }
-
   }
 
   .v-card__text {
@@ -206,7 +205,7 @@ ul, ol {
         padding: 1rem;
       }
       code:before {
-        content: '';
+        content: "";
       }
     }
   }
@@ -223,22 +222,22 @@ ul, ol {
   }
 }
 
-
 .justify-space-evenly {
   justify-content: space-around;
   justify-content: space-evenly;
 }
 
 .gradient-overlay {
-  background-image:
-    linear-gradient(rgba(0,0,0,0.1),rgba(255,255,255,0.1)),
-    linear-gradient(rgba(255,255,255,0.8),rgba(255,255,255,0.8)),
+  background-image: linear-gradient(
+      rgba(0, 0, 0, 0.1),
+      rgba(255, 255, 255, 0.1)
+    ),
+    linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)),
     url("../static/how-it-works.jpg");
-    background-position: center center;
+  background-position: center center;
 }
 
 .invertColor {
   filter: invert(1);
 }
-
 </style>

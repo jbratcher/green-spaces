@@ -1,27 +1,13 @@
 <template>
-
   <!-- Dialog Wrapper -->
-  <v-dialog
-    v-if="isLoggedIn"
-    v-model="menuOpen"
-    class="pa-10"
-    activator=".add-new-event"
-  >
+  <v-dialog v-if="isAuthenticated" v-model="menuOpen" class="pa-10" activator=".add-new-event">
     <v-sheet class="pa-10 d-flex flex-column">
-
       <!-- Dialog Header -->
-      <v-icon @click="menuOpen = false" class="align-self-end">
-        mdi-close
-      </v-icon>
+      <v-icon @click="menuOpen = false" class="align-self-end">mdi-close</v-icon>
       <h3>Add a new event</h3>
 
       <!-- Event Form -->
-      <v-form
-        ref="form"
-        v-model="valid"
-        class="newEventForm"
-        lazy-validation
-      >
+      <v-form ref="form" v-model="valid" class="newEventForm" lazy-validation>
         <v-text-field
           :value="newSpaceEventName"
           :counter="50"
@@ -97,125 +83,111 @@
 
         <!-- Form Actions -->
         <v-sheet class="d-flex justify-space-evenly">
-          <v-btn
-            @click="resetCreateEventForm"
-            color="info elevation-10"
-            class="my-5"
-          >
-            Reset
-          </v-btn>
-          <v-btn
-            @click="createEvent"
-            color="primary"
-            class="my-5 elevation-10"
-          >
-            Submit
-          </v-btn>
+          <v-btn @click="resetCreateEventForm" color="info elevation-10" class="my-5">Reset</v-btn>
+          <v-btn @click="createEvent" color="primary" class="my-5 elevation-10">Submit</v-btn>
         </v-sheet>
       </v-form>
-
     </v-sheet>
   </v-dialog>
-
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
-import { Datetime } from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css'
+import { mapActions, mapGetters, mapMutations, mapState } from "vuex";
+import { Datetime } from "vue-datetime";
+import "vue-datetime/dist/vue-datetime.css";
 
 export default {
-  name: 'NewEventDialog',
+  name: "NewEventDialog",
   components: {
-    datetime: Datetime,
+    datetime: Datetime
   },
   data: () => ({
     startDateTime: new Date().toJSON(),
     endDateTime: new Date().toJSON(),
     valid: true,
     nameRules: [
-      v => !!v || 'Name is required',
-      v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+      v => !!v || "Name is required",
+      v => (v && v.length <= 50) || "Name must be less than 50 characters"
     ],
-    startRules: [
-      v => !!v || 'Start Date is required'
-    ],
+    startRules: [v => !!v || "Start Date is required"],
     descriptionRules: [
-      v => !!v || 'Description is required',
-      v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
+      v => !!v || "Description is required",
+      v =>
+        (v && v.length <= 1000) ||
+        "Description must be less than 1000 characters"
     ],
     addressNameRules: [
-      v => !!v || 'Address Name is required',
-      v => (v && v.length <= 1000) || 'Address Name must be less than 1000 characters',
+      v => !!v || "Address Name is required",
+      v =>
+        (v && v.length <= 1000) ||
+        "Address Name must be less than 1000 characters"
     ],
     fullAddressRules: [
-      v => !!v || 'Full Address is required',
-      v => (v && v.length <= 1000) || 'Full Address must be less than 1000 characters',
+      v => !!v || "Full Address is required",
+      v =>
+        (v && v.length <= 1000) ||
+        "Full Address must be less than 1000 characters"
     ],
     imageSourceRules: [
-      v => !!v || 'Image Source is required',
-      v => (v && v.length <= 1000) || 'Image Source must be less than 1000 characters',
+      v => !!v || "Image Source is required",
+      v =>
+        (v && v.length <= 1000) ||
+        "Image Source must be less than 1000 characters"
     ],
-    menuOpen: false,
+    menuOpen: false
   }),
   computed: {
-    ...mapState('spaceEvents', [
-      'newSpaceEventName',
-      'newSpaceEventDescription',
-      'newSpaceEventStart',
-      'newSpaceEventEnd',
-      'newSpaceEventAddressName',
-      'newSpaceEventFullAddress',
-      'newSpaceEventImageSource',
-      'spaceEvents',
+    ...mapState("spaceEvents", [
+      "newSpaceEventName",
+      "newSpaceEventDescription",
+      "newSpaceEventStart",
+      "newSpaceEventEnd",
+      "newSpaceEventAddressName",
+      "newSpaceEventFullAddress",
+      "newSpaceEventImageSource",
+      "spaceEvents"
     ]),
-    ...mapState('auth', [
-      'isLoggedIn',
-      'user',
-    ]),
+    ...mapGetters(["isAuthenticated", "loggedInUser"])
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
-    startDateTime () {
+    startDateTime() {
       console.log(this.startDateTime);
-      const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
+      const formatted = this.startDateTime.substr(0, 19).replace("T", " ");
       console.log(`Start value: ${formatted}`);
       this.setNewSpaceEventStart(formatted);
     },
-    endDateTime () {
+    endDateTime() {
       console.log(this.endDateTime);
-      const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
+      const formatted = this.endDateTime.substr(0, 19).replace("T", " ");
       console.log(`End value: ${formatted}`);
       this.setNewSpaceEventEnd(formatted);
-    },
+    }
   },
   methods: {
-    ...mapActions('spaceEvents', [
-      'createSpaceEvent',
+    ...mapActions("spaceEvents", ["createSpaceEvent"]),
+    ...mapMutations("spaceEvents", [
+      "setNewSpaceEventName",
+      "setNewSpaceEventDescription",
+      "setNewSpaceEventStart",
+      "setNewSpaceEventEnd",
+      "setNewSpaceEventAddressName",
+      "setNewSpaceEventFullAddress",
+      "setNewSpaceEventImageSource"
     ]),
-    ...mapMutations('spaceEvents', [
-      'setNewSpaceEventName',
-      'setNewSpaceEventDescription',
-      'setNewSpaceEventStart',
-      'setNewSpaceEventEnd',
-      'setNewSpaceEventAddressName',
-      'setNewSpaceEventFullAddress',
-      'setNewSpaceEventImageSource',
-    ]),
-    createEvent () {
+    createEvent() {
       this.createSpaceEvent();
       this.resetCreateEventForm();
     },
-    resetCreateEventForm () {
+    resetCreateEventForm() {
       this.$refs.form.reset();
       this.menuOpen = false;
-    },
+    }
   }
-}
+};
 </script>
 
 <style lang="scss">
-
 .v-dialog {
   width: 80vw;
 }
@@ -225,11 +197,8 @@ export default {
 }
 
 @media screen and (min-width: 768px) {
-
   .v-dialog {
     width: 50vw;
   }
-
 }
-
 </style>
