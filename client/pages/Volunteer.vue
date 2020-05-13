@@ -2,17 +2,14 @@
   <v-container class="pa-0" fluid>
     <v-row>
       <v-col class="pa-0">
-
         <!-- Page Header -->
         <v-sheet class="text-center text-shadow-light white--text" color="primary lighten-2">
-
-          <h1 :class="{'display-2 font-weight-bold pt-6 pb-3': $breakpoint.mdAndUp, 'display-1 font-weight-bold pt-6 pb-3': $breakpoint.smAndDown}">
-            Give your time
-          </h1>
-          <p :class="{'headline pt-3 pb-6': $breakpoint.mdAndUp, 'title pt-3 pb-6': $breakpoint.smAndDown}">
-            Your time helps fight climate change
-          </p>
-
+          <h1
+            :class="{'display-2 font-weight-bold pt-6 pb-3': $breakpoint.mdAndUp, 'display-1 font-weight-bold pt-6 pb-3': $breakpoint.smAndDown}"
+          >Give your time</h1>
+          <p
+            :class="{'headline pt-3 pb-6': $breakpoint.mdAndUp, 'title pt-3 pb-6': $breakpoint.smAndDown}"
+          >Your time helps fight climate change</p>
         </v-sheet>
 
         <!-- Main Content -->
@@ -20,17 +17,16 @@
           <v-row>
             <v-col class="text-center">
               <!-- Content Header -->
-              <h2 :class="{'headline font-weight-bold py-5': $breakpoint.mdAndUp, 'title  font-weight-bold py-5': $breakpoint.smAndDown}">
-                Upcoming Events
-              </h2>
-              <p :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}">
-                Find volunteer events near you
-              </p>
+              <h2
+                :class="{'headline font-weight-bold py-5': $breakpoint.mdAndUp, 'title  font-weight-bold py-5': $breakpoint.smAndDown}"
+              >Upcoming Events</h2>
+              <p
+                :class="{'title font-weight-regular': $breakpoint.mdAndUp, 'subtitle-1 font-weight-regular': $breakpoint.smAndDown}"
+              >Find volunteer events near you</p>
             </v-col>
           </v-row>
 
           <v-row>
-
             <v-col>
               <!-- Event List -->
               <v-container>
@@ -41,10 +37,12 @@
                         <v-col class="py-0">
                           <ul class="pl-0">
                             <li v-for="event in eventsByDateOld" :key="event.id">
-                              <h3 class="mb-3 pl-6">
-                                {{ listDate(event.start) }}
-                              </h3>
-                              <v-card class="d-flex flex-column flex-sm-row mb-6" :height="$breakpoint.mdAndUp ? '12.5rem' : '100%'" hover>
+                              <h3 class="mb-3 pl-6">{{ listDate(event.start) }}</h3>
+                              <v-card
+                                class="d-flex flex-column flex-sm-row mb-6"
+                                :height="$breakpoint.mdAndUp ? '12.5rem' : '100%'"
+                                hover
+                              >
                                 <v-container class="pa-0" fluid>
                                   <v-img
                                     alt="event image"
@@ -53,29 +51,25 @@
                                   />
                                 </v-container>
                                 <v-container>
-                                  <v-card-title class="py-0 mb-4">
-                                    {{ event.name }}
-                                  </v-card-title>
-                                  <v-card-subtitle class="subtitle-1 py-0">
-                                    {{ listTime(event.start) }}
-                                  </v-card-subtitle>
-                                  <v-card-text v-if="event.creator_name" class="subtitle-1 py-0">
-                                    Hosted by {{ event.creator_name }}
-                                  </v-card-text>
-                                  <v-card-text v-if="event.attendees" class="body-1">
-                                    {{ event.attendees.length }} Volunteers Going
-                                  </v-card-text>
-                                  <v-card-text v-if="!event.attendees" class="body-1">
-                                    No Volunteers
-                                  </v-card-text>
+                                  <v-card-title class="py-0 mb-4">{{ event.name }}</v-card-title>
+                                  <v-card-subtitle
+                                    class="subtitle-1 py-0"
+                                  >{{ listTime(event.start) }}</v-card-subtitle>
+                                  <v-card-text
+                                    v-if="event.creator_name"
+                                    class="subtitle-1 py-0"
+                                  >Hosted by {{ event.creator_name }}</v-card-text>
+                                  <v-card-text
+                                    v-if="event.attendees"
+                                    class="body-1"
+                                  >{{ event.attendees.length }} Volunteers Going</v-card-text>
+                                  <v-card-text v-if="!event.attendees" class="body-1">No Volunteers</v-card-text>
                                   <v-btn
                                     :to="'/events/' + event.id"
                                     class="ml-3 mb-3"
                                     color="primary"
                                     nuxt
-                                  >
-                                    More...
-                                  </v-btn>
+                                  >More...</v-btn>
                                 </v-container>
                               </v-card>
                             </li>
@@ -89,12 +83,8 @@
                     <!-- Add Event Button -->
                     <v-card class="add-new-event" color="transparent" flat>
                       <p class="d-flex align-center justify-center">
-                        <v-icon class="mr-3" size="32" color="black">
-                          mdi-calendar-plus
-                        </v-icon>
-                        <span class="headline">
-                          Create New Event
-                        </span>
+                        <v-icon class="mr-3" size="32" color="black">{{ calendarIcon }}</v-icon>
+                        <span class="headline">Create New Event</span>
                       </p>
                     </v-card>
 
@@ -104,125 +94,157 @@
                 </v-row>
               </v-container>
             </v-col>
-
           </v-row>
         </v-container>
 
         <!-- Add New Event Dialog -->
         <NewEventDialog />
-
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex';
-import EventCalendar from '../components/EventCalendar.vue';
-import NewEventDialog from '../components/NewEventDialog.vue';
+import { mapActions, mapState } from "vuex";
+import { mdiCalendarPlus } from "@mdi/js";
+import EventCalendar from "../components/EventCalendar.vue";
+import NewEventDialog from "../components/NewEventDialog.vue";
 
 export default {
   components: {
     EventCalendar,
-    NewEventDialog,
+    NewEventDialog
   },
   data: () => ({
+    calendarIcon: mdiCalendarPlus,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
     today: new Date().toISOString().substr(0, 10),
-    start: null,
+    start: null
   }),
   computed: {
-    ...mapState('spaceEvents', [
-      'spaceEvents',
-      'days',
-      'months',
-    ]),
+    ...mapState("spaceEvents", ["spaceEvents", "days", "months"]),
     // return temporary array of events from newest to oldest
-    eventsByDateNew () {
-      return this.spaceEvents.slice().sort((a, b) => new Date(b.start) - new Date(a.start))
+    eventsByDateNew() {
+      return this.spaceEvents
+        .slice()
+        .sort((a, b) => new Date(b.start) - new Date(a.start));
     },
     // return temporary array of events from oldest to newest
-    eventsByDateOld () {
-      return this.spaceEvents.slice().sort((a, b) => new Date(a.start) - new Date(b.start))
+    eventsByDateOld() {
+      return this.spaceEvents
+        .slice()
+        .sort((a, b) => new Date(a.start) - new Date(b.start));
     },
-    monthFormatter () {
+    monthFormatter() {
       return this.$refs.miniCal.getFormatter({
-        timeZone: 'UTC', month: 'long',
-      })
+        timeZone: "UTC",
+        month: "long"
+      });
     },
     // get current month long name
-    title () {
+    title() {
       const { start, end } = this;
       if (!start || !end) {
-        return ''
+        return "";
       }
       const startMonth = this.monthFormatter(start);
       const startYear = start.year;
       return `${startMonth} ${startYear}`;
-    },
+    }
   },
-  mounted () {
+  mounted() {
     this.fetchSpaceEvents();
-    this.getSpaceEventAttendeesByEvent(this.spaceEvents);
+    if (this.spaceEvents) {
+      console.log(JSON.parse(JSON.stringify(this.spaceEvents)));
+      this.getSpaceEventAttendeesByEvent(this.spaceEvents);
+    }
   },
   methods: {
-    ...mapActions('spaceEvents', [
-      'fetchSpaceEvents',
-      'fetchSpaceEventAttendees',
+    ...mapActions("spaceEvents", [
+      "fetchSpaceEvents",
+      "fetchSpaceEventAttendees"
     ]),
-    getDayName (date) {
-      const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    getDayName(date) {
+      const days = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ];
       return days[date.getDay()];
     },
-    getMonthName (date) {
-      const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    getMonthName(date) {
+      const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
       return months[date.getMonth()];
     },
     // format event date to dayName, Month yy
-    listDate (start) {
-      return this.getDayName(new Date(start)) + ', ' + this.getMonthName(new Date(start)) + ' ' + new Date(start).getDate();
+    listDate(start) {
+      return (
+        this.getDayName(new Date(start)) +
+        ", " +
+        this.getMonthName(new Date(start)) +
+        " " +
+        new Date(start).getDate()
+      );
     },
     // format event time to hh:mm AM/PM
-    listTime (start) {
+    listTime(start) {
       const hours = new Date(start).getHours() % 12 || 12;
       const minutes = new Date(start).getMinutes();
-      const suffix = new Date(start).getHours() > 11 ? 'PM' : 'AM';
+      const suffix = new Date(start).getHours() > 11 ? "PM" : "AM";
       // format minutes to mm
       if (minutes === 0) {
-        return hours + ':' + minutes + '0' + ' ' + suffix;
+        return hours + ":" + minutes + "0" + " " + suffix;
       } else if (minutes < 10) {
-        return hours + ':' + '0' + minutes + ' ' + suffix;
+        return hours + ":" + "0" + minutes + " " + suffix;
       } else {
-        return hours + ':' + minutes + ' ' + suffix;
+        return hours + ":" + minutes + " " + suffix;
       }
     },
-    next () {
-      this.$refs.miniCal.next()
+    next() {
+      this.$refs.miniCal.next();
     },
     // get suffix value for each numbered date
-    nth (d) {
+    nth(d) {
       return d > 3 && d < 21
-        ? 'th'
-        : ['th', 'st', 'nd', 'rd', 'th', 'th', 'th', 'th', 'th', 'th'][d % 10]
+        ? "th"
+        : ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th"][d % 10];
     },
-    prev () {
-      this.$refs.miniCal.prev()
+    prev() {
+      this.$refs.miniCal.prev();
     },
-    setToday () {
-      this.focus = this.today
+    setToday() {
+      this.focus = this.today;
     },
-    updateRange ({ start, end }) {
-      this.start = start
-      this.end = end
+    updateRange({ start, end }) {
+      this.start = start;
+      this.end = end;
     },
-    getSpaceEventAttendeesByEvent (spaceEvents) {
-      this.spaceEvents.forEach((spaceEvent) => {
+    getSpaceEventAttendeesByEvent(spaceEvents) {
+      console.log(JSON.parse(JSON.stringify(this.spaceEvents)));
+      this.spaceEvents.forEach(spaceEvent => {
         this.fetchSpaceEventAttendees(spaceEvent);
       });
     }
-  },
-}
+  }
+};
 </script>
 
 <style lang="scss">

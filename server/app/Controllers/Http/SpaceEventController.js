@@ -1,10 +1,9 @@
-'use strict'
+"use strict";
 
-const SpaceEvent = use('App/Models/SpaceEvent');
-const User = use('App/Models/User');
+const SpaceEvent = use("App/Models/SpaceEvent");
+const User = use("App/Models/User");
 
 class SpaceEventController {
-
   async index() {
     const spaceEvents = await SpaceEvent.all();
     return spaceEvents;
@@ -18,7 +17,15 @@ class SpaceEventController {
 
   async create({ auth, request }) {
     const user = await auth.getUser();
-    const { name, description, start, end, address_name, full_address, image_source } = request.all();
+    const {
+      name,
+      description,
+      start,
+      end,
+      address_name,
+      full_address,
+      image_source,
+    } = request.all();
     const spaceEvent = new SpaceEvent();
     spaceEvent.fill({
       name,
@@ -30,7 +37,7 @@ class SpaceEventController {
       image_source,
       creator_id: user.id,
       creator_name: user.full_name,
-      attendees: '',
+      attendees: "",
     });
     await user.spaceEventsCreated().save(spaceEvent);
     return spaceEvent;
@@ -54,13 +61,18 @@ class SpaceEventController {
     } else {
       await spaceEvent.attendees().detach(user.id);
     }
+    return spaceEvent.attendees().fetch();
   }
 
-  async getAttendees({ request, params}) {
+  async getAttendees({ request, params }) {
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
+    console.log(spaceEvent.name)
     const attendees = await spaceEvent.attendees().fetch();
-    return attendees;
+    if (attendees.rows[0]) {
+      console.log(attendees.rows[0].username)
+    }
+    return attendees.rows;
   }
 
   async destroy({ auth, params }) {
@@ -70,7 +82,6 @@ class SpaceEventController {
     await spaceEvent.delete();
     return spaceEvent;
   }
-
 }
 
-module.exports = SpaceEventController
+module.exports = SpaceEventController;

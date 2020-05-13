@@ -2,7 +2,6 @@
   <v-container>
     <v-row>
       <v-col>
-
         <!-- Selected Event Modal -->
         <v-menu
           v-model="selectedOpen"
@@ -12,21 +11,20 @@
           top
           transition="slide-y-transition"
         >
-
           <!-- Event/Form Display  -->
           <v-card class="d-flex flex-column">
-
             <!-- Header -->
             <v-card-title
               v-if="!editMode"
-              :class="{'headline primary white--text justify-space-between': $breakpoint.mdAndUp, 'display-1 primary white--text justify-space-between': $breakpoint.smAndDown }"
+              :class="{
+                'headline primary white--text justify-space-between':
+                  $breakpoint.mdAndUp,
+                'display-1 primary white--text justify-space-between':
+                  $breakpoint.smAndDown,
+              }"
             >
               {{ selectedEvent.name }}
-              <v-btn
-                @click="cancelEventEdit"
-                color="primary darken-2"
-                fab
-              >
+              <v-btn @click="cancelEventEdit" color="primary darken-2" fab>
                 <v-icon>
                   mdi-close
                 </v-icon>
@@ -34,14 +32,15 @@
             </v-card-title>
             <v-card-title
               v-if="editMode"
-              :class="{'headline font-weight-regular primary white--text justify-space-between': $breakpoint.mdAndUp, 'display-1 primary white--text justify-space-between': $breakpoint.smAndDown }"
+              :class="{
+                'headline font-weight-regular primary white--text justify-space-between':
+                  $breakpoint.mdAndUp,
+                'display-1 primary white--text justify-space-between':
+                  $breakpoint.smAndDown,
+              }"
             >
               Edit {{ selectedEvent.name }}
-              <v-btn
-                @click="cancelEventEdit"
-                color="primary darken-2"
-                fab
-              >
+              <v-btn @click="cancelEventEdit" color="primary darken-2" fab>
                 <v-icon>
                   mdi-close
                 </v-icon>
@@ -49,25 +48,41 @@
             </v-card-title>
 
             <!-- Body -->
-            <v-container v-if="!editMode" class="d-flex flex-column justify-space-evenly">
+            <v-container
+              v-if="!editMode"
+              class="d-flex flex-column justify-space-evenly"
+            >
               <v-card-subtitle
                 v-text="eventDate"
-                :class="{'body-1 font-weight-regular pt-0': $breakpoint.mdAndUp, 'title font-weight-regular pt-0': $breakpoint.smAndDown}"
+                :class="{
+                  'body-1 font-weight-regular pt-0': $breakpoint.mdAndUp,
+                  'title font-weight-regular pt-0': $breakpoint.smAndDown,
+                }"
               />
               <v-card-text
                 v-text="selectedEvent.description"
-                :class="{'body-1 font-weight-regular': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}"
+                :class="{
+                  'body-1 font-weight-regular': $breakpoint.mdAndUp,
+                  'title font-weight-regular': $breakpoint.smAndDown,
+                }"
               />
-              <v-card-text :class="{'body-1 font-weight-regular': $breakpoint.mdAndUp, 'title font-weight-regular': $breakpoint.smAndDown}">
+              <v-card-text
+                :class="{
+                  'body-1 font-weight-regular': $breakpoint.mdAndUp,
+                  'title font-weight-regular': $breakpoint.smAndDown,
+                }"
+              >
                 Volunteers: {{ volunteersCount }}
               </v-card-text>
               <v-card-text>
                 <ul>
-                  <li v-for="user in selectedEvent.attendees" :key="user.id" class="d-flex align-center mb-3">
+                  <li
+                    v-for="user in selectedEvent.attendees"
+                    :key="user.id"
+                    class="d-flex align-center mb-3"
+                  >
                     <v-avatar class="mr-3" size="32">
-                      <v-img
-                        :src="user.profile_image_source"
-                      />
+                      <v-img :src="user.profile_image_source" />
                     </v-avatar>
                     <p class="subtitle-1 mb-0">{{ user.full_name }}</p>
                   </li>
@@ -81,7 +96,9 @@
                 :value="selectedEvent.name"
                 :counter="50"
                 :rules="nameRules"
-                @input="setUpdatedSpaceEventName({ selectedEvent, name: $event })"
+                @input="
+                  setUpdatedSpaceEventName({ selectedEvent, name: $event })
+                "
                 label="Name"
                 required
               />
@@ -89,7 +106,12 @@
                 :value="selectedEvent.description"
                 :rules="descriptionRules"
                 :counter="1000"
-                @input="setUpdatedSpaceEventDescription({ selectedEvent, description: $event })"
+                @input="
+                  setUpdatedSpaceEventDescription({
+                    selectedEvent,
+                    description: $event,
+                  })
+                "
                 label="Description"
                 name="Description"
                 auto-grow
@@ -118,7 +140,12 @@
                 :value="selectedEvent.address_name"
                 :rules="addressNameRules"
                 :counter="1000"
-                @input="setUpdatedSpaceEventAddressName({ selectedEvent, addressName: $event })"
+                @input="
+                  setUpdatedSpaceEventAddressName({
+                    selectedEvent,
+                    addressName: $event,
+                  })
+                "
                 label="Address Name"
                 name="AddressName"
                 auto-grow
@@ -128,7 +155,12 @@
                 :value="selectedEvent.full_address"
                 :rules="fullAddressRules"
                 :counter="1000"
-                @input="setUpdatedSpaceEventFullAddress({ selectedEvent, fullAddress: $event })"
+                @input="
+                  setUpdatedSpaceEventFullAddress({
+                    selectedEvent,
+                    fullAddress: $event,
+                  })
+                "
                 label="Full Address"
                 name="FullAddress"
                 auto-grow
@@ -138,7 +170,12 @@
                 :value="selectedEvent.image_source"
                 :rules="imageSourceRules"
                 :counter="1000"
-                @input="setUpdatedSpaceEventImageSource({ selectedEvent, image_source: $event })"
+                @input="
+                  setUpdatedSpaceEventImageSource({
+                    selectedEvent,
+                    image_source: $event,
+                  })
+                "
                 label="Image Source"
                 name="ImageSource"
                 auto-grow
@@ -179,7 +216,7 @@
                 right
               >
                 <v-icon>
-                  {{ editMode ? 'mdi-pencil-off' : 'mdi-pencil' }}
+                  {{ editMode ? "mdi-pencil-off" : "mdi-pencil" }}
                 </v-icon>
               </v-btn>
               <!-- Update Event -->
@@ -226,22 +263,21 @@
                 right
               >
                 <v-icon>
-                  {{ rsvp ? 'mdi-account-minus' : 'mdi-account-plus' }}
+                  {{ rsvp ? "mdi-account-minus" : "mdi-account-plus" }}
                 </v-icon>
               </v-btn>
             </v-card-actions>
           </v-card>
         </v-menu>
-
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script>
-import { mapActions, mapMutations, mapState } from 'vuex';
-import { Datetime } from 'vue-datetime';
-import 'vue-datetime/dist/vue-datetime.css';
+import { mapActions, mapMutations, mapState } from "vuex";
+import { Datetime } from "vue-datetime";
+import "vue-datetime/dist/vue-datetime.css";
 
 export default {
   components: {
@@ -269,146 +305,180 @@ export default {
       startDateTime: new Date().toJSON(),
       valid: true,
       nameRules: [
-        v => !!v || 'Name is required',
-        v => (v && v.length <= 50) || 'Name must be less than 50 characters',
+        (v) => !!v || "Name is required",
+        (v) => (v && v.length <= 50) || "Name must be less than 50 characters",
       ],
       descriptionRules: [
-        v => !!v || 'Description is required',
-        v => (v && v.length <= 1000) || 'Description must be less than 1000 characters',
+        (v) => !!v || "Description is required",
+        (v) =>
+          (v && v.length <= 1000) ||
+          "Description must be less than 1000 characters",
       ],
       addressNameRules: [
-        v => !!v || 'Address Name is required',
-        v => (v && v.length <= 1000) || 'Address Name must be less than 1000 characters',
+        (v) => !!v || "Address Name is required",
+        (v) =>
+          (v && v.length <= 1000) ||
+          "Address Name must be less than 1000 characters",
       ],
       fullAddressRules: [
-        v => !!v || 'Full Address is required',
-        v => (v && v.length <= 1000) || 'Full Address must be less than 1000 characters',
+        (v) => !!v || "Full Address is required",
+        (v) =>
+          (v && v.length <= 1000) ||
+          "Full Address must be less than 1000 characters",
       ],
       imageSourceRules: [
-        v => !!v || 'Image Source is required',
-        v => (v && v.length <= 1000) || 'Image Source must be less than 1000 characters',
+        (v) => !!v || "Image Source is required",
+        (v) =>
+          (v && v.length <= 1000) ||
+          "Image Source must be less than 1000 characters",
       ],
-    }
+    };
   },
   computed: {
-    ...mapState('spaceEvents', [
-      'newSpaceEventName',
-      'newSpaceEventDescription',
-      'newSpaceEventStart',
-      'newSpaceEventEnd',
-      'newSpaceEventAddressName',
-      'newSpaceEventFullAddress',
-      'newSpaceEventImageSource',
-      'rsvp',
-      'spaceEvents',
+    ...mapState("spaceEvents", [
+      "newSpaceEventName",
+      "newSpaceEventDescription",
+      "newSpaceEventStart",
+      "newSpaceEventEnd",
+      "newSpaceEventAddressName",
+      "newSpaceEventFullAddress",
+      "newSpaceEventImageSource",
+      "rsvp",
+      "spaceEvents",
     ]),
-    ...mapState('auth', [
-      'user',
-    ]),
+    computed: {
+      ...mapState(["loggedInUser"]),
+    },
     // volunteer count by event (expects string)
-    volunteersCount () {
+    volunteersCount() {
       if (this.selectedEvent.attendees) {
         return this.selectedEvent.attendees.length;
       } else {
-        return '0';
+        return "0";
       }
     },
-    eventDate () {
+    eventDate() {
       return new Date(this.selectedEvent.start).toLocaleString();
-    }
+    },
   },
   watch: {
     // workaround to set datetime of event, cannot use v-on handlers, watching v-model changes and passing formatted date to vuex mutation
-    startDateTime () {
-      const formatted = this.startDateTime.substr(0, 19).replace('T', ' ');
-      this.setUpdatedSpaceEventStart({ selectedEvent: this.selectedEvent, start: formatted });
+    startDateTime() {
+      const formatted = this.startDateTime.substr(0, 19).replace("T", " ");
+      this.setUpdatedSpaceEventStart({
+        selectedEvent: this.selectedEvent,
+        start: formatted,
+      });
     },
-    endDateTime () {
-      const formatted = this.endDateTime.substr(0, 19).replace('T', ' ');
-      this.setUpdatedSpaceEventEnd({ selectedEvent: this.selectedEvent, end: formatted });
+    endDateTime() {
+      const formatted = this.endDateTime.substr(0, 19).replace("T", " ");
+      this.setUpdatedSpaceEventEnd({
+        selectedEvent: this.selectedEvent,
+        end: formatted,
+      });
     },
     // convert stored datetime format to tz datetime to match picker format
-    selectedEvent () {
+    selectedEvent() {
       this.startDateTime = this.toISOLocal(new Date(this.selectedEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.selectedEvent.end));
       // check if not empty object
-      if (!(Object.entries(this.selectedEvent).length === 0 && this.selectedEvent.constructor === Object)) {
+      if (
+        !(
+          Object.entries(this.selectedEvent).length === 0 &&
+          this.selectedEvent.constructor === Object
+        )
+      ) {
         this.setRsvpByUser({
           selectedEvent: this.selectedEvent,
-          user: this.user,
+          user: this.loggedInUser,
         });
       } else {
-        console.log('user rsvp not set');
+        console.log("user rsvp not set");
       }
     },
   },
   mounted() {
     this.fetchSpaceEvents();
-    this.spaceEvents.forEach(spaceEvent => this.fetchSpaceEventAttendees(spaceEvent));
+    this.spaceEvents.forEach((spaceEvent) =>
+      this.fetchSpaceEventAttendees(spaceEvent)
+    );
   },
   methods: {
-    ...mapActions('spaceEvents', [
-      'deleteSpaceEvent',
-      'fetchSpaceEvents',
-      'fetchSpaceEventAttendees',
-      'updateSpaceEvent',
-      'updateSpaceEventAttendees',
+    ...mapActions("spaceEvents", [
+      "deleteSpaceEvent",
+      "fetchSpaceEvents",
+      "fetchSpaceEventAttendees",
+      "updateSpaceEvent",
+      "updateSpaceEventAttendees",
     ]),
-    ...mapMutations('spaceEvents', [
-      'setRsvpByUser',
-      'setSpaceEvent',
-      'setUpdatedSpaceEventName',
-      'setUpdatedSpaceEventDescription',
-      'setUpdatedSpaceEventStart',
-      'setUpdatedSpaceEventEnd',
-      'setUpdatedSpaceEventAddressName',
-      'setUpdatedSpaceEventFullAddress',
-      'setUpdatedSpaceEventImageSource',
-      'toggleRsvp',
+    ...mapMutations("spaceEvents", [
+      "setRsvpByUser",
+      "setSpaceEvent",
+      "setUpdatedSpaceEventName",
+      "setUpdatedSpaceEventDescription",
+      "setUpdatedSpaceEventStart",
+      "setUpdatedSpaceEventEnd",
+      "setUpdatedSpaceEventAddressName",
+      "setUpdatedSpaceEventFullAddress",
+      "setUpdatedSpaceEventImageSource",
+      "toggleRsvp",
     ]),
     // converts a date to ISO w/o resetting time zone (https://stackoverflow.com/questions/49330139/date-toisostring-but-local-time-instead-of-utc)
-    toISOLocal (date) {
-      const z = n => ('0' + n).slice(-2);
-      const zz = n => ('00' + n).slice(-3);
-      return date.getFullYear() + '-' + z(date.getMonth() + 1) + '-' + z(date.getDate()) + 'T' + z(date.getHours()) + ':' + z(date.getMinutes()) + ':' + z(date.getSeconds()) + '.' + zz(date.getMilliseconds()) + 'Z';
+    toISOLocal(date) {
+      const z = (n) => ("0" + n).slice(-2);
+      const zz = (n) => ("00" + n).slice(-3);
+      return (
+        date.getFullYear() +
+        "-" +
+        z(date.getMonth() + 1) +
+        "-" +
+        z(date.getDate()) +
+        "T" +
+        z(date.getHours()) +
+        ":" +
+        z(date.getMinutes()) +
+        ":" +
+        z(date.getSeconds()) +
+        "." +
+        zz(date.getMilliseconds()) +
+        "Z"
+      );
     },
-    toggleUserAttending () {
+    toggleUserAttending() {
       this.toggleRsvp();
       this.updateSpaceEventAttendees(this.selectedEvent);
     },
-    cancelEventEdit () {
+    cancelEventEdit() {
       this.resetEventForm();
     },
-    deleteEvent () {
+    deleteEvent() {
       this.deleteSpaceEvent(this.selectedEvent);
       this.resetEventForm();
     },
-    enterEditMode () {
+    enterEditMode() {
       this.editMode = true;
     },
-    toggleEditMode () {
+    toggleEditMode() {
       this.editMode = !this.editMode;
     },
-    resetEventForm () {
+    resetEventForm() {
       this.editMode = false;
-      this.$emit('toggleOpen', false);
+      this.$emit("toggleOpen", false);
     },
-    updateEvent () {
+    updateEvent() {
       this.updateSpaceEvent(this.selectedEvent);
       this.editMode = false;
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-
 .update-btn {
   margin-right: 15%;
 }
 
-.edit-btn{
+.edit-btn {
   margin-right: 30%;
 }
-
 </style>

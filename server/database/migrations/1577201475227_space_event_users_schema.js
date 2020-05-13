@@ -4,7 +4,7 @@
 const Schema = use('Schema')
 
 class SpaceEventUserSchema extends Schema {
-  up () {
+  up() {
     this.create('space_event_user', (table) => {
       table.increments()
       table.integer('creator_id').unsigned().references('id').inTable('users').onDelete('cascade')
@@ -13,7 +13,7 @@ class SpaceEventUserSchema extends Schema {
     })
   }
 
-  down () {
+  down() {
     this.drop('space_event_user')
   }
 }
