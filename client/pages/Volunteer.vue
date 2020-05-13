@@ -155,10 +155,6 @@ export default {
   },
   mounted() {
     this.fetchSpaceEvents();
-    if (this.spaceEvents) {
-      console.log(JSON.parse(JSON.stringify(this.spaceEvents)));
-      this.getSpaceEventAttendeesByEvent(this.spaceEvents);
-    }
   },
   methods: {
     ...mapActions("spaceEvents", [
@@ -238,10 +234,14 @@ export default {
       this.end = end;
     },
     getSpaceEventAttendeesByEvent(spaceEvents) {
-      console.log(JSON.parse(JSON.stringify(this.spaceEvents)));
-      this.spaceEvents.forEach(spaceEvent => {
+      this.spaceEvents.map(spaceEvent => {
         this.fetchSpaceEventAttendees(spaceEvent);
       });
+    }
+  },
+  watch: {
+    spaceEvents() {
+      this.getSpaceEventAttendeesByEvent(this.spaceEvents);
     }
   }
 };

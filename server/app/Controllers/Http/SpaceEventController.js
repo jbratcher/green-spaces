@@ -64,7 +64,7 @@ class SpaceEventController {
     return spaceEvent.attendees().fetch();
   }
 
-  async getAttendees({ request, params }) {
+  async getAttendees({ params }) {
     const { id } = params;
     const spaceEvent = await SpaceEvent.find(id);
     const attendees = await spaceEvent.attendees().fetch();

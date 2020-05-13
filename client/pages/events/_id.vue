@@ -177,8 +177,8 @@
                     'title font-weight-regular': $breakpoint.smAndDown,
                   }"
                 >Attending</v-card-text>
-                <ul v-if="spaceEvent.attendees">
-                  <li v-for="user in spaceEvent.attendees" :key="user.id">
+                <ul v-if="attendees">
+                  <li v-for="user in attendees" :key="user.id">
                     <v-avatar size="48">
                       <v-img :src="user.profile_image_source" />
                     </v-avatar>
@@ -254,7 +254,7 @@ export default {
   },
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
-    ...mapState("spaceEvents", ["spaceEvent", "rsvp"]),
+    ...mapState("spaceEvents", ["attendees", "rsvp", "spaceEvent"]),
     ...mapState("user", ["userSpaceEvents"])
   },
   created() {
@@ -343,7 +343,9 @@ export default {
       this.endDateTime = this.toISOLocal(new Date(this.spaceEvent.end));
       this.fetchSpaceEventAttendees(this.spaceEvent);
     },
-    userSpaceEvents() {}
+    rsvp() {
+      this.fetchSpaceEventAttendees(this.spaceEvent);
+    }
   }
 };
 </script>
