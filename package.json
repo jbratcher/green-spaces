@@ -1,9 +1,10 @@
 {
-    "name": "green_spaces",
-    "version": "1.0.0",
-    "description": "Crowd-sourced tree planting for climate control",
-    "author": "jbratcher",
-    "private": true,
+  "name": "green_spaces",
+  "version": "1.0.0",
+  "description": "Crowd-sourced tree planting for climate control",
+  "author": "jbratcher",
+  "private": true,
+  "scripts": {
     "merge-dev:master": "git checkout master && git merge dev && git push origin master",
     "merge-dev:staging": "git checkout staging && git merge dev",
     "merge-dev:release": "npm run merge-dev:master && npm run merge-dev:staging",
@@ -15,4 +16,15 @@
     "deploy:client": "npm run merge-dev:release && npm run merge-staging:gh-pages && npm run release:gh-pages",
     "deploy:server": "npm run merge-dev:release && npm run merge-staging:heroku && npm run release:heroku",
     "deploy:all": "npm run deploy:client && npm run deploy:server"
+  },
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbratcher/green-spaces.git"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/jbratcher/green-spaces/issues"
+  },
+  "homepage": "https://github.com/jbratcher/green-spaces#readme"
 }
