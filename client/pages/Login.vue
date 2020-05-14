@@ -19,9 +19,10 @@
           autocomplete="new-password"
         />
         <v-alert :value="Boolean(error)" type="error">{{ error }}</v-alert>
-        <v-btn @click="login" dark>
+        <v-btn class="mr-6" @click="login" dark>
           <v-icon class="mr-3">{{ loginIcon }}</v-icon>Login
         </v-btn>
+        <v-btn class="body-2 my-6 px-0" to="/register" text>Not registered yet?</v-btn>
       </v-col>
     </v-row>
   </v-container>

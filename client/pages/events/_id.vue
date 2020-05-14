@@ -16,7 +16,10 @@
           />
 
           <!-- Edit Mode -->
-          <v-container v-if="loggedInUser.id === spaceEvent.creator_id" class="d-flex justify-end">
+          <v-container
+            v-if="loggedInUser && loggedInUser.id === spaceEvent.creator_id"
+            class="d-flex justify-end"
+          >
             <!-- Edit/Cancel Edit Event Button -->
             <v-btn @click="toggleEditMode" :color="editMode ? 'warning' : 'secondary'">
               <v-icon>{{ editMode ? pencilOffIcon : pencilIcon }}</v-icon>
@@ -172,11 +175,19 @@
 
                 <!-- Volunteer List -->
                 <v-card-text
+                  v-if="attendees.length > 0"
                   :class="{
                     'body-1': $breakpoint.mdAndUp,
                     'title font-weight-regular': $breakpoint.smAndDown,
                   }"
                 >Attending</v-card-text>
+                <v-card-text
+                  v-else-if="attendees.length === 0"
+                  :class="{
+                    'body-1': $breakpoint.mdAndUp,
+                    'title font-weight-regular': $breakpoint.smAndDown,
+                  }"
+                >No attendees yet</v-card-text>
                 <ul v-if="attendees">
                   <li v-for="user in attendees" :key="user.id">
                     <v-avatar size="48">
@@ -259,10 +270,12 @@ export default {
   },
   created() {
     this.fetchSpaceEventById(this.$route.params.id);
-    this.fetchSpaceEventsAttending();
+    if (this.$auth.user) {
+      this.fetchSpaceEventsAttending();
+    }
   },
   mounted() {
-    if (this.spaceEvent && this.userSpaceEvents) {
+    if (this.spaceEvent && this.userSpaceEvents.length > 0) {
       this.setRsvpByUser({
         spaceEvent: this.spaceEvent,
         userSpaceEvents: this.userSpaceEvents
@@ -310,8 +323,12 @@ export default {
       );
     },
     toggleUserAttending() {
-      this.toggleRsvp();
-      this.updateSpaceEventAttendees(this.spaceEvent);
+      if (this.isAuthenticated) {
+        this.toggleRsvp();
+        this.updateSpaceEventAttendees(this.spaceEvent);
+      } else {
+        this.$router.push("/login");
+      }
     },
     toggleEditMode() {
       this.editMode = !this.editMode;
@@ -337,8 +354,8 @@ export default {
         end: formatted
       });
     },
-    // convert stored datetime format to tz datetime to match picker format
     spaceEvent() {
+      // convert stored datetime format to tz datetime to match picker format
       this.startDateTime = this.toISOLocal(new Date(this.spaceEvent.start));
       this.endDateTime = this.toISOLocal(new Date(this.spaceEvent.end));
       this.fetchSpaceEventAttendees(this.spaceEvent);

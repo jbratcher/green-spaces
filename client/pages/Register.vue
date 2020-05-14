@@ -21,9 +21,10 @@
           autocomplete="new-password"
         />
         <v-alert v-model="error" type="error">{{ errorMessage }}</v-alert>
-        <v-btn @click="register" dark>
+        <v-btn class="mr-6" @click="register" dark>
           <v-icon class="mr-3">{{ accountPlusIcon }}</v-icon>Register
         </v-btn>
+        <v-btn class="body-2 my-6 px-0" to="/login" text>Already registered?</v-btn>
       </v-col>
     </v-row>
   </v-container>
@@ -44,6 +45,21 @@ export default {
     };
   },
   methods: {
+    login() {
+      this.$auth
+        .loginWith("local", {
+          data: {
+            email: this.email,
+            password: this.password
+          }
+        })
+        .then(response => {
+          this.$auth.setToken("local", "Bearer " + response.data.token);
+          console.log(response.data.token);
+          this.$router.replace("/reports");
+        })
+        .catch(error => console.log(`Login Error: ${error}`));
+    },
     register() {
       try {
         const newUser = {
@@ -63,21 +79,6 @@ export default {
         this.error = true;
         this.errorMessage = e.response.data[0].message;
       }
-    },
-    login() {
-      this.$auth
-        .loginWith("local", {
-          data: {
-            email: this.email,
-            password: this.password
-          }
-        })
-        .then(response => {
-          this.$auth.setToken("local", "Bearer " + response.data.token);
-          console.log(response.data.token);
-          this.$router.replace("/reports");
-        })
-        .catch(error => console.log(`Login Error: ${error}`));
     }
   }
 };

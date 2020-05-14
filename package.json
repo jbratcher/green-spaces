@@ -1,0 +1,18 @@
+{
+    "name": "green_spaces",
+    "version": "1.0.0",
+    "description": "Crowd-sourced tree planting for climate control",
+    "author": "jbratcher",
+    "private": true,
+    "merge-dev:master": "git checkout master && git merge dev && git push origin master",
+    "merge-dev:staging": "git checkout staging && git merge dev",
+    "merge-dev:release": "npm run merge-dev:master && npm run merge-dev:staging",
+    "merge-staging:heroku": "git checkout heroku && git merge staging",
+    "merge-staging:gh-pages": "git checkout gh-pages && git merge staging",
+    "merge-staging:release": "npm run merge-staging:heroku && npm run merge-staging:gh-pages",
+    "release:heroku": "git subtree push --prefix server heroku master && git checkout staging",
+    "release:gh-pages": "git subtree push --prefix client/dist origin gh-pages && git checkout staging",
+    "deploy:client": "npm run merge-dev:release && npm run merge-staging:gh-pages && npm run release:gh-pages",
+    "deploy:server": "npm run merge-dev:release && npm run merge-staging:heroku && npm run release:heroku",
+    "deploy:all": "npm run deploy:client && npm run deploy:server"
+}

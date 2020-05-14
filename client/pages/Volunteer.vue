@@ -83,7 +83,7 @@
                     <!-- Add Event Button -->
                     <v-card class="add-new-event" color="transparent" flat>
                       <p class="d-flex align-center justify-center">
-                        <v-icon class="mr-3" size="32" color="black">{{ calendarIcon }}</v-icon>
+                        <v-icon class="mr-3" size="32" color="primary">{{ calendarIcon }}</v-icon>
                         <span class="headline">Create New Event</span>
                       </p>
                     </v-card>
@@ -119,6 +119,7 @@ export default {
     calendarIcon: mdiCalendarPlus,
     end: null,
     focus: new Date().toISOString().substr(0, 10),
+    hover: false,
     today: new Date().toISOString().substr(0, 10),
     start: null
   }),
@@ -248,4 +249,12 @@ export default {
 </script>
 
 <style lang="scss">
+.add-new-event p {
+  .v-icon,
+  span {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
 </style>
