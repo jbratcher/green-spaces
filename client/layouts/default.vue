@@ -14,7 +14,7 @@
         <p class="headline my-auto ml-3">GreenSpaces</p>
       </v-toolbar-title>
       <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up">
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" class="hidden-md-and-up mr-3">
         <i aria-hidden="true" class="v-icon notranslate theme--dark">
           <v-icon>{{ menuIcon }}</v-icon>
         </i>
@@ -22,7 +22,7 @@
       <MenuLinks
         :general-links="generalLinks"
         :logged-out-links="loggedOutLinks"
-        list-class="hidden-sm-and-down d-md-flex"
+        list-class="hidden-sm-and-down d-md-flex mr-3"
         list-item-class
       />
     </v-app-bar>
@@ -212,7 +212,7 @@ ol {
 }
 
 .v-application a {
-  color: #fff !important;
+  color: #fff;
 }
 
 .text-shadow {

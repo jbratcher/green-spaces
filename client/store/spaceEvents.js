@@ -79,7 +79,6 @@ export const actions = {
   async fetchSpaceEventAttendees({ commit }, spaceEvent) {
     await this.$axios.$get(`/space-events/${spaceEvent.id}/attendees`)
       .then(attendees => {
-        console.log(JSON.parse(JSON.stringify(attendees)))
         commit('setSpaceEventAttendeesFromDB', { spaceEvent, attendees });
       })
       .catch((error) => {
