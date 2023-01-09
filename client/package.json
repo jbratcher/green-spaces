@@ -21,7 +21,7 @@
     "@nuxtjs/axios": "^5.3.6",
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/vuetify": "^1.0.0",
-    "luxon": "^1.21.2",
+    "luxon": "^1.28.1",
     "nuxt": "^2.11.0",
     "vue-datetime": "^1.0.0-beta.11",
     "vuex-persistedstate": "^2.7.0",
